@@ -18,6 +18,10 @@ export default function MeditationPage() {
   const prev = index > 0 ? meditations[index - 1] : null
   const next = index < meditations.length - 1 ? meditations[index + 1] : null
 
+  const chapterLabel = meditation.phase
+    ? `${meditation.phase} · ${meditation.phaseEnergy}`
+    : index === 0 ? 'Introduction' : 'Conclusion'
+
   return (
     <article className="space-y-8 animate-fade-in">
       {/* Hero image placeholder */}
@@ -32,7 +36,7 @@ export default function MeditationPage() {
       {/* Title */}
       <div>
         <p className="text-terracotta text-xs font-medium tracking-wider uppercase mb-1">
-          Chapter {meditation.id} of 6
+          Chapter {meditation.id} of 6 · {chapterLabel}
         </p>
         <h1 className="font-heritage text-3xl text-white">{meditation.title}</h1>
         <p className="text-gold-rich text-sm mt-1">{meditation.era}</p>
@@ -68,12 +72,23 @@ export default function MeditationPage() {
       {/* Journal prompt */}
       <section className="bg-compass-card border border-gold/20 rounded-xl p-6">
         <h2 className="font-heritage text-sm text-gold-rich mb-3">Reflect</h2>
-        <p className="text-gold/80 text-sm leading-relaxed italic">
+        <p className="text-gold/80 text-sm leading-relaxed italic mb-4">
           "{meditation.journalPrompt}"
         </p>
+
+        {meditation.followUpQuestions.length > 0 && (
+          <div className="space-y-2 mb-4 pl-4 border-l border-gold/10">
+            {meditation.followUpQuestions.map((q, i) => (
+              <p key={i} className="text-text-muted/70 text-xs leading-relaxed italic">
+                {q}
+              </p>
+            ))}
+          </div>
+        )}
+
         <Link
           to={`/compass/journal?prompt=${encodeURIComponent(meditation.journalPrompt)}`}
-          className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-gold-rich/10 border border-gold-rich/30 text-gold-rich text-sm rounded-lg hover:bg-gold-rich/20 transition-colors"
+          className="mt-2 inline-flex items-center gap-2 px-4 py-2 bg-gold-rich/10 border border-gold-rich/30 text-gold-rich text-sm rounded-lg hover:bg-gold-rich/20 transition-colors"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
             <path strokeLinecap="round" strokeLinejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931z" />

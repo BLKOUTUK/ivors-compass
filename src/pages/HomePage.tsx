@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import { meditations } from '../data/meditations'
 
 const sections = [
   {
@@ -86,14 +87,7 @@ export default function HomePage() {
       <div className="bg-compass-dark border border-terracotta/20 rounded-xl p-5">
         <h3 className="font-heritage text-sm text-terracotta mb-3">Six Chapters of a Life</h3>
         <div className="space-y-2">
-          {[
-            { id: 1, title: 'Hartlepool Origins', era: '1913–1930s' },
-            { id: 2, title: 'Aggrey House', era: '1930s' },
-            { id: 3, title: 'The Colonial Office', era: '1940s' },
-            { id: 4, title: 'Tilbury Docks', era: '1948' },
-            { id: 5, title: 'Queer Life', era: '1950s–1970s' },
-            { id: 6, title: 'Legacy', era: '1992–present' },
-          ].map((m) => (
+          {meditations.map((m) => (
             <Link
               key={m.id}
               to={`/compass/meditation/${m.id}`}
@@ -105,7 +99,7 @@ export default function HomePage() {
                 </span>
                 <span className="text-sm text-white">{m.title}</span>
               </div>
-              <span className="text-xs text-text-muted/40">{m.era}</span>
+              <span className="text-xs text-text-muted/40">{m.phase ? m.phase : m.era}</span>
             </Link>
           ))}
         </div>
