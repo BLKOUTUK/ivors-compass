@@ -35,7 +35,7 @@ const MOOD_KEY = 'ivors-compass-mood'
 const MAX_AUDIO_MS = 120_000 // 2 minutes
 
 const PHASE_COLORS: Record<Phase, string> = {
-  identity: '#B35A44',
+  identity: '#802918',
   connection: '#A67C52',
   resistance: '#4A5568',
   joy: '#D97706',
@@ -99,6 +99,21 @@ function phaseLabel(p: Phase | null | undefined): string {
 function phaseColor(p: Phase | null | undefined): string {
   if (!p) return '#D4AF37'
   return PHASE_COLORS[p]
+}
+
+// ---------------------------------------------------------------------------
+// PrivacyLock — consistent privacy indicator
+// ---------------------------------------------------------------------------
+
+function PrivacyLock({ extra }: { extra?: string }) {
+  return (
+    <div className="flex items-center gap-2 text-[#D4AF37]/30 text-[10px]">
+      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+      </svg>
+      Private — stored only on this device{extra}
+    </div>
+  )
 }
 
 // ---------------------------------------------------------------------------
@@ -563,23 +578,7 @@ export default function JournalPage() {
       </div>
 
       {/* Privacy badge */}
-      <div className="flex items-center gap-2 text-text-muted/30 text-[10px]">
-        <svg
-          className="w-3 h-3"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-          />
-        </svg>
-        Private — stored only on this device, never sent anywhere
-        {(audioData || isRecording) && ' (recordings too)'}
-      </div>
+      <PrivacyLock extra={(audioData || isRecording) ? ' (recordings too)' : undefined} />
 
       {view === 'write' ? (
         <div className="space-y-4">
@@ -829,12 +828,12 @@ export default function JournalPage() {
               </div>
 
               {/* Textarea + voice controls */}
-              <div className="relative">
+              <div className="relative archival-texture">
                 <textarea
                   value={text}
                   onChange={(e) => setText(e.target.value)}
                   placeholder="Write freely. This is your space."
-                  className="w-full min-h-[250px] bg-compass-dark border border-compass-border rounded-xl p-5 pr-12 text-white text-sm leading-relaxed placeholder-text-muted/20 resize-none focus:outline-none transition-colors"
+                  className="w-full min-h-[250px] bg-compass-dark border border-compass-border rounded-xl p-5 pr-12 text-white text-sm leading-relaxed placeholder-text-muted/20 resize-none focus:outline-none transition-colors relative z-[2]"
                   style={{
                     borderColor: text.length > 0 ? phaseColor(selectedPrompt.phase) + '30' : undefined,
                   }}

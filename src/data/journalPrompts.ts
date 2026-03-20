@@ -16,7 +16,7 @@ export interface JournalPrompt {
 export const phaseConfig: Record<Phase, { label: string; color: string; description: string }> = {
   identity: {
     label: 'Identity',
-    color: '#B35A44',
+    color: '#802918',
     description: 'Grounding. Reclaiming self, celebrating Blackness and Queerness, ancestral pride.',
   },
   connection: {

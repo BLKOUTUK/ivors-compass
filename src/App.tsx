@@ -1,3 +1,4 @@
+import { type ReactNode } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
 import { CompassProvider, useCompass } from './hooks/useCompass'
 import Layout from './components/Layout'
@@ -12,8 +13,11 @@ import AboutPage from './pages/AboutPage'
 import CrisisPage from './pages/CrisisPage'
 import MoodTrackerPage from './pages/MoodTrackerPage'
 import WorkshopsPage from './pages/WorkshopsPage'
+import SunroomPage from './pages/SunroomPage'
+import ProgressPage from './pages/ProgressPage'
+import ConvergencePage from './pages/ConvergencePage'
 
-function ProtectedRoute({ children }: { children: React.ReactNode }) {
+function ProtectedRoute({ children }: { children: ReactNode }) {
   const { isUnlocked } = useCompass()
   if (!isUnlocked) return <Navigate to="/" replace />
   return <>{children}</>
@@ -36,6 +40,7 @@ function AppRoutes() {
         }
       >
         <Route path="/compass" element={<HomePage />} />
+        <Route path="/compass/convergence" element={<ConvergencePage />} />
         <Route path="/compass/meditation/:id" element={<MeditationPage />} />
         <Route path="/compass/cards" element={<CardsPage />} />
         <Route path="/compass/poem" element={<PoemPage />} />
@@ -43,6 +48,8 @@ function AppRoutes() {
         <Route path="/compass/journal" element={<JournalPage />} />
         <Route path="/compass/mood" element={<MoodTrackerPage />} />
         <Route path="/compass/workshops" element={<WorkshopsPage />} />
+        <Route path="/compass/sunroom" element={<SunroomPage />} />
+        <Route path="/compass/progress" element={<ProgressPage />} />
         <Route path="/compass/about" element={<AboutPage />} />
         <Route path="/compass/crisis" element={<CrisisPage />} />
       </Route>

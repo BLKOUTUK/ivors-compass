@@ -2,6 +2,41 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 
 // ---------------------------------------------------------------------------
+// WarmthOrb — abstract golden indicator
+// ---------------------------------------------------------------------------
+
+function WarmthOrb({ intensity = 0.5, color = '#D4AF37', size = 24 }: { intensity?: number; color?: string; size?: number }) {
+  return (
+    <div
+      className="rounded-full animate-pulse"
+      style={{
+        width: size,
+        height: size,
+        background: color,
+        opacity: intensity,
+        filter: `blur(${size * 0.3}px)`,
+        boxShadow: `0 0 ${size}px ${color}`,
+      }}
+    />
+  )
+}
+
+// ---------------------------------------------------------------------------
+// PrivacyLock — consistent privacy indicator
+// ---------------------------------------------------------------------------
+
+function PrivacyLock() {
+  return (
+    <div className="flex items-center gap-2 text-[#D4AF37]/30 text-[10px]">
+      <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+      </svg>
+      Private — stored only on this device
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
 // Breathing animation phases (4-7-8 technique)
 // ---------------------------------------------------------------------------
 
@@ -109,7 +144,7 @@ const helplines: Helpline[] = [
 ]
 
 // ---------------------------------------------------------------------------
-// Component: BreathingCircle
+// Component: BreathingCircle — upgraded with golden glow
 // ---------------------------------------------------------------------------
 
 function BreathingCircle() {
@@ -117,13 +152,19 @@ function BreathingCircle() {
 
   // Scale: inhale 1 → 1.5, hold stays 1.5, exhale 1.5 → 1
   let scale: number
+  let glowIntensity: number
   if (phase === 'inhale') {
     scale = 1 + progress * 0.5
+    glowIntensity = 0.1 + progress * 0.4
   } else if (phase === 'hold') {
     scale = 1.5
+    glowIntensity = 0.5
   } else {
     scale = 1.5 - progress * 0.5
+    glowIntensity = 0.5 - progress * 0.4
   }
+
+  const goldGlow = `0 0 ${20 + glowIntensity * 40}px rgba(212,175,55,${glowIntensity}), 0 0 ${40 + glowIntensity * 60}px rgba(212,175,55,${glowIntensity * 0.5})`
 
   return (
     <div className="flex flex-col items-center gap-4">
@@ -133,7 +174,7 @@ function BreathingCircle() {
           className="absolute inset-0 rounded-full transition-none"
           style={{
             transform: `scale(${scale})`,
-            background: 'radial-gradient(circle, rgba(255,215,0,0.15) 0%, transparent 70%)',
+            background: `radial-gradient(circle, rgba(212,175,55,${0.1 + glowIntensity * 0.15}) 0%, transparent 70%)`,
           }}
         />
         {/* Main breathing circle */}
@@ -143,10 +184,11 @@ function BreathingCircle() {
             transform: `scale(${scale})`,
             backgroundColor:
               phase === 'inhale'
-                ? `rgba(255,215,0,${0.05 + progress * 0.1})`
+                ? `rgba(212,175,55,${0.05 + progress * 0.12})`
                 : phase === 'hold'
-                  ? 'rgba(255,215,0,0.15)'
-                  : `rgba(255,215,0,${0.15 - progress * 0.1})`,
+                  ? 'rgba(212,175,55,0.17)'
+                  : `rgba(212,175,55,${0.17 - progress * 0.12})`,
+            boxShadow: goldGlow,
           }}
         >
           <span className="text-gold/80 text-xs font-medium select-none">{label}</span>
@@ -236,7 +278,7 @@ export default function CrisisPage() {
 
   return (
     <div className="space-y-6 animate-fade-in">
-      {/* ── Grounding section ──────────────────────────────────── */}
+      {/* -- Grounding section -- */}
       <section className="text-center py-6 space-y-5">
         <h1 className="font-heritage text-3xl text-white">Get Help Now</h1>
 
@@ -270,7 +312,7 @@ export default function CrisisPage() {
         </div>
       </section>
 
-      {/* ── Crisis helplines ──────────────────────────────────── */}
+      {/* -- Crisis helplines -- */}
       <section className="space-y-3">
         <h2 className="font-heritage text-lg text-white px-1">Speak to someone now</h2>
         <div className="space-y-3">
@@ -280,7 +322,7 @@ export default function CrisisPage() {
         </div>
       </section>
 
-      {/* ── Talk to AIvor ─────────────────────────────────────── */}
+      {/* -- Talk to AIvor -- */}
       <section className="bg-compass-dark border border-gold/20 rounded-xl p-5">
         <div className="flex items-start gap-4">
           <svg
@@ -317,7 +359,7 @@ export default function CrisisPage() {
         </div>
       </section>
 
-      {/* ── Self-care options ─────────────────────────────────── */}
+      {/* -- Self-care options -- */}
       <section className="space-y-3">
         <h2 className="font-heritage text-lg text-white px-1">Something gentle</h2>
 
@@ -326,7 +368,7 @@ export default function CrisisPage() {
             to="/compass/journal?prompt=58"
             className="flex items-center gap-4 bg-compass-dark border border-terracotta/20 rounded-xl p-4 hover:border-terracotta/40 transition-colors active:scale-[0.98]"
           >
-            <span className="text-2xl">📓</span>
+            <WarmthOrb intensity={0.4} color="#802918" size={18} />
             <div>
               <p className="text-white text-sm font-medium">Return to Journal</p>
               <p className="text-text-muted/60 text-xs">Grounding prompt pre-loaded</p>
@@ -337,7 +379,7 @@ export default function CrisisPage() {
             to="/compass/cards"
             className="flex items-center gap-4 bg-compass-dark border border-gold/20 rounded-xl p-4 hover:border-gold/40 transition-colors active:scale-[0.98]"
           >
-            <span className="text-2xl">🃏</span>
+            <WarmthOrb intensity={0.35} color="#D4AF37" size={18} />
             <div>
               <p className="text-white text-sm font-medium">Draw an Affirmation Card</p>
               <p className="text-text-muted/60 text-xs">A word to carry with you</p>
@@ -348,7 +390,7 @@ export default function CrisisPage() {
             to="/compass/poem"
             className="flex items-center gap-4 bg-compass-dark border border-gold/20 rounded-xl p-4 hover:border-gold/40 transition-colors active:scale-[0.98]"
           >
-            <span className="text-2xl">🎤</span>
+            <WarmthOrb intensity={0.35} color="#D4AF37" size={18} />
             <div>
               <p className="text-white text-sm font-medium">Listen to something</p>
               <p className="text-text-muted/60 text-xs">Keith Jarrett &middot; 3 min</p>
@@ -357,18 +399,9 @@ export default function CrisisPage() {
         </div>
       </section>
 
-      {/* ── Privacy badge ─────────────────────────────────────── */}
-      <div className="flex items-center justify-center gap-2 py-4">
-        <svg className="w-4 h-4 text-text-muted/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
-          />
-        </svg>
-        <p className="text-text-muted/40 text-xs">
-          This page doesn&rsquo;t track anything. No data is sent anywhere.
-        </p>
+      {/* -- Privacy badge -- */}
+      <div className="flex items-center justify-center py-4">
+        <PrivacyLock />
       </div>
     </div>
   )

@@ -21,7 +21,7 @@ export interface Workshop {
 }
 
 export const PHASE_COLORS: Record<Phase, string> = {
-  identity: '#B35A44',
+  identity: '#802918',
   connection: '#A67C52',
   resistance: '#4A5568',
   joy: '#D97706',

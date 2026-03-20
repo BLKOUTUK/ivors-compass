@@ -24,13 +24,13 @@ export default function MeditationPage() {
 
   return (
     <article className="space-y-8 animate-fade-in">
-      {/* Hero image placeholder */}
-      <div className="aspect-video rounded-xl bg-gradient-to-br from-compass-card to-compass-dark border border-compass-border flex items-center justify-center relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-t from-compass-black/80 to-transparent" />
+      {/* Hero image placeholder with archival texture */}
+      <div className="aspect-video rounded-xl bg-gradient-to-br from-compass-card to-compass-dark border border-compass-border flex items-center justify-center relative overflow-hidden archival-texture">
+        <div className="absolute inset-0 bg-gradient-to-t from-compass-black/80 to-transparent z-[2]" />
         <div className="relative z-10 text-center">
           <span className="text-6xl font-heritage text-gold/20">{meditation.id}</span>
         </div>
-        <p className="absolute bottom-3 left-3 text-[10px] text-text-muted/30 italic">{meditation.imageAlt}</p>
+        <p className="absolute bottom-3 left-3 text-[10px] text-text-muted/30 italic z-[3]">{meditation.imageAlt}</p>
       </div>
 
       {/* Title */}
