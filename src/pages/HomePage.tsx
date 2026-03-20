@@ -36,6 +36,22 @@ const sections = [
     accent: 'border-terracotta/30 hover:border-terracotta/60',
   },
   {
+    to: '/compass/mood',
+    icon: '🌤',
+    title: 'Mood Check-in',
+    subtitle: 'How are you arriving today?',
+    detail: 'Track patterns • Suggest journal phases',
+    accent: 'border-gold/30 hover:border-gold/60',
+  },
+  {
+    to: '/compass/workshops',
+    icon: '🧭',
+    title: 'Workshops',
+    subtitle: 'Self-guided mini-journeys',
+    detail: '6 workshops • Anxiety, Anger, Shame & more',
+    accent: 'border-terracotta/30 hover:border-terracotta/60',
+  },
+  {
     to: '/compass/journal',
     icon: '📓',
     title: 'Your Journal',
@@ -104,6 +120,26 @@ export default function HomePage() {
           ))}
         </div>
       </div>
+
+      {/* Crisis support link */}
+      <Link
+        to="/compass/crisis"
+        className="block bg-compass-dark border border-red-700/40 hover:border-red-600/60 rounded-xl p-5 transition-all active:scale-[0.98]"
+      >
+        <div className="flex items-start gap-4">
+          <svg className="w-6 h-6 text-red-400 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+          </svg>
+          <div className="flex-1 min-w-0">
+            <h2 className="font-heritage text-lg text-white">Need Support?</h2>
+            <p className="text-text-muted text-sm mt-0.5">Crisis helplines, grounding exercises, and care</p>
+            <p className="text-red-400/60 text-xs mt-1">Get help now</p>
+          </div>
+          <svg className="w-5 h-5 text-text-muted/30 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+          </svg>
+        </div>
+      </Link>
     </div>
   )
 }

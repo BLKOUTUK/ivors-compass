@@ -9,6 +9,9 @@ import PoemPage from './pages/PoemPage'
 import FilmPage from './pages/FilmPage'
 import JournalPage from './pages/JournalPage'
 import AboutPage from './pages/AboutPage'
+import CrisisPage from './pages/CrisisPage'
+import MoodTrackerPage from './pages/MoodTrackerPage'
+import WorkshopsPage from './pages/WorkshopsPage'
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isUnlocked } = useCompass()
@@ -38,7 +41,10 @@ function AppRoutes() {
         <Route path="/compass/poem" element={<PoemPage />} />
         <Route path="/compass/film" element={<FilmPage />} />
         <Route path="/compass/journal" element={<JournalPage />} />
+        <Route path="/compass/mood" element={<MoodTrackerPage />} />
+        <Route path="/compass/workshops" element={<WorkshopsPage />} />
         <Route path="/compass/about" element={<AboutPage />} />
+        <Route path="/compass/crisis" element={<CrisisPage />} />
       </Route>
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
