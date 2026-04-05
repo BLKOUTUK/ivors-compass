@@ -61,12 +61,25 @@ export default function MeditationPage() {
         <div className="flex-1 h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
       </div>
 
-      {/* Meditation text */}
+      {/* Essay */}
       <section className="bg-compass-dark border border-compass-border rounded-xl p-6">
-        <h2 className="font-heritage text-lg text-white mb-4">Meditation</h2>
-        <p className="text-text-muted leading-relaxed text-sm italic">
-          {meditation.meditationText}
-        </p>
+        {meditation.meditationAuthor && (
+          <h2 className="font-heritage text-lg text-white mb-4">
+            {meditation.meditationAuthor}
+          </h2>
+        )}
+        <div className="space-y-4">
+          {meditation.meditationText.map((p, i) => (
+            <p key={i} className="text-text-muted leading-relaxed text-sm">
+              {p}
+            </p>
+          ))}
+        </div>
+        {meditation.meditationAuthorBio && (
+          <p className="text-text-muted/50 text-xs mt-6 pt-4 border-t border-compass-border italic">
+            {meditation.meditationAuthorBio}
+          </p>
+        )}
       </section>
 
       {/* Journal prompt */}

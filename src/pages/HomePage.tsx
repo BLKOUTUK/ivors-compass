@@ -153,14 +153,18 @@ export default function HomePage() {
       {/* Bento Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
 
-        {/* Film — wide (spans 2 cols on sm+) */}
+        {/* Meet Ivor — audio intro, wide (spans 2 cols on sm+) */}
         <BentoCard to="/compass/film" className="sm:col-span-2">
           <div className="flex items-start gap-4">
-            <WarmthOrb intensity={0.7} color="#FFD700" size={28} />
+            <div className="mt-0.5 flex-shrink-0">
+              <svg className="w-7 h-7 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.114 5.636a9 9 0 010 12.728M16.463 8.288a5.25 5.25 0 010 7.424M6.75 8.25l4.72-4.72a.75.75 0 011.28.53v15.88a.75.75 0 01-1.28.53l-4.72-4.72H4.51c-.88 0-1.704-.507-1.938-1.354A9.01 9.01 0 012.25 12c0-.83.112-1.633.322-2.396C2.806 8.756 3.63 8.25 4.51 8.25H6.75z" />
+              </svg>
+            </div>
             <div className="flex-1 min-w-0">
-              <h2 className="font-heritage text-lg text-white">The Film</h2>
-              <p className="text-text-muted text-sm mt-0.5">Watch Ivor's story</p>
-              <p className="text-text-muted/50 text-xs mt-1">3 min · AI-animated</p>
+              <h2 className="font-heritage text-lg text-white">Meet Ivor</h2>
+              <p className="text-text-muted text-sm mt-0.5">Listen to his story</p>
+              <p className="text-text-muted/50 text-xs mt-1">2 min audio introduction</p>
             </div>
             <svg className="w-5 h-5 text-text-muted/30 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />

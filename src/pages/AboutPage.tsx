@@ -1,3 +1,295 @@
+import { useState } from 'react'
+
+// ---------------------------------------------------------------------------
+// Data export
+// ---------------------------------------------------------------------------
+
+const JOURNAL_KEY = 'ivors-compass-journal'
+const MOOD_KEY = 'ivors-compass-mood-tracker'
+const LAUGHTER_KEY = 'ivors-compass-laughter'
+
+interface JournalExport {
+  id: string
+  text: string
+  prompt?: string
+  phase?: string
+  audioData?: string
+  createdAt: string
+}
+
+interface MoodExport {
+  date: string
+  level: number
+  note: string
+}
+
+interface LaughterExport {
+  text: string
+  date: string
+}
+
+const MOOD_LABELS: Record<number, string> = {
+  1: 'Struggling',
+  2: 'Low',
+  3: 'Steady',
+  4: 'Good',
+  5: 'Thriving',
+}
+
+function formatExportDate(iso: string): string {
+  try {
+    return new Date(iso).toLocaleDateString('en-GB', {
+      weekday: 'long',
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    })
+  } catch {
+    return iso
+  }
+}
+
+function buildExportText(): string {
+  const lines: string[] = []
+  const divider = '─'.repeat(60)
+
+  lines.push("IVOR'S COMPASS — YOUR JOURNAL")
+  lines.push('Exported ' + formatExportDate(new Date().toISOString()))
+  lines.push('This is yours. It never left your device until you chose to save it.')
+  lines.push('')
+  lines.push(divider)
+
+  // Journal entries
+  let journalEntries: JournalExport[] = []
+  try {
+    const raw = localStorage.getItem(JOURNAL_KEY)
+    if (raw) journalEntries = JSON.parse(raw) as JournalExport[]
+  } catch { /* empty */ }
+
+  if (journalEntries.length > 0) {
+    lines.push('')
+    lines.push('JOURNAL ENTRIES')
+    lines.push(divider)
+
+    const sorted = [...journalEntries].sort(
+      (a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime(),
+    )
+
+    for (const entry of sorted) {
+      lines.push('')
+      lines.push(formatExportDate(entry.createdAt))
+      if (entry.phase) lines.push('Phase: ' + entry.phase)
+      if (entry.prompt) lines.push('Prompt: ' + entry.prompt)
+      lines.push('')
+      if (entry.text) {
+        lines.push(entry.text)
+      }
+      if (entry.audioData) {
+        lines.push('[Voice recording attached — use the Download voice notes button to export audio]')
+      }
+      lines.push('')
+      lines.push(divider)
+    }
+  }
+
+  // Mood check-ins
+  let moodEntries: MoodExport[] = []
+  try {
+    const raw = localStorage.getItem(MOOD_KEY)
+    if (raw) moodEntries = JSON.parse(raw) as MoodExport[]
+  } catch { /* empty */ }
+
+  if (moodEntries.length > 0) {
+    lines.push('')
+    lines.push('MOOD CHECK-INS')
+    lines.push(divider)
+
+    const sorted = [...moodEntries].sort(
+      (a, b) => a.date.localeCompare(b.date),
+    )
+
+    for (const entry of sorted) {
+      const label = MOOD_LABELS[entry.level] || String(entry.level)
+      lines.push('')
+      lines.push(formatExportDate(entry.date + 'T12:00:00') + ' — ' + label)
+      if (entry.note) lines.push(entry.note)
+    }
+    lines.push('')
+    lines.push(divider)
+  }
+
+  // Laughter notes
+  let laughterNotes: LaughterExport[] = []
+  try {
+    const raw = localStorage.getItem(LAUGHTER_KEY)
+    if (raw) laughterNotes = JSON.parse(raw) as LaughterExport[]
+  } catch { /* empty */ }
+
+  if (laughterNotes.length > 0) {
+    lines.push('')
+    lines.push('LAUGHTER NOTES')
+    lines.push(divider)
+
+    const sorted = [...laughterNotes].sort(
+      (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+    )
+
+    for (const note of sorted) {
+      lines.push('')
+      lines.push(formatExportDate(note.date))
+      lines.push(note.text)
+    }
+    lines.push('')
+    lines.push(divider)
+  }
+
+  // Empty state
+  if (journalEntries.length === 0 && moodEntries.length === 0 && laughterNotes.length === 0) {
+    lines.push('')
+    lines.push('No entries yet. When you write, check in, or capture a laugh,')
+    lines.push('you can come back here to download everything.')
+  }
+
+  lines.push('')
+  lines.push('BLKOUT Creative Ltd · Community Benefit Society · FCA Registered')
+  lines.push('blkoutuk.com')
+
+  return lines.join('\n')
+}
+
+function downloadExport() {
+  const text = buildExportText()
+  const blob = new Blob([text], { type: 'text/plain;charset=utf-8' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = 'ivors-compass-journal.txt'
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+}
+
+function dataURLtoBlob(dataURL: string): Blob | null {
+  try {
+    const [header, base64] = dataURL.split(',')
+    const match = header.match(/data:([^;]+)/)
+    const mime = match ? match[1] : 'audio/webm'
+    const binary = atob(base64)
+    const bytes = new Uint8Array(binary.length)
+    for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i)
+    return new Blob([bytes], { type: mime })
+  } catch {
+    return null
+  }
+}
+
+function extFromMime(mime: string): string {
+  if (mime.includes('webm')) return 'webm'
+  if (mime.includes('ogg')) return 'ogg'
+  if (mime.includes('mp4')) return 'm4a'
+  if (mime.includes('mpeg')) return 'mp3'
+  if (mime.includes('wav')) return 'wav'
+  return 'webm'
+}
+
+function countVoiceNotes(): number {
+  try {
+    const raw = localStorage.getItem(JOURNAL_KEY)
+    if (!raw) return 0
+    const entries = JSON.parse(raw) as JournalExport[]
+    return entries.filter((e) => e.audioData).length
+  } catch {
+    return 0
+  }
+}
+
+function downloadVoiceNotes(): number {
+  let entries: JournalExport[] = []
+  try {
+    const raw = localStorage.getItem(JOURNAL_KEY)
+    if (raw) entries = JSON.parse(raw) as JournalExport[]
+  } catch { /* empty */ }
+
+  const withAudio = entries
+    .filter((e) => e.audioData)
+    .sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
+
+  let downloaded = 0
+  withAudio.forEach((entry, i) => {
+    const blob = dataURLtoBlob(entry.audioData!)
+    if (!blob) return
+    const ext = extFromMime(blob.type)
+    const date = entry.createdAt.split('T')[0]
+    const filename = `ivors-compass-voice-${date}-${String(i + 1).padStart(2, '0')}.${ext}`
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = filename
+    document.body.appendChild(a)
+    a.click()
+    document.body.removeChild(a)
+    setTimeout(() => URL.revokeObjectURL(url), 1000)
+    downloaded++
+  })
+
+  return downloaded
+}
+
+// ---------------------------------------------------------------------------
+// ExportButton component
+// ---------------------------------------------------------------------------
+
+function ExportButton() {
+  const [textDone, setTextDone] = useState(false)
+  const [audioDone, setAudioDone] = useState<number | null>(null)
+  const voiceCount = countVoiceNotes()
+
+  function handleText() {
+    downloadExport()
+    setTextDone(true)
+    setTimeout(() => setTextDone(false), 3000)
+  }
+
+  function handleAudio() {
+    const n = downloadVoiceNotes()
+    setAudioDone(n)
+    setTimeout(() => setAudioDone(null), 4000)
+  }
+
+  return (
+    <div className="flex flex-wrap gap-3">
+      <button
+        onClick={handleText}
+        className="inline-flex items-center gap-2 px-4 py-2 bg-gold-rich/10 border border-gold-rich/30 text-gold-rich text-sm rounded-lg hover:bg-gold-rich/20 transition-colors active:scale-[0.98]"
+      >
+        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+        </svg>
+        {textDone ? 'Downloaded' : 'Download written journal'}
+      </button>
+
+      {voiceCount > 0 && (
+        <button
+          onClick={handleAudio}
+          className="inline-flex items-center gap-2 px-4 py-2 bg-terracotta/10 border border-terracotta/30 text-terracotta text-sm rounded-lg hover:bg-terracotta/20 transition-colors active:scale-[0.98]"
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
+          </svg>
+          {audioDone !== null
+            ? `Downloaded ${audioDone} recording${audioDone === 1 ? '' : 's'}`
+            : `Download voice notes (${voiceCount})`}
+        </button>
+      )}
+    </div>
+  )
+}
+
+// ---------------------------------------------------------------------------
+// Timeline data
+// ---------------------------------------------------------------------------
+
 const timeline = [
   {
     era: '1913',
@@ -64,13 +356,20 @@ export default function AboutPage() {
         <p className="text-text-muted/40 text-[10px] mt-0.5">— Nicholas Boston, The Independent, 2019</p>
       </div>
 
-      {/* Portrait placeholder */}
-      <div className="aspect-[3/4] max-w-[200px] mx-auto rounded-xl bg-gradient-to-b from-compass-card to-compass-dark border border-gold/20 flex items-center justify-center">
-        <div className="text-center p-4">
-          <p className="text-text-muted/20 text-xs">Portrait</p>
-          <p className="text-text-muted/10 text-[10px] mt-1">Historical image pending</p>
+      {/* Portrait */}
+      <figure className="max-w-[260px] mx-auto">
+        <div className="rounded-xl overflow-hidden border border-gold/20">
+          <img
+            src="/images/ivor-1974.jpg"
+            alt="Ivor Cummings, BBC interview 1974"
+            className="w-full h-auto block"
+            loading="lazy"
+          />
         </div>
-      </div>
+        <figcaption className="text-text-muted/40 text-[10px] italic text-center mt-2">
+          BBC, <em>The Black Man in Britain 1550&ndash;1950</em>, 1974
+        </figcaption>
+      </figure>
 
       {/* Intro */}
       <div className="bg-compass-dark border border-gold/20 rounded-xl p-6">
@@ -148,6 +447,16 @@ export default function AboutPage() {
           </svg>
           Chat with AIvor on blkoutuk.com
         </a>
+      </section>
+
+      {/* Your Data */}
+      <section className="bg-compass-dark border border-gold/20 rounded-xl p-6">
+        <h2 className="font-heritage text-lg text-white mb-3">Your Data</h2>
+        <p className="text-text-muted text-sm leading-relaxed mb-4">
+          Everything you write in this journal stays on your device. Nothing is sent to a server.
+          Download a copy whenever you want — it's yours to keep, even if you stop using the app.
+        </p>
+        <ExportButton />
       </section>
 
       {/* Further reading */}
