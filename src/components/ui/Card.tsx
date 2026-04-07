@@ -14,7 +14,7 @@ const borderClasses: Record<string, string> = {
 export function Card({ variant = 'default', phaseColor, className = '', children }: CardProps) {
   return (
     <div
-      className={`bg-compass-dark border rounded-xl p-5 ${borderClasses[variant]} ${className}`}
+      className={`bg-compass-dark border p-5 ${borderClasses[variant]} ${className}`}
       style={variant === 'phase' && phaseColor ? { borderColor: `${phaseColor}30` } : undefined}
     >
       {children}

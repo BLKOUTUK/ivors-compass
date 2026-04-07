@@ -146,10 +146,10 @@ export default function CrisisPage() {
     <div className="space-y-6 animate-fade-in">
       {/* -- Grounding section -- */}
       <section className="text-center py-6 space-y-5">
-        <h1 className="font-heritage text-3xl text-white">Get Help Now</h1>
+        <h1 className="font-bold-shell text-3xl text-white">Get Help Now</h1>
 
-        <div className="bg-compass-dark border border-gold/20 rounded-xl p-6 space-y-4">
-          <p className="text-white text-lg leading-relaxed font-medium">
+        <div className="gradient-disruption border border-blkout-teal/20 rounded-xl p-6 space-y-4">
+          <p className="font-heritage italic text-white text-lg leading-relaxed">
             You are safe. You are here.
           </p>
           <p className="text-text-muted text-base leading-relaxed">

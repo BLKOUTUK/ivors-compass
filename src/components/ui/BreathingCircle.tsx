@@ -59,7 +59,7 @@ function AutoBreathingCircle() {
     glowIntensity = 0.5 - progress * 0.4
   }
 
-  const goldGlow = `0 0 ${20 + glowIntensity * 40}px rgba(212,175,55,${glowIntensity}), 0 0 ${40 + glowIntensity * 60}px rgba(212,175,55,${glowIntensity * 0.5})`
+  const tealGlow = `0 0 ${20 + glowIntensity * 40}px rgba(42,157,143,${glowIntensity}), 0 0 ${40 + glowIntensity * 60}px rgba(42,157,143,${glowIntensity * 0.5})`
 
   return (
     <div className="flex flex-col items-center gap-4">
@@ -68,23 +68,23 @@ function AutoBreathingCircle() {
           className="absolute inset-0 rounded-full transition-none"
           style={{
             transform: `scale(${scale})`,
-            background: `radial-gradient(circle, rgba(212,175,55,${0.1 + glowIntensity * 0.15}) 0%, transparent 70%)`,
+            background: `radial-gradient(circle, rgba(42,157,143,${0.1 + glowIntensity * 0.15}) 0%, transparent 70%)`,
           }}
         />
         <div
-          className="w-24 h-24 rounded-full border-2 border-gold/40 transition-none flex items-center justify-center"
+          className="w-24 h-24 rounded-full border-2 border-blkout-teal/40 transition-none flex items-center justify-center"
           style={{
             transform: `scale(${scale})`,
             backgroundColor:
               phase === 'inhale'
-                ? `rgba(212,175,55,${0.05 + progress * 0.12})`
+                ? `rgba(42,157,143,${0.05 + progress * 0.12})`
                 : phase === 'hold'
-                  ? 'rgba(212,175,55,0.17)'
-                  : `rgba(212,175,55,${0.17 - progress * 0.12})`,
-            boxShadow: goldGlow,
+                  ? 'rgba(42,157,143,0.17)'
+                  : `rgba(42,157,143,${0.17 - progress * 0.12})`,
+            boxShadow: tealGlow,
           }}
         >
-          <span className="text-gold/80 text-xs font-medium select-none" aria-live="polite">{label}</span>
+          <span className="text-blkout-teal/80 text-xs font-medium select-none" aria-live="polite">{label}</span>
         </div>
       </div>
       <p className="text-text-muted/50 text-[11px]">

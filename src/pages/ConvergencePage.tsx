@@ -23,7 +23,7 @@ function AffirmationHero({ daily }: { daily: DailyConvergence }) {
   const color = phaseColor(daily.phase)
 
   return (
-    <section className="text-center py-8 px-4 archival-texture overflow-hidden rounded-xl">
+    <section className="text-center py-8 px-4 archival-texture overflow-hidden gradient-disruption">
       {/* Phase badge */}
       <span
         className="inline-block text-[10px] font-semibold tracking-widest uppercase px-3 py-1 rounded-full mb-6"
@@ -366,7 +366,7 @@ export default function ConvergencePage() {
 
       {/* Title */}
       <div className="text-center">
-        <h1 className="font-heritage text-2xl text-white">Daily Convergence</h1>
+        <h1 className="font-bold-shell text-2xl text-white">Daily Convergence</h1>
         <p className="text-text-muted/60 text-xs mt-1">
           A shared ritual. One affirmation. Many whispers.
         </p>

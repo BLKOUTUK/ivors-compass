@@ -114,7 +114,7 @@ export default function FilmPage() {
     <div className="space-y-8 animate-fade-in">
       {/* Header */}
       <div className="text-center py-4">
-        <h1 className="font-heritage text-3xl text-white mb-1">Meet Ivor</h1>
+        <h1 className="font-bold-shell text-3xl text-white mb-1">Meet Ivor</h1>
         <p className="text-text-muted text-sm">
           The gay father of the Windrush generation
         </p>

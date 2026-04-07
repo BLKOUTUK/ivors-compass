@@ -39,7 +39,7 @@ export default function MeditationPage() {
         <p className="text-terracotta text-xs font-medium tracking-wider uppercase mb-1">
           Chapter {meditation.id} of 6 · {chapterLabel}
         </p>
-        <h1 className="font-heritage text-3xl text-white">{meditation.title}</h1>
+        <h1 className="font-bold-shell text-3xl text-white">{meditation.title}</h1>
         <p className="text-gold-rich text-sm mt-1">{meditation.era}</p>
       </div>
 
@@ -56,8 +56,8 @@ export default function MeditationPage() {
       {/* Divider */}
       <Divider />
 
-      {/* Essay */}
-      <section className="bg-compass-dark border border-compass-border rounded-xl p-6">
+      {/* Essay — disruption gradient */}
+      <section className="gradient-disruption border border-compass-border rounded-xl p-6">
         {meditation.meditationAuthor && (
           <h2 className="font-heritage text-lg text-white mb-4">
             {meditation.meditationAuthor}

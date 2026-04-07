@@ -51,7 +51,7 @@ export default function InstallPrompt() {
       <div className="flex gap-2 mt-3">
         <button
           onClick={handleInstall}
-          className="flex-1 py-2 bg-gold-rich hover:bg-gold text-black text-sm font-semibold rounded-lg transition-colors"
+          className="flex-1 py-2 bg-blkout-red hover:bg-red-700 text-white text-sm font-semibold transition-colors"
         >
           Install
         </button>

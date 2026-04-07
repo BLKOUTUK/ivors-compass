@@ -311,7 +311,7 @@ export default function MoodTrackerPage() {
     <div className="space-y-6">
       {/* Header */}
       <div className="text-center py-4">
-        <h1 className="font-heritage text-2xl text-white mb-1">Mood Check-in</h1>
+        <h1 className="font-bold-shell text-2xl text-white mb-1">Mood Check-in</h1>
         <p className="text-text-muted text-sm">How are you arriving today?</p>
       </div>
 

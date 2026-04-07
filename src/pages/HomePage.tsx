@@ -72,11 +72,11 @@ export default function HomePage() {
 
   return (
     <div className="space-y-4 stagger">
-      {/* Hero */}
+      {/* Hero — shell title + disruption tagline */}
       <div className="text-center py-6">
         <p className="text-text-muted text-sm mb-1">{getGreeting()}</p>
-        <h1 className="font-heritage text-3xl text-gold-gradient mb-2">Ivor's Compass</h1>
-        <p className="text-gold-rich text-sm italic">Your compass. Your pace. Your story.</p>
+        <h1 className="font-bold-shell text-3xl text-gold-gradient mb-2">Ivor's Compass</h1>
+        <p className="font-heritage italic text-gold-dim text-sm">Your compass. Your pace. Your story.</p>
       </div>
 
       {/* Daily Convergence Card — prominent, shimmer glow */}
@@ -95,7 +95,7 @@ export default function HomePage() {
             </svg>
           </div>
           <div className="flex-1 min-w-0">
-            <h2 className="font-heritage text-lg text-gold">Daily Convergence</h2>
+            <h2 className="text-lg text-gold font-semibold">Daily Convergence</h2>
             {snapshot ? (
               <>
                 <p className="text-white/80 text-sm mt-1 line-clamp-2 font-heritage italic leading-relaxed">
@@ -132,7 +132,7 @@ export default function HomePage() {
               </svg>
             </div>
             <div className="flex-1 min-w-0">
-              <h2 className="font-heritage text-lg text-white">Meet Ivor</h2>
+              <h2 className="text-lg text-white font-semibold">Meet Ivor</h2>
               <p className="text-text-muted text-sm mt-0.5">Listen to his story</p>
               <p className="text-text-muted/60 text-xs mt-1">2 min audio introduction</p>
             </div>
@@ -147,7 +147,7 @@ export default function HomePage() {
           <div className="flex flex-col h-full gap-3">
             <WarmthOrb intensity={0.6} color="#802918" size={22} />
             <div className="flex-1">
-              <h2 className="font-heritage text-lg text-white">Heritage Meditations</h2>
+              <h2 className="text-lg text-white font-semibold">Heritage Meditations</h2>
               <p className="text-text-muted text-sm mt-0.5">Six reflections on a life</p>
               <p className="text-text-muted/60 text-xs mt-1">6 writers · 6 chapters</p>
             </div>
@@ -175,7 +175,7 @@ export default function HomePage() {
           <div className="flex items-start gap-4">
             <WarmthOrb intensity={0.5} color="#D4AF37" size={20} />
             <div className="flex-1 min-w-0">
-              <h2 className="font-heritage text-lg text-white">Affirmation Cards</h2>
+              <h2 className="text-lg text-white font-semibold">Affirmation Cards</h2>
               <p className="text-text-muted text-sm mt-0.5">Draw your daily card</p>
               <p className="text-text-muted/60 text-xs mt-1">Deck of 30+</p>
             </div>
@@ -187,7 +187,7 @@ export default function HomePage() {
           <div className="flex items-start gap-4">
             <WarmthOrb intensity={0.45} color="#FFD700" size={20} />
             <div className="flex-1 min-w-0">
-              <h2 className="font-heritage text-lg text-white">Mood Check-in</h2>
+              <h2 className="text-lg text-white font-semibold">Mood Check-in</h2>
               <p className="text-text-muted text-sm mt-0.5">How are you arriving today?</p>
               <p className="text-text-muted/60 text-xs mt-1">Track patterns · Suggest journal phases</p>
             </div>
@@ -199,7 +199,7 @@ export default function HomePage() {
           <div className="flex items-start gap-4">
             <WarmthOrb intensity={0.55} color="#802918" size={20} />
             <div className="flex-1 min-w-0">
-              <h2 className="font-heritage text-lg text-white">Workshops</h2>
+              <h2 className="text-lg text-white font-semibold">Workshops</h2>
               <p className="text-text-muted text-sm mt-0.5">Self-guided mini-journeys</p>
               <p className="text-text-muted/60 text-xs mt-1">6 workshops · Anxiety, Anger, Shame & more</p>
             </div>
@@ -215,7 +215,7 @@ export default function HomePage() {
               </svg>
             </div>
             <div className="flex-1 min-w-0">
-              <h2 className="font-heritage text-lg text-gold">The Sunroom</h2>
+              <h2 className="text-lg text-gold font-semibold">The Sunroom</h2>
               <p className="text-text-muted text-sm mt-0.5">Joy, community, and AIvor</p>
               <p className="text-text-muted/60 text-xs mt-1">Laughter notes · Community highlights · AIvor chat</p>
             </div>
@@ -230,7 +230,7 @@ export default function HomePage() {
           <div className="flex items-start gap-4">
             <WarmthOrb intensity={0.6} color="#D4AF37" size={24} />
             <div className="flex-1 min-w-0">
-              <h2 className="font-heritage text-lg text-white">Your Journal</h2>
+              <h2 className="text-lg text-white font-semibold">Your Journal</h2>
               <p className="text-text-muted text-sm mt-0.5">Private. On your device.</p>
               <p className="text-text-muted/60 text-xs mt-1">Never leaves your phone</p>
             </div>
@@ -249,7 +249,7 @@ export default function HomePage() {
               </svg>
             </div>
             <div className="flex-1 min-w-0">
-              <h2 className="font-heritage text-lg text-white">Sacred Momentum</h2>
+              <h2 className="text-lg text-white font-semibold">Sacred Momentum</h2>
               <p className="text-text-muted text-sm mt-0.5">Your journey so far</p>
               <p className="text-text-muted/60 text-xs mt-1">5-month cycle · Milestones · Phase wisdom</p>
             </div>

@@ -1,20 +1,32 @@
 @import "tailwindcss";
 
 @theme {
-  --color-compass-black: #0A0A0A;
-  --color-compass-dark: #111111;
-  --color-compass-card: #1A1A1A;
-  --color-compass-border: #2A2A2A;
-  --color-gold: #FFD700;
+  /* BLKOUT shell — dark, powerful */
+  --color-compass-black: #1a1a2e;
+  --color-compass-dark: #16162a;
+  --color-compass-card: #1e1e38;
+  --color-compass-border: #2a2a4a;
+
+  /* Gold — heritage power, borders */
+  --color-gold: #d4af37;
   --color-gold-rich: #D4AF37;
   --color-gold-dim: #B8941F;
+
+  /* BLKOUT brand */
+  --color-blkout-red: #D4261A;
+  --color-blkout-teal: #2A9D8F;
+  --color-blkout-orange: #E76F51;
+  --color-blkout-purple: #4a1942;
+
+  /* Heritage */
   --color-terracotta: #802918;
   --color-terracotta-dark: #5C1D11;
+
   --color-warm-white: #FAFAF5;
   --color-text-muted: #9CA3AF;
 
   --font-serif: 'Newsreader', serif;
-  --font-sans: 'Manrope', system-ui, sans-serif;
+  --font-sans: 'Work Sans', system-ui, sans-serif;
 }
 
 body {
@@ -23,15 +35,49 @@ body {
   margin: 0;
 }
 
+/* Heritage disruption — Newsreader italic for quotes, meditations, tender moments */
 .font-heritage {
   font-family: var(--font-serif);
 }
 
+/* Bold shell — Work Sans 900 uppercase for page titles, section headers */
+.font-bold-shell {
+  font-family: var(--font-sans);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
 .text-gold-gradient {
-  background: linear-gradient(135deg, #FFD700, #D4AF37);
+  background: linear-gradient(135deg, #d4af37, #B8941F);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+/* ---------------------------------------------------------------------------
+   Shell & Disruption Borders
+   --------------------------------------------------------------------------- */
+
+/* Sharp shell borders — power statements */
+.border-shell {
+  border: 3px solid #d4af37;
+  border-radius: 0;
+}
+.border-shell-subtle {
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 0;
+}
+
+/* ---------------------------------------------------------------------------
+   Gradients — Disruption (beauty breaking through)
+   --------------------------------------------------------------------------- */
+
+.gradient-disruption {
+  background: linear-gradient(135deg, #4a1942, #1a1a2e);
+}
+.gradient-heritage {
+  background: linear-gradient(135deg, rgba(212,175,55,0.08), rgba(74,25,66,0.08));
 }
 
 /* Card flip */
@@ -45,7 +91,7 @@ body {
    Animations
    --------------------------------------------------------------------------- */
 
-/* Page enter — richer than plain fade-in */
+/* Page enter — slide up + fade + slight scale */
 @keyframes fade-in {
   from { opacity: 0; transform: translateY(20px) scale(0.98); }
   to { opacity: 1; transform: translateY(0) scale(1); }
@@ -59,14 +105,14 @@ body {
 }
 .animate-pulse-gold { animation: pulse-gold 2s ease-in-out infinite; }
 
-/* Compass star rotation — used on UnlockPage */
+/* Compass star rotation */
 @keyframes compass-rotate {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
 .animate-compass-rotate { animation: compass-rotate 20s linear infinite; }
 
-/* Shimmer border glow — used on featured cards */
+/* Shimmer border glow */
 @keyframes shimmer {
   0%, 100% {
     box-shadow: 0 0 8px rgba(212, 175, 55, 0.1), 0 0 20px rgba(212, 175, 55, 0.05);
@@ -77,7 +123,7 @@ body {
 }
 .animate-shimmer { animation: shimmer 3s ease-in-out infinite; }
 
-/* Gentle float — subtle hover-like effect for hero elements */
+/* Gentle float */
 @keyframes gentle-float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-4px); }
@@ -92,8 +138,6 @@ body {
 .stagger > *:nth-child(4) { animation-delay: 0.2s; }
 .stagger > *:nth-child(5) { animation-delay: 0.25s; }
 .stagger > *:nth-child(6) { animation-delay: 0.3s; }
-
-/* Stagger extra children for bento grid */
 .stagger > *:nth-child(7) { animation-delay: 0.35s; }
 .stagger > *:nth-child(8) { animation-delay: 0.4s; }
 .stagger > *:nth-child(9) { animation-delay: 0.45s; }
@@ -134,7 +178,7 @@ body {
 
 /* Focus styles */
 :focus-visible {
-  outline: 2px solid rgba(255, 215, 0, 0.6);
+  outline: 2px solid rgba(212, 175, 55, 0.6);
   outline-offset: 2px;
 }
 
@@ -161,9 +205,8 @@ body {
   margin: 0;
   overflow: visible;
   clip: auto;
-  background: #D4AF37;
-  color: #0A0A0A;
-  border-radius: 0.5rem;
+  background: #D4261A;
+  color: white;
   font-size: 0.875rem;
   font-weight: 600;
 }
@@ -201,5 +244,5 @@ body {
 
 /* Scrollbar */
 ::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: #0A0A0A; }
-::-webkit-scrollbar-thumb { background: #B8941F; border-radius: 2px; }
+::-webkit-scrollbar-track { background: #1a1a2e; }
+::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 2px; }

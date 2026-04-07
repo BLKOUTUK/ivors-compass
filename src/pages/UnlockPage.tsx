@@ -27,7 +27,6 @@ export default function UnlockPage() {
         setError('Code not recognised. Check your card and try again.')
       }
     } catch {
-      // Offline or Supabase not yet set up — allow any IVOR-XXXX code for dev
       if (/^IVOR-[A-Z0-9]{4}$/i.test(cleaned)) {
         unlock(cleaned)
       } else {
@@ -38,7 +37,6 @@ export default function UnlockPage() {
     }
   }
 
-  // Handle URL param (QR code scan)
   const params = new URLSearchParams(window.location.search)
   const urlCode = params.get('code')
   if (urlCode && !code) {
@@ -47,11 +45,11 @@ export default function UnlockPage() {
 
   return (
     <div className="min-h-screen bg-compass-black flex flex-col items-center justify-center px-6 relative overflow-hidden">
-      {/* Radial gold glow behind logo */}
+      {/* Radial gold glow */}
       <div
         className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full pointer-events-none"
         style={{
-          background: 'radial-gradient(circle, rgba(212,175,55,0.08) 0%, rgba(212,175,55,0.03) 40%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(212,175,55,0.06) 0%, rgba(74,25,66,0.04) 40%, transparent 70%)',
         }}
       />
 
@@ -63,14 +61,14 @@ export default function UnlockPage() {
             <svg viewBox="0 0 64 64" fill="none" className="w-full h-full">
               <path
                 d="M32 6L37.09 22.26L54 23.77L41.5 34.64L45.82 51.52L32 42.27L18.18 51.52L22.5 34.64L10 23.77L26.91 22.26L32 6Z"
-                stroke="#D4AF37"
+                stroke="#d4af37"
                 strokeWidth="1"
                 opacity="0.3"
               />
             </svg>
           </div>
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-12 h-12 rounded-full border-2 border-gold/40 flex items-center justify-center">
+            <div className="w-12 h-12 border-2 border-gold/40 flex items-center justify-center">
               <svg viewBox="0 0 24 24" className="w-6 h-6 text-gold" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
               </svg>
@@ -78,18 +76,18 @@ export default function UnlockPage() {
           </div>
         </div>
 
-        <h1 className="font-heritage text-4xl text-gold-gradient mb-2">Ivor's Compass</h1>
-        <p className="text-gold-rich text-sm italic">Making Shared Heritage Personal</p>
+        <h1 className="font-bold-shell text-3xl text-gold-gradient mb-2">Ivor's Compass</h1>
+        <p className="font-heritage italic text-gold-dim text-sm">Making Shared Heritage Personal</p>
 
         {/* BLKOUT branding */}
         <div className="mt-6 flex flex-col items-center gap-2">
           <img
             src="/images/blkout-logo.png"
             alt="BLKOUT"
-            className="w-12 h-12 opacity-30"
-            style={{ filter: 'brightness(1.5) sepia(1) hue-rotate(10deg) saturate(0.3)' }}
+            className="w-12 h-12 opacity-60"
+            style={{ filter: 'brightness(2)' }}
           />
-          <p className="text-text-muted/60 text-[10px] tracking-widest uppercase">A BLKOUT Heritage Production</p>
+          <p className="text-text-muted/60 text-[10px] tracking-widest uppercase">Community-Owned Heritage</p>
         </div>
       </div>
 
@@ -109,7 +107,7 @@ export default function UnlockPage() {
             }}
             placeholder="IVOR-XXXX"
             maxLength={9}
-            className="w-full text-center text-xl tracking-[0.3em] font-mono bg-compass-dark border border-compass-border rounded-lg px-4 py-4 text-white placeholder-text-muted/40 focus:outline-none focus:border-gold/60 focus:shadow-[0_2px_0_0_#D4AF37] transition-all"
+            className="w-full text-center text-xl tracking-[0.3em] font-mono bg-compass-dark border border-compass-border px-4 py-4 text-white placeholder-text-muted/60 focus:outline-none focus:border-gold/60 focus:shadow-[0_2px_0_0_#d4af37] transition-all"
             autoFocus
             autoComplete="off"
           />
@@ -122,7 +120,7 @@ export default function UnlockPage() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full py-3 bg-gold-rich hover:bg-gold text-black font-semibold rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full py-3 bg-blkout-red hover:bg-red-700 text-white font-semibold transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {loading ? 'Checking...' : 'Unlock'}
         </button>
@@ -145,7 +143,7 @@ export default function UnlockPage() {
       {/* Funder logos */}
       <div className="mt-8 flex items-center gap-6 text-text-muted/60 text-[9px] relative z-10">
         <span>Croydon Council</span>
-        <span>•</span>
+        <span>&mdash;</span>
         <span>National Lottery Heritage Fund</span>
       </div>
     </div>

@@ -72,13 +72,13 @@ export default function BottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 bg-compass-black/95 backdrop-blur-sm"
+      className="fixed bottom-0 left-0 right-0 z-50 bg-compass-dark/95 backdrop-blur-sm"
       style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
       role="navigation"
       aria-label="Main navigation"
     >
-      {/* Gold glow line */}
-      <div className="h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
+      {/* Heavy gold border — power statement */}
+      <div className="h-[3px] bg-gold/40" />
 
       <div className="max-w-lg mx-auto flex items-center justify-around px-2 py-2">
         {navItems.map((item) => {
@@ -87,16 +87,15 @@ export default function BottomNav() {
             <Link
               key={item.label}
               to={item.to}
-              className={`flex flex-col items-center gap-1 px-3 py-1.5 rounded-lg transition-colors min-w-[52px] ${
+              className={`flex flex-col items-center gap-1 px-3 py-1.5 transition-colors min-w-[52px] ${
                 active ? 'text-gold' : 'text-text-muted/50 hover:text-text-muted'
               }`}
               aria-current={active ? 'page' : undefined}
             >
               {item.icon}
-              <span className="text-[10px]">{item.label}</span>
-              {/* Active dot indicator */}
+              <span className="text-[10px] font-medium">{item.label}</span>
               {active && (
-                <span className="w-1 h-1 rounded-full bg-gold" />
+                <span className="w-1 h-1 bg-gold" />
               )}
             </Link>
           )
