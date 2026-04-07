@@ -1,7 +1,9 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const WELCOME_KEY = 'ivors-compass-welcomed'
+export const WELCOME_KEY = 'ivors-compass-welcomed'
+export const USER_NAME_KEY = 'ivors-compass-user-name'
+export const CADENCE_KEY = 'ivors-compass-reminder-cadence'
 
 const PHASES = [
   { name: 'Identity', color: '#C8B89A', angle: 0, desc: 'Know who you are' },
@@ -10,33 +12,40 @@ const PHASES = [
   { name: 'Joy', color: '#E6A020', angle: 270, desc: 'Celebrate your light' },
 ]
 
-type Step = 'spin' | 'settle' | 'ivor' | 'directions' | 'begin'
+const CADENCE_OPTIONS = [
+  { value: 'daily', label: 'Every morning', desc: 'A gentle nudge to start the day' },
+  { value: 'few', label: 'A few times a week', desc: 'Space to breathe between visits' },
+  { value: 'new', label: 'When something new arrives', desc: 'New meditations, community moments' },
+  { value: 'none', label: "I'll find my own way", desc: 'No reminders — the compass waits' },
+] as const
+
+type Step = 'spin' | 'settle' | 'ivor' | 'directions' | 'name' | 'community' | 'cadence' | 'begin'
+
+const STEP_SEQUENCE: Step[] = ['spin', 'settle', 'ivor', 'directions', 'name', 'community', 'cadence', 'begin']
+const DOT_STEPS: Step[] = ['settle', 'ivor', 'directions', 'name', 'community', 'cadence', 'begin']
 
 export default function WelcomePage() {
   const navigate = useNavigate()
   const [step, setStep] = useState<Step>('spin')
   const [compassAngle, setCompassAngle] = useState(0)
   const [settling, setSettling] = useState(false)
+  const [userName, setUserName] = useState('')
+  const [cadence, setCadence] = useState<string>('few')
 
-  // Compass spin — fast at first, then decelerate and settle
+  // ── Compass spin physics ──
   useEffect(() => {
     if (step !== 'spin') return
 
     let angle = 0
-    let speed = 12 // degrees per frame
+    let speed = 12
     let frame: number
 
     const spin = () => {
       angle += speed
       setCompassAngle(angle % 360)
 
-      // After ~2 seconds of fast spin, begin decelerating
-      if (angle > 720) {
-        speed *= 0.97
-      }
-
+      if (angle > 720) speed *= 0.97
       if (speed < 0.3) {
-        // Settle on a direction
         setSettling(true)
         setStep('settle')
         return
@@ -49,7 +58,7 @@ export default function WelcomePage() {
     return () => cancelAnimationFrame(frame)
   }, [step])
 
-  // Auto-advance from settle → ivor
+  // Auto-advance settle → ivor
   useEffect(() => {
     if (step !== 'settle') return
     const t = setTimeout(() => setStep('ivor'), 2000)
@@ -57,114 +66,86 @@ export default function WelcomePage() {
   }, [step])
 
   const advance = useCallback(() => {
-    const sequence: Step[] = ['spin', 'settle', 'ivor', 'directions', 'begin']
-    const idx = sequence.indexOf(step)
-    if (idx < sequence.length - 1) {
-      setStep(sequence[idx + 1])
+    const idx = STEP_SEQUENCE.indexOf(step)
+    if (idx < STEP_SEQUENCE.length - 1) {
+      setStep(STEP_SEQUENCE[idx + 1])
     }
   }, [step])
 
   const complete = () => {
     try {
       localStorage.setItem(WELCOME_KEY, 'true')
+      if (userName.trim()) {
+        localStorage.setItem(USER_NAME_KEY, userName.trim())
+      }
+      localStorage.setItem(CADENCE_KEY, cadence)
     } catch {}
     navigate('/compass', { replace: true })
   }
+
+  // ── Shared button component ──
+  const PillButton = ({ onClick, children, glow }: { onClick: (e: React.MouseEvent) => void; children: React.ReactNode; glow?: boolean }) => (
+    <button
+      onClick={(e) => { e.stopPropagation(); onClick(e) }}
+      className={`mt-4 px-10 py-3.5 bg-white text-compass-black font-semibold text-base rounded-full transition-all active:scale-[0.97] ${
+        glow ? 'shadow-[0_0_30px_rgba(212,175,55,0.2)]' : ''
+      }`}
+    >
+      {children}
+    </button>
+  )
 
   return (
     <div
       className="min-h-screen bg-compass-black flex flex-col items-center justify-center relative overflow-hidden"
       onClick={step === 'ivor' || step === 'directions' ? advance : undefined}
     >
-      {/* Radial glow — always present, pulses on settle */}
+      {/* Radial glow */}
       <div
         className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 rounded-full pointer-events-none transition-opacity duration-1000 ${
           settling ? 'opacity-100' : 'opacity-30'
         }`}
         style={{
-          background:
-            'radial-gradient(circle, rgba(212,175,55,0.12) 0%, rgba(212,175,55,0.04) 40%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(212,175,55,0.12) 0%, rgba(212,175,55,0.04) 40%, transparent 70%)',
         }}
       />
 
-      {/* ── Step 1 & 2: Compass Spinning / Settling ── */}
+      {/* ────────────────────────────────────────────────────────────────────── */}
+      {/* Step 1 & 2: Compass Spinning / Settling                              */}
+      {/* ────────────────────────────────────────────────────────────────────── */}
       {(step === 'spin' || step === 'settle') && (
         <div className="flex flex-col items-center justify-center gap-8 relative z-10">
-          {/* Compass star */}
           <div className="relative w-40 h-40">
             <div
-              className={`absolute inset-0 transition-all ${
-                step === 'settle' ? 'duration-1000 ease-out' : ''
-              }`}
+              className={`absolute inset-0 transition-all ${step === 'settle' ? 'duration-1000 ease-out' : ''}`}
               style={{ transform: `rotate(${compassAngle}deg)` }}
             >
               <svg viewBox="0 0 120 120" fill="none" className="w-full h-full">
-                {/* Outer ring */}
                 <circle cx="60" cy="60" r="56" stroke="#d4af37" strokeWidth="0.5" opacity="0.3" />
-                {/* Cardinal ticks */}
                 {[0, 90, 180, 270].map((a) => (
-                  <line
-                    key={a}
-                    x1="60"
-                    y1="8"
-                    x2="60"
-                    y2="16"
-                    stroke="#d4af37"
-                    strokeWidth="1.5"
-                    opacity="0.6"
-                    transform={`rotate(${a} 60 60)`}
-                  />
+                  <line key={a} x1="60" y1="8" x2="60" y2="16" stroke="#d4af37" strokeWidth="1.5" opacity="0.6" transform={`rotate(${a} 60 60)`} />
                 ))}
-                {/* Compass star */}
-                <path
-                  d="M60 10L67 42L98 38L72 56L85 86L60 66L35 86L48 56L22 38L53 42Z"
-                  fill="none"
-                  stroke="#d4af37"
-                  strokeWidth="1.5"
-                  opacity="0.9"
-                />
-                {/* Inner diamond */}
-                <path
-                  d="M60 30L70 60L60 90L50 60Z"
-                  fill="rgba(212,175,55,0.15)"
-                  stroke="#d4af37"
-                  strokeWidth="1"
-                />
-                {/* North pointer */}
-                <path
-                  d="M60 10L64 40L60 35L56 40Z"
-                  fill="#d4af37"
-                  opacity="0.8"
-                />
+                <path d="M60 10L67 42L98 38L72 56L85 86L60 66L35 86L48 56L22 38L53 42Z" fill="none" stroke="#d4af37" strokeWidth="1.5" opacity="0.9" />
+                <path d="M60 30L70 60L60 90L50 60Z" fill="rgba(212,175,55,0.15)" stroke="#d4af37" strokeWidth="1" />
+                <path d="M60 10L64 40L60 35L56 40Z" fill="#d4af37" opacity="0.8" />
               </svg>
             </div>
-            {/* Centre dot */}
             <div className="absolute inset-0 flex items-center justify-center">
-              <div
-                className={`w-3 h-3 rounded-full bg-gold transition-all duration-1000 ${
-                  step === 'settle' ? 'shadow-[0_0_20px_rgba(212,175,55,0.6)]' : ''
-                }`}
-              />
+              <div className={`w-3 h-3 rounded-full bg-gold transition-all duration-1000 ${step === 'settle' ? 'shadow-[0_0_20px_rgba(212,175,55,0.6)]' : ''}`} />
             </div>
           </div>
 
-          {/* Text */}
-          <div
-            className={`text-center transition-opacity duration-1000 ${
-              step === 'settle' ? 'opacity-100' : 'opacity-0'
-            }`}
-          >
-            <p className="font-heritage italic text-gold text-xl">
-              Every journey needs a guide
-            </p>
+          <div className={`text-center transition-opacity duration-1000 ${step === 'settle' ? 'opacity-100' : 'opacity-0'}`}>
+            <p className="font-heritage italic text-gold text-xl">Every journey needs a guide</p>
           </div>
         </div>
       )}
 
-      {/* ── Step 3: Ivor Emerges ── */}
+      {/* ────────────────────────────────────────────────────────────────────── */}
+      {/* Step 3: Ivor Emerges                                                  */}
+      {/* ────────────────────────────────────────────────────────────────────── */}
       {step === 'ivor' && (
         <div className="flex flex-col items-center justify-center gap-8 px-8 relative z-10 animate-fade-in">
-          {/* Portrait */}
           <div className="relative w-56 h-72 overflow-hidden">
             <div className="absolute inset-0 border border-gold/30" />
             <img
@@ -176,39 +157,27 @@ export default function WelcomePage() {
                 WebkitMaskImage: 'linear-gradient(to bottom, black 70%, transparent 100%)',
               }}
             />
-            {/* Gold corner accents */}
             <div className="absolute top-0 left-0 w-6 h-6 border-t-2 border-l-2 border-gold/60" />
             <div className="absolute top-0 right-0 w-6 h-6 border-t-2 border-r-2 border-gold/60" />
           </div>
 
           <div className="text-center max-w-xs">
-            <h2 className="font-bold-shell text-2xl text-gold-gradient mb-3">
-              Meet Ivor Cummings
-            </h2>
+            <h2 className="font-bold-shell text-2xl text-gold-gradient mb-3">Meet Ivor Cummings</h2>
             <p className="font-heritage italic text-warm-white/70 text-base leading-relaxed">
-              A man who navigated identity, resistance, connection, and joy —
-              and left a compass for those who follow.
+              A man who navigated identity, resistance, connection, and joy — and left a compass for those who follow.
             </p>
           </div>
 
-          <button
-            onClick={(e) => {
-              e.stopPropagation()
-              advance()
-            }}
-            className="mt-4 px-10 py-3.5 bg-white text-compass-black font-semibold text-base rounded-full transition-all active:scale-[0.97]"
-          >
-            Continue
-          </button>
+          <PillButton onClick={advance}>Continue</PillButton>
         </div>
       )}
 
-      {/* ── Step 4: Four Directions ── */}
+      {/* ────────────────────────────────────────────────────────────────────── */}
+      {/* Step 4: Four Directions                                               */}
+      {/* ────────────────────────────────────────────────────────────────────── */}
       {step === 'directions' && (
         <div className="flex flex-col items-center justify-center gap-6 px-8 relative z-10 animate-fade-in">
-          {/* Compass rose with four phases */}
           <div className="relative w-64 h-64">
-            {/* Centre compass */}
             <div className="absolute inset-0 flex items-center justify-center">
               <div className="w-16 h-16 border border-gold/40 rotate-45 flex items-center justify-center">
                 <div className="w-10 h-10 border border-gold/30 rotate-0 flex items-center justify-center">
@@ -217,37 +186,21 @@ export default function WelcomePage() {
               </div>
             </div>
 
-            {/* Phase labels at cardinal positions */}
             {PHASES.map((phase, i) => {
               const positions = [
-                { top: '0', left: '50%', transform: 'translateX(-50%)' },       // N
-                { top: '50%', right: '0', transform: 'translateY(-50%)' },      // E
-                { bottom: '0', left: '50%', transform: 'translateX(-50%)' },    // S
-                { top: '50%', left: '0', transform: 'translateY(-50%)' },       // W
+                { top: '0', left: '50%', transform: 'translateX(-50%)' },
+                { top: '50%', right: '0', transform: 'translateY(-50%)' },
+                { bottom: '0', left: '50%', transform: 'translateX(-50%)' },
+                { top: '50%', left: '0', transform: 'translateY(-50%)' },
               ]
               return (
-                <div
-                  key={phase.name}
-                  className="absolute text-center animate-fade-in"
-                  style={{
-                    ...positions[i],
-                    animationDelay: `${i * 0.15}s`,
-                  }}
-                >
-                  <p
-                    className="font-bold-shell text-sm tracking-wider"
-                    style={{ color: phase.color }}
-                  >
-                    {phase.name}
-                  </p>
-                  <p className="text-warm-white/50 text-xs font-heritage italic mt-0.5">
-                    {phase.desc}
-                  </p>
+                <div key={phase.name} className="absolute text-center animate-fade-in" style={{ ...positions[i], animationDelay: `${i * 0.15}s` }}>
+                  <p className="font-bold-shell text-sm tracking-wider" style={{ color: phase.color }}>{phase.name}</p>
+                  <p className="text-warm-white/50 text-xs font-heritage italic mt-0.5">{phase.desc}</p>
                 </div>
               )
             })}
 
-            {/* Connecting lines */}
             <svg className="absolute inset-0 w-full h-full" viewBox="0 0 256 256">
               <line x1="128" y1="40" x2="128" y2="216" stroke="#d4af37" strokeWidth="0.5" opacity="0.2" />
               <line x1="40" y1="128" x2="216" y2="128" stroke="#d4af37" strokeWidth="0.5" opacity="0.2" />
@@ -255,31 +208,148 @@ export default function WelcomePage() {
           </div>
 
           <div className="text-center max-w-xs mt-4">
-            <h2 className="font-bold-shell text-xl text-gold-gradient mb-3">
-              Four Directions
-            </h2>
+            <h2 className="font-bold-shell text-xl text-gold-gradient mb-3">Four Directions</h2>
             <p className="font-heritage italic text-warm-white/70 text-sm leading-relaxed">
-              Morning and evening, the compass points to different reflections.
-              Your mood guides the direction.
+              Morning and evening, the compass points to different reflections. Your mood guides the direction.
             </p>
           </div>
 
-          <button
-            onClick={(e) => {
-              e.stopPropagation()
-              advance()
-            }}
-            className="mt-4 px-10 py-3.5 bg-white text-compass-black font-semibold text-base rounded-full transition-all active:scale-[0.97]"
-          >
-            Continue
-          </button>
+          <PillButton onClick={advance}>Continue</PillButton>
         </div>
       )}
 
-      {/* ── Step 5: Begin ── */}
+      {/* ────────────────────────────────────────────────────────────────────── */}
+      {/* Step 5: What should we call you?                                      */}
+      {/* ────────────────────────────────────────────────────────────────────── */}
+      {step === 'name' && (
+        <div className="flex flex-col items-center justify-center gap-8 px-8 relative z-10 animate-fade-in">
+          {/* Mic icon — introduce voice as part of identity */}
+          <div className="w-16 h-16 rounded-full border border-gold/30 flex items-center justify-center">
+            <svg viewBox="0 0 24 24" className="w-7 h-7 text-gold" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
+            </svg>
+          </div>
+
+          <div className="text-center max-w-xs">
+            <h2 className="font-bold-shell text-2xl text-gold-gradient mb-3">
+              What should we call you?
+            </h2>
+            <p className="font-heritage italic text-warm-white/60 text-sm leading-relaxed">
+              Your name stays on your device. We use it to greet you — and you can journal by voice, not just text.
+            </p>
+          </div>
+
+          <input
+            type="text"
+            value={userName}
+            onChange={(e) => setUserName(e.target.value)}
+            placeholder="Your first name"
+            maxLength={30}
+            className="w-full max-w-xs text-center text-lg bg-compass-dark border border-compass-border px-4 py-4 text-white placeholder-text-muted/60 focus:outline-none focus:border-gold/60 focus:shadow-[0_2px_0_0_#d4af37] transition-all rounded-none"
+            autoFocus
+            autoComplete="given-name"
+          />
+
+          <PillButton onClick={advance}>
+            {userName.trim() ? 'Continue' : 'Skip for now'}
+          </PillButton>
+        </div>
+      )}
+
+      {/* ────────────────────────────────────────────────────────────────────── */}
+      {/* Step 6: Self-care is community care                                   */}
+      {/* ────────────────────────────────────────────────────────────────────── */}
+      {step === 'community' && (
+        <div className="flex flex-col items-center justify-center gap-6 px-8 relative z-10 animate-fade-in">
+          {/* Two connected circles — self + community */}
+          <div className="relative w-32 h-20 mb-2">
+            <div className="absolute left-2 top-2 w-16 h-16 rounded-full border-2 border-gold/40" />
+            <div className="absolute right-2 top-2 w-16 h-16 rounded-full border-2 border-blkout-teal/60" />
+            {/* Overlap glow */}
+            <div
+              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full animate-pulse-gold"
+              style={{ background: 'radial-gradient(circle, rgba(212,175,55,0.3), transparent 70%)' }}
+            />
+          </div>
+
+          <div className="text-center max-w-xs">
+            <h2 className="font-bold-shell text-xl text-gold-gradient mb-3">
+              Self-care is community care
+            </h2>
+            <p className="font-heritage italic text-warm-white/70 text-sm leading-relaxed mb-4">
+              You don't have to journal alone. The BLKOUT HUB connects you with accountability partners — friends you're yet to meet — who are on the same journey.
+            </p>
+          </div>
+
+          {/* Two paths */}
+          <div className="w-full max-w-xs space-y-3">
+            <a
+              href="https://blkoutuk.com/join"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full py-3.5 bg-blkout-teal text-white text-center font-semibold text-sm rounded-full transition-all active:scale-[0.97]"
+            >
+              Join the HUB — find your partner
+            </a>
+            <button
+              onClick={(e) => { e.stopPropagation(); advance() }}
+              className="block w-full py-3 text-warm-white/50 text-center text-sm transition-colors hover:text-warm-white/80"
+            >
+              I'll explore on my own for now
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ────────────────────────────────────────────────────────────────────── */}
+      {/* Step 7: How often should the compass call you back?                   */}
+      {/* ────────────────────────────────────────────────────────────────────── */}
+      {step === 'cadence' && (
+        <div className="flex flex-col items-center justify-center gap-6 px-8 relative z-10 animate-fade-in">
+          {/* Bell icon */}
+          <div className="w-16 h-16 rounded-full border border-gold/30 flex items-center justify-center">
+            <svg viewBox="0 0 24 24" className="w-7 h-7 text-gold" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+            </svg>
+          </div>
+
+          <div className="text-center max-w-xs">
+            <h2 className="font-bold-shell text-xl text-gold-gradient mb-2">
+              When should the compass call?
+            </h2>
+            <p className="font-heritage italic text-warm-white/60 text-xs">
+              You can change this anytime
+            </p>
+          </div>
+
+          <div className="w-full max-w-xs space-y-2">
+            {CADENCE_OPTIONS.map((opt) => (
+              <button
+                key={opt.value}
+                onClick={() => setCadence(opt.value)}
+                className={`w-full text-left px-5 py-3.5 border transition-all ${
+                  cadence === opt.value
+                    ? 'border-gold/60 bg-gold/10'
+                    : 'border-compass-border bg-compass-dark hover:border-compass-border/80'
+                }`}
+              >
+                <p className={`text-sm font-medium ${cadence === opt.value ? 'text-gold' : 'text-warm-white/80'}`}>
+                  {opt.label}
+                </p>
+                <p className="text-xs text-text-muted mt-0.5">{opt.desc}</p>
+              </button>
+            ))}
+          </div>
+
+          <PillButton onClick={advance}>Continue</PillButton>
+        </div>
+      )}
+
+      {/* ────────────────────────────────────────────────────────────────────── */}
+      {/* Step 8: Begin — personalised                                          */}
+      {/* ────────────────────────────────────────────────────────────────────── */}
       {step === 'begin' && (
         <div className="flex flex-col items-center justify-center gap-8 px-8 relative z-10 animate-fade-in">
-          {/* Gentle compass */}
           <div className="relative w-24 h-24 animate-gentle-float">
             <svg viewBox="0 0 64 64" fill="none" className="w-full h-full">
               <path
@@ -293,7 +363,7 @@ export default function WelcomePage() {
 
           <div className="text-center max-w-xs">
             <h2 className="font-heritage italic text-gold text-2xl mb-3">
-              The compass is yours
+              {userName.trim() ? `The compass is yours, ${userName.trim()}` : 'The compass is yours'}
             </h2>
             <p className="text-warm-white/60 text-sm leading-relaxed">
               Journal. Reflect. Listen. Draw a card.
@@ -314,7 +384,7 @@ export default function WelcomePage() {
       {/* Step indicator dots */}
       {step !== 'spin' && (
         <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex gap-2">
-          {(['settle', 'ivor', 'directions', 'begin'] as Step[]).map((s) => (
+          {DOT_STEPS.map((s) => (
             <div
               key={s}
               className={`w-1.5 h-1.5 rounded-full transition-all duration-500 ${
