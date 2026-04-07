@@ -3,7 +3,7 @@ import BottomNav from './BottomNav'
 import OfflineIndicator from './OfflineIndicator'
 
 const SECTION_NAMES: Record<string, string> = {
-  '/compass/convergence': 'Daily Convergence',
+  '/compass/convergence': 'Assembly',
   '/compass/meditation': 'Meditations',
   '/compass/cards': 'Affirmation Cards',
   '/compass/poem': 'Spoken Word',

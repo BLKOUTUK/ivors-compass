@@ -1,6 +1,7 @@
 export { WarmthOrb } from './WarmthOrb'
 export { PrivacyLock } from './PrivacyLock'
 export { BentoCard } from './BentoCard'
+export { ImageBentoBox } from './ImageBentoBox'
 export { PhaseBadge } from './PhaseBadge'
 export { PageHeader } from './PageHeader'
 export { Button } from './Button'

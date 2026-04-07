@@ -366,7 +366,7 @@ export default function ConvergencePage() {
 
       {/* Title */}
       <div className="text-center">
-        <h1 className="font-bold-shell text-2xl text-white title-underline" style={{ '--accent-color': 'var(--color-task-reflection)' } as React.CSSProperties}>Daily Convergence</h1>
+        <h1 className="font-bold-shell text-2xl text-white title-underline" style={{ '--accent-color': 'var(--color-task-reflection)' } as React.CSSProperties}>Assembly</h1>
         <p className="text-text-muted/60 text-xs mt-1">
           A shared ritual. One affirmation. Many whispers.
         </p>
