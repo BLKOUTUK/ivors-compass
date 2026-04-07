@@ -540,7 +540,7 @@ export default function WorkshopsPage() {
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
       <div>
-        <h1 className="font-bold-shell text-2xl text-white">Workshops</h1>
+        <h1 className="font-bold-shell text-2xl text-white title-underline" style={{ '--accent-color': 'var(--color-task-strength)' } as React.CSSProperties}>Workshops</h1>
         <p className="text-text-muted text-sm mt-1">
           Self-guided journeys through specific challenges. Your pace, your time.
         </p>

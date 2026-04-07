@@ -539,7 +539,7 @@ export default function JournalPage() {
     <div className="space-y-5 animate-fade-in" style={{ backgroundImage: bgGradient }}>
       {/* Header */}
       <div className="flex items-center justify-between">
-        <h1 className="font-heritage text-2xl text-white">Your Journal</h1>
+        <h1 className="font-heritage text-2xl text-white title-underline" style={{ '--accent-color': 'var(--color-task-reflection)' } as React.CSSProperties}>Your Journal</h1>
         <div className="flex gap-2">
           <button
             onClick={() => setView('write')}

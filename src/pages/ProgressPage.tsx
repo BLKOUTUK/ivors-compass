@@ -329,7 +329,7 @@ export default function ProgressPage() {
     <div className="space-y-6 animate-fade-in">
       {/* Hero */}
       <div className="text-center py-6">
-        <h1 className="font-bold-shell text-3xl text-white mb-2">Sacred Momentum</h1>
+        <h1 className="font-bold-shell text-3xl text-white mb-2 title-underline" style={{ '--accent-color': 'var(--color-task-strength)' } as React.CSSProperties}>Sacred Momentum</h1>
         <p className="text-gold-rich text-sm italic">
           Not a checklist. A compass needle finding true north.
         </p>

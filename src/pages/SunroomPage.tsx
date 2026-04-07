@@ -218,7 +218,7 @@ export default function SunroomPage() {
         <div className="flex items-center justify-center gap-2 mb-3">
           <SunIcon className="w-7 h-7 text-gold" />
         </div>
-        <h1 className="font-bold-shell text-3xl text-white mb-2">The Sunroom</h1>
+        <h1 className="font-bold-shell text-3xl text-white mb-2 title-underline" style={{ '--accent-color': 'var(--color-task-joy)' } as React.CSSProperties}>The Sunroom</h1>
         <p className="text-gold-rich text-sm italic">
           A warmer space. For joy, community, and connection.
         </p>

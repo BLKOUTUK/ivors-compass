@@ -30,7 +30,7 @@ export default function PoemPage() {
         <p className="text-terracotta text-xs font-medium tracking-wider uppercase mb-2">
           Spoken Word
         </p>
-        <h1 className="font-bold-shell text-3xl text-white mb-1">The Poem</h1>
+        <h1 className="font-bold-shell text-3xl text-white mb-1 title-underline" style={{ '--accent-color': 'var(--color-task-learning)' } as React.CSSProperties}>The Poem</h1>
         <p className="text-gold-rich text-sm">Keith Jarrett</p>
         <p className="text-text-muted/60 text-xs mt-1">Former UK Poetry Slam Champion</p>
       </div>

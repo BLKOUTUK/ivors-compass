@@ -18,6 +18,13 @@
   --color-blkout-orange: #E76F51;
   --color-blkout-purple: #4a1942;
 
+  /* Task colours — what kind of experience you are entering */
+  --color-task-reflection: #C8B89A;
+  --color-task-grounding: #B54A32;
+  --color-task-joy: #E6A020;
+  --color-task-learning: #6B8F71;
+  --color-task-strength: #6B3557;
+
   /* Heritage */
   --color-terracotta: #802918;
   --color-terracotta-dark: #5C1D11;
@@ -58,6 +65,36 @@ body {
 /* ---------------------------------------------------------------------------
    Shell & Disruption Borders
    --------------------------------------------------------------------------- */
+
+/* Task accent line — thin colour bar signalling the mood of a section */
+.accent-line {
+  position: relative;
+}
+.accent-line::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--accent-color, #d4af37);
+}
+
+/* Title underline — task colour below a heading */
+.title-underline {
+  position: relative;
+  display: inline-block;
+  padding-bottom: 6px;
+}
+.title-underline::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 40px;
+  height: 3px;
+  background: var(--accent-color, #d4af37);
+}
 
 /* Sharp shell borders — power statements */
 .border-shell {

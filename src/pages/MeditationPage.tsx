@@ -39,7 +39,7 @@ export default function MeditationPage() {
         <p className="text-terracotta text-xs font-medium tracking-wider uppercase mb-1">
           Chapter {meditation.id} of 6 · {chapterLabel}
         </p>
-        <h1 className="font-bold-shell text-3xl text-white">{meditation.title}</h1>
+        <h1 className="font-bold-shell text-3xl text-white title-underline" style={{ '--accent-color': 'var(--color-task-learning)' } as React.CSSProperties}>{meditation.title}</h1>
         <p className="text-gold-rich text-sm mt-1">{meditation.era}</p>
       </div>
 

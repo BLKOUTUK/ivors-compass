@@ -348,7 +348,7 @@ export default function AboutPage() {
     <div className="space-y-8 animate-fade-in">
       {/* Header */}
       <div className="text-center py-4">
-        <h1 className="font-bold-shell text-3xl text-white mb-2">Ivor Cummings</h1>
+        <h1 className="font-bold-shell text-3xl text-white mb-2 title-underline" style={{ '--accent-color': 'var(--color-task-learning)' } as React.CSSProperties}>Ivor Cummings</h1>
         <p className="text-gold-rich text-sm">1913–1992</p>
         <p className="text-text-muted text-xs mt-1 italic">
           "The gay father of the Windrush generation"

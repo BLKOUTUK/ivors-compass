@@ -146,7 +146,7 @@ export default function CrisisPage() {
     <div className="space-y-6 animate-fade-in">
       {/* -- Grounding section -- */}
       <section className="text-center py-6 space-y-5">
-        <h1 className="font-bold-shell text-3xl text-white">Get Help Now</h1>
+        <h1 className="font-bold-shell text-3xl text-white title-underline" style={{ '--accent-color': 'var(--color-task-grounding)' } as React.CSSProperties}>Get Help Now</h1>
 
         <div className="gradient-disruption border border-blkout-teal/20 rounded-xl p-6 space-y-4">
           <p className="font-heritage italic text-white text-lg leading-relaxed">

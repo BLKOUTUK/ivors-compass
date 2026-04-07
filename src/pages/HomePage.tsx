@@ -79,11 +79,12 @@ export default function HomePage() {
         <p className="font-heritage italic text-gold-dim text-sm">Your compass. Your pace. Your story.</p>
       </div>
 
-      {/* Daily Convergence Card — prominent, shimmer glow */}
+      {/* Daily Convergence Card — reflection (oatmeal) */}
       <Link
         to="/compass/convergence"
         aria-label="Daily Convergence — today's shared affirmation and anonymous reflections"
-        className="block bg-gradient-to-br from-compass-dark to-compass-card border border-gold/30 hover:border-gold/50 rounded-xl p-5 transition-all active:scale-[0.98] animate-shimmer"
+        className="block bg-gradient-to-br from-compass-dark to-compass-card border border-gold/30 hover:border-gold/50 p-5 transition-all active:scale-[0.98] animate-shimmer accent-line"
+        style={{ '--accent-color': 'var(--color-task-reflection)' } as React.CSSProperties}
       >
         <div className="flex items-start gap-4">
           {/* Ripple icon */}
@@ -123,8 +124,8 @@ export default function HomePage() {
       {/* Bento Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
 
-        {/* Meet Ivor — audio intro, wide */}
-        <BentoCard to="/compass/film" className="sm:col-span-2" label="Meet Ivor — 2 minute audio introduction">
+        {/* Meet Ivor — learning (sage) */}
+        <BentoCard to="/compass/film" className="sm:col-span-2" label="Meet Ivor — 2 minute audio introduction" taskColor="var(--color-task-learning)">
           <div className="flex items-start gap-4">
             <div className="mt-0.5 flex-shrink-0">
               <svg className="w-7 h-7 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
@@ -142,8 +143,8 @@ export default function HomePage() {
           </div>
         </BentoCard>
 
-        {/* Heritage Meditations — tall */}
-        <BentoCard to="/compass/meditation/1" className="sm:row-span-2 border-terracotta/20 hover:border-terracotta/40" label="Heritage Meditations — six reflections on Ivor's life">
+        {/* Heritage Meditations — learning (sage) */}
+        <BentoCard to="/compass/meditation/1" className="sm:row-span-2" label="Heritage Meditations — six reflections on Ivor's life" taskColor="var(--color-task-learning)">
           <div className="flex flex-col h-full gap-3">
             <WarmthOrb intensity={0.6} color="#802918" size={22} />
             <div className="flex-1">
@@ -170,8 +171,8 @@ export default function HomePage() {
           </div>
         </BentoCard>
 
-        {/* Affirmation Cards */}
-        <BentoCard to="/compass/cards" label="Affirmation Cards — draw your daily card">
+        {/* Affirmation Cards — joy (amber) */}
+        <BentoCard to="/compass/cards" label="Affirmation Cards — draw your daily card" taskColor="var(--color-task-joy)">
           <div className="flex items-start gap-4">
             <WarmthOrb intensity={0.5} color="#D4AF37" size={20} />
             <div className="flex-1 min-w-0">
@@ -182,8 +183,8 @@ export default function HomePage() {
           </div>
         </BentoCard>
 
-        {/* Mood Check-in */}
-        <BentoCard to="/compass/mood" label="Mood Check-in — track patterns and get journal phase suggestions">
+        {/* Mood Check-in — strength (plum) */}
+        <BentoCard to="/compass/mood" label="Mood Check-in — track patterns and get journal phase suggestions" taskColor="var(--color-task-strength)">
           <div className="flex items-start gap-4">
             <WarmthOrb intensity={0.45} color="#FFD700" size={20} />
             <div className="flex-1 min-w-0">
@@ -194,8 +195,8 @@ export default function HomePage() {
           </div>
         </BentoCard>
 
-        {/* Workshops */}
-        <BentoCard to="/compass/workshops" className="border-terracotta/20 hover:border-terracotta/40" label="Workshops — self-guided wellness mini-journeys">
+        {/* Workshops — strength (plum) */}
+        <BentoCard to="/compass/workshops" label="Workshops — self-guided wellness mini-journeys" taskColor="var(--color-task-strength)">
           <div className="flex items-start gap-4">
             <WarmthOrb intensity={0.55} color="#802918" size={20} />
             <div className="flex-1 min-w-0">
@@ -206,8 +207,8 @@ export default function HomePage() {
           </div>
         </BentoCard>
 
-        {/* The Sunroom */}
-        <BentoCard to="/compass/sunroom" className="sm:col-span-2 border-[#D4AF37]/30 hover:border-[#D4AF37]/50" label="The Sunroom — joy, community, and AIvor chat">
+        {/* The Sunroom — joy (amber) */}
+        <BentoCard to="/compass/sunroom" className="sm:col-span-2" label="The Sunroom — joy, community, and AIvor chat" taskColor="var(--color-task-joy)">
           <div className="flex items-start gap-4">
             <div className="mt-0.5 flex-shrink-0">
               <svg className="w-7 h-7 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
@@ -225,8 +226,8 @@ export default function HomePage() {
           </div>
         </BentoCard>
 
-        {/* Journal */}
-        <BentoCard to="/compass/journal" className="sm:col-span-2" label="Your Journal — private, stored only on your device">
+        {/* Journal — reflection (oatmeal) */}
+        <BentoCard to="/compass/journal" className="sm:col-span-2" label="Your Journal — private, stored only on your device" taskColor="var(--color-task-reflection)">
           <div className="flex items-start gap-4">
             <WarmthOrb intensity={0.6} color="#D4AF37" size={24} />
             <div className="flex-1 min-w-0">
@@ -240,8 +241,8 @@ export default function HomePage() {
           </div>
         </BentoCard>
 
-        {/* Sacred Momentum */}
-        <BentoCard to="/compass/progress" className="sm:col-span-1 border-[#D4AF37]/20 hover:border-[#D4AF37]/40" label="Sacred Momentum — your journey milestones">
+        {/* Sacred Momentum — strength (plum) */}
+        <BentoCard to="/compass/progress" className="sm:col-span-1" label="Sacred Momentum — your journey milestones" taskColor="var(--color-task-strength)">
           <div className="flex items-start gap-4">
             <div className="mt-0.5 flex-shrink-0">
               <svg className="w-6 h-6 text-gold-rich" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
@@ -256,13 +257,13 @@ export default function HomePage() {
           </div>
         </BentoCard>
 
-        {/* Crisis Support */}
+        {/* Crisis Support — grounding (terracotta) */}
         <div className="sm:col-span-2">
           <Link
             to="/compass/crisis"
             aria-label="Need support? Crisis helplines, grounding exercises, and care"
-            className="block bg-compass-dark border border-red-700/30 hover:border-red-600/50 rounded-xl p-4 transition-all active:scale-[0.98]"
-            style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.3)' }}
+            className="block bg-compass-dark border border-task-grounding/30 hover:border-task-grounding/50 p-4 transition-all active:scale-[0.98] accent-line"
+            style={{ boxShadow: '0 2px 12px rgba(0,0,0,0.3)', '--accent-color': 'var(--color-task-grounding)' } as React.CSSProperties}
           >
             <div className="flex items-center gap-3">
               <svg className="w-5 h-5 text-red-400/70 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
@@ -277,8 +278,8 @@ export default function HomePage() {
           </Link>
         </div>
 
-        {/* About */}
-        <BentoCard to="/compass/about" className="sm:col-span-1 border-compass-border hover:border-gold/30" label="About Ivor Cummings — the gay father of Windrush">
+        {/* About — learning (sage) */}
+        <BentoCard to="/compass/about" className="sm:col-span-1" label="About Ivor Cummings — the gay father of Windrush" taskColor="var(--color-task-learning)">
           <div className="flex items-center gap-3">
             <WarmthOrb intensity={0.3} color="#D4AF37" size={16} />
             <div>
