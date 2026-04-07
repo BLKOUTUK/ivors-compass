@@ -1,9 +1,10 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 export const WELCOME_KEY = 'ivors-compass-welcomed'
 export const USER_NAME_KEY = 'ivors-compass-user-name'
 export const CADENCE_KEY = 'ivors-compass-reminder-cadence'
+export const INTRO_AUDIO_KEY = 'ivors-compass-voice-intro'
 
 const PHASES = [
   { name: 'Identity', color: '#C8B89A', angle: 0, desc: 'Know who you are' },
@@ -31,6 +32,76 @@ export default function WelcomePage() {
   const [settling, setSettling] = useState(false)
   const [userName, setUserName] = useState('')
   const [cadence, setCadence] = useState<string>('few')
+
+  // Voice intro recording
+  const [isRecording, setIsRecording] = useState(false)
+  const [introAudio, setIntroAudio] = useState<string | null>(null)
+  const [recordingTime, setRecordingTime] = useState(0)
+  const [aivorText, setAivorText] = useState('')
+  const mediaRecorderRef = useRef<MediaRecorder | null>(null)
+  const chunksRef = useRef<Blob[]>([])
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null)
+
+  const MAX_INTRO_SECONDS = 30
+
+  const AIVOR_MESSAGE = userName.trim()
+    ? `Welcome, ${userName.trim()}. I'm Ivor — or at least, the part of me that lives on in this compass. I'd love to hear your voice. Record a short introduction — who you are, what brought you here. When you join the HUB, this is how your accountability partner will first meet you.`
+    : `Welcome. I'm Ivor — or at least, the part of me that lives on in this compass. I'd love to hear your voice. Record a short introduction — who you are, what brought you here. When you join the HUB, this is how your accountability partner will first meet you.`
+
+  // Typewriter effect for AIvor's message
+  useEffect(() => {
+    if (step !== 'community') { setAivorText(''); return }
+    let i = 0
+    setAivorText('')
+    const interval = setInterval(() => {
+      i++
+      setAivorText(AIVOR_MESSAGE.slice(0, i))
+      if (i >= AIVOR_MESSAGE.length) clearInterval(interval)
+    }, 28)
+    return () => clearInterval(interval)
+  }, [step, AIVOR_MESSAGE])
+
+  const startRecording = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true })
+      const recorder = new MediaRecorder(stream, { mimeType: 'audio/webm' })
+      chunksRef.current = []
+
+      recorder.ondataavailable = (e) => { if (e.data.size > 0) chunksRef.current.push(e.data) }
+      recorder.onstop = () => {
+        stream.getTracks().forEach((t) => t.stop())
+        const blob = new Blob(chunksRef.current, { type: 'audio/webm' })
+        const reader = new FileReader()
+        reader.onloadend = () => setIntroAudio(reader.result as string)
+        reader.readAsDataURL(blob)
+      }
+
+      recorder.start()
+      mediaRecorderRef.current = recorder
+      setIsRecording(true)
+      setRecordingTime(0)
+
+      timerRef.current = setInterval(() => {
+        setRecordingTime((t) => {
+          if (t + 1 >= MAX_INTRO_SECONDS) {
+            mediaRecorderRef.current?.stop()
+            setIsRecording(false)
+            if (timerRef.current) clearInterval(timerRef.current)
+            return MAX_INTRO_SECONDS
+          }
+          return t + 1
+        })
+      }, 1000)
+    } catch {
+      // Mic permission denied — user can skip
+    }
+  }
+
+  const stopRecording = () => {
+    mediaRecorderRef.current?.stop()
+    setIsRecording(false)
+    if (timerRef.current) clearInterval(timerRef.current)
+  }
 
   // ── Compass spin physics ──
   useEffect(() => {
@@ -79,6 +150,9 @@ export default function WelcomePage() {
         localStorage.setItem(USER_NAME_KEY, userName.trim())
       }
       localStorage.setItem(CADENCE_KEY, cadence)
+      if (introAudio) {
+        localStorage.setItem(INTRO_AUDIO_KEY, introAudio)
+      }
     } catch {}
     navigate('/compass', { replace: true })
   }
@@ -257,45 +331,111 @@ export default function WelcomePage() {
       )}
 
       {/* ────────────────────────────────────────────────────────────────────── */}
-      {/* Step 6: Self-care is community care                                   */}
+      {/* Step 6: AIvor invites voice introduction + community care              */}
       {/* ────────────────────────────────────────────────────────────────────── */}
       {step === 'community' && (
-        <div className="flex flex-col items-center justify-center gap-6 px-8 relative z-10 animate-fade-in">
-          {/* Two connected circles — self + community */}
-          <div className="relative w-32 h-20 mb-2">
-            <div className="absolute left-2 top-2 w-16 h-16 rounded-full border-2 border-gold/40" />
-            <div className="absolute right-2 top-2 w-16 h-16 rounded-full border-2 border-blkout-teal/60" />
-            {/* Overlap glow */}
-            <div
-              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full animate-pulse-gold"
-              style={{ background: 'radial-gradient(circle, rgba(212,175,55,0.3), transparent 70%)' }}
-            />
+        <div className="flex flex-col items-center justify-center gap-5 px-8 relative z-10 animate-fade-in max-w-sm mx-auto">
+          {/* AIvor speech bubble */}
+          <div className="w-full">
+            <div className="flex items-start gap-3 mb-4">
+              {/* AIvor avatar */}
+              <div className="flex-shrink-0 w-10 h-10 rounded-full overflow-hidden border border-gold/40">
+                <img
+                  src="/images/ivor-1974.jpg"
+                  alt="AIvor"
+                  className="w-full h-full object-cover object-top"
+                />
+              </div>
+              <div>
+                <p className="text-gold text-xs font-bold-shell tracking-wider mb-1">AIVOR</p>
+                <p className="font-heritage italic text-warm-white/80 text-sm leading-relaxed min-h-[5rem]">
+                  {aivorText}
+                  {aivorText.length < AIVOR_MESSAGE.length && (
+                    <span className="inline-block w-0.5 h-4 bg-gold/60 ml-0.5 animate-pulse-gold" />
+                  )}
+                </p>
+              </div>
+            </div>
           </div>
 
-          <div className="text-center max-w-xs">
-            <h2 className="font-bold-shell text-xl text-gold-gradient mb-3">
-              Self-care is community care
-            </h2>
-            <p className="font-heritage italic text-warm-white/70 text-sm leading-relaxed mb-4">
-              You don't have to journal alone. The BLKOUT HUB connects you with accountability partners — friends you're yet to meet — who are on the same journey.
+          {/* Recording interface */}
+          <div className="w-full flex flex-col items-center gap-4">
+            {!introAudio ? (
+              <>
+                {/* Record button */}
+                <button
+                  onClick={isRecording ? stopRecording : startRecording}
+                  className={`w-20 h-20 rounded-full flex items-center justify-center transition-all ${
+                    isRecording
+                      ? 'bg-blkout-red/20 border-2 border-blkout-red shadow-[0_0_20px_rgba(212,38,26,0.3)]'
+                      : 'bg-compass-dark border-2 border-gold/40 hover:border-gold/70'
+                  }`}
+                >
+                  {isRecording ? (
+                    <div className="w-6 h-6 rounded-sm bg-blkout-red" />
+                  ) : (
+                    <svg viewBox="0 0 24 24" className="w-8 h-8 text-gold" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 006-6v-1.5m-6 7.5a6 6 0 01-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 01-3-3V4.5a3 3 0 116 0v8.25a3 3 0 01-3 3z" />
+                    </svg>
+                  )}
+                </button>
+
+                {isRecording && (
+                  <div className="flex items-center gap-2 text-sm">
+                    <div className="w-2 h-2 rounded-full bg-blkout-red animate-pulse" />
+                    <span className="text-warm-white/70 font-mono text-xs">
+                      {recordingTime}s / {MAX_INTRO_SECONDS}s
+                    </span>
+                  </div>
+                )}
+
+                {!isRecording && (
+                  <p className="text-text-muted text-xs">
+                    Tap to record — up to {MAX_INTRO_SECONDS} seconds
+                  </p>
+                )}
+              </>
+            ) : (
+              <>
+                {/* Playback */}
+                <div className="w-full bg-compass-dark border border-gold/30 p-4 flex flex-col items-center gap-3">
+                  <div className="flex items-center gap-2 text-gold text-xs">
+                    <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75l3 3m0 0l3-3m-3 3v-7.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span className="font-medium">Voice intro recorded</span>
+                  </div>
+                  <audio src={introAudio} controls className="w-full h-8 opacity-70" />
+                  <button
+                    onClick={() => { setIntroAudio(null); setRecordingTime(0) }}
+                    className="text-text-muted text-xs hover:text-warm-white/60 transition-colors"
+                  >
+                    Re-record
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+
+          {/* Community CTA */}
+          <div className="w-full space-y-3 mt-2">
+            <p className="text-center text-warm-white/50 text-xs font-heritage italic">
+              Self-care is community care. Join the HUB to find your accountability partner — a friend you're yet to meet.
             </p>
-          </div>
-
-          {/* Two paths */}
-          <div className="w-full max-w-xs space-y-3">
             <a
               href="https://blkoutuk.com/join"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => { /* advance after clicking, don't block navigation */ setTimeout(advance, 300) }}
               className="block w-full py-3.5 bg-blkout-teal text-white text-center font-semibold text-sm rounded-full transition-all active:scale-[0.97]"
             >
-              Join the HUB — find your partner
+              Join the HUB
             </a>
             <button
               onClick={(e) => { e.stopPropagation(); advance() }}
-              className="block w-full py-3 text-warm-white/50 text-center text-sm transition-colors hover:text-warm-white/80"
+              className="block w-full py-2.5 text-warm-white/40 text-center text-xs transition-colors hover:text-warm-white/60"
             >
-              I'll explore on my own for now
+              I'll join later
             </button>
           </div>
         </div>
