@@ -16,6 +16,7 @@ import WorkshopsPage from './pages/WorkshopsPage'
 import SunroomPage from './pages/SunroomPage'
 import ProgressPage from './pages/ProgressPage'
 import ConvergencePage from './pages/ConvergencePage'
+import InterviewPage from './pages/InterviewPage'
 
 function ProtectedRoute({ children }: { children: ReactNode }) {
   const { isUnlocked } = useCompass()
@@ -53,6 +54,7 @@ function AppRoutes() {
         <Route path="/compass/about" element={<AboutPage />} />
         <Route path="/compass/crisis" element={<CrisisPage />} />
       </Route>
+      <Route path="/interview/:tableId" element={<InterviewPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )

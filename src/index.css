@@ -85,6 +85,13 @@ body {
   z-index: 1;
 }
 
+/* Typing indicator */
+@keyframes typing-dot {
+  0%, 80%, 100% { opacity: 0.3; }
+  40% { opacity: 1; }
+}
+.animate-typing-dot { animation: typing-dot 1.4s infinite; }
+
 /* Scrollbar */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: #0A0A0A; }
