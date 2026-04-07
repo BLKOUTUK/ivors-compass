@@ -650,6 +650,7 @@ function CompleteScreen({ tableId }: { tableId: number }) {
 export default function InterviewPage() {
   const { tableId: tableIdParam } = useParams<{ tableId: string }>()
   const tableId = Number(tableIdParam)
+  const [started, setStarted] = useState(false)
 
   const {
     messages,
@@ -672,6 +673,11 @@ export default function InterviewPage() {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
   }, [messages, sending])
 
+  // If session already has messages, skip cover page
+  useEffect(() => {
+    if (messages.length > 0) setStarted(true)
+  }, [messages])
+
   // Invalid table
   if (!config) {
     return (
@@ -692,6 +698,83 @@ export default function InterviewPage() {
         <div className="text-center space-y-3">
           <div className="w-8 h-8 border-2 border-gold border-t-transparent rounded-full animate-spin mx-auto" />
           <p className="text-text-muted text-sm">Opening the archive...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Cover page
+  if (!started) {
+    return (
+      <div className="h-dvh bg-compass-black flex flex-col">
+        {/* Promo image — top half */}
+        <div className="relative flex-1 min-h-0">
+          <img
+            src="/images/promo-poster.jpg"
+            alt="Ivor's Compass — heritage installation"
+            className="w-full h-full object-cover"
+          />
+          {/* Gradient overlay for text legibility */}
+          <div className="absolute inset-0 bg-gradient-to-t from-compass-black via-compass-black/40 to-transparent" />
+
+          {/* BLKOUT logo top-left */}
+          <div className="absolute top-4 left-4">
+            <img src="/images/blkout-logo.png" alt="BLKOUT" className="h-8 opacity-90" />
+          </div>
+        </div>
+
+        {/* Content — bottom half */}
+        <div className="shrink-0 px-5 pb-6 pt-4 space-y-4 -mt-16 relative z-10">
+          {/* Direction badge */}
+          <div className="flex items-center gap-2">
+            <div
+              className="w-2.5 h-2.5 rounded-full"
+              style={{ backgroundColor: config.colour }}
+            />
+            <span
+              className="text-xs font-bold tracking-[0.3em] uppercase"
+              style={{ color: config.colour }}
+            >
+              {config.direction}
+            </span>
+          </div>
+
+          {/* Compass prompt */}
+          <p className="font-heritage text-gold text-xl leading-snug italic">
+            {config.compassPrompt}
+          </p>
+
+          {/* Instructions */}
+          <div className="space-y-2 text-sm text-text-muted leading-relaxed">
+            <p>
+              A research assistant has loaded a chatbot with fragments of a man's life.
+              Your table shares <span className="text-gold">5 questions</span>.
+              Choose carefully — the archive has gaps.
+            </p>
+            <p>
+              Discuss with your table what to ask. One person types.
+              Everyone discovers.
+            </p>
+          </div>
+
+          {/* Begin button */}
+          <button
+            onClick={() => setStarted(true)}
+            className="w-full py-3.5 rounded-xl bg-gold text-compass-black font-semibold text-base active:scale-[0.98] transition-all"
+          >
+            Begin interview
+          </button>
+
+          {/* Sponsor acknowledgement */}
+          <div className="flex items-center justify-center gap-3 pt-2">
+            <span className="text-[10px] text-text-muted/50">Funded by</span>
+            <span className="text-[10px] text-text-muted/60">Croydon Council</span>
+            <span className="text-[10px] text-text-muted/40">|</span>
+            <span className="text-[10px] text-text-muted/60">National Lottery Heritage Fund</span>
+          </div>
+          <p className="text-[9px] text-text-muted/30 text-center">
+            Samuel Coleridge-Taylor 150 Small Heritage Grant
+          </p>
         </div>
       </div>
     )
