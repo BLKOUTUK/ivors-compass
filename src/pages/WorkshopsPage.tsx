@@ -572,7 +572,7 @@ export default function WorkshopsPage() {
                   </p>
                 </div>
                 <svg
-                  className="w-4 h-4 text-text-muted/40 flex-shrink-0"
+                  className="w-4 h-4 text-text-muted/60 flex-shrink-0"
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"

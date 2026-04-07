@@ -93,7 +93,7 @@ export default function CardsPage() {
               </div>
 
               {/* Back — revealed */}
-              <div className="card-back absolute inset-0 bg-compass-dark rounded-2xl border-2 border-gold/40 flex items-center justify-center p-8 shadow-2xl">
+              <div className="card-back absolute inset-0 bg-compass-dark rounded-2xl border-2 border-gold/40 flex items-center justify-center p-8 shadow-2xl archival-texture overflow-hidden">
                 {currentCard && (
                   <div className="text-center space-y-6">
                     <p className="text-white text-lg leading-relaxed font-light italic">
@@ -127,7 +127,7 @@ export default function CardsPage() {
           </button>
 
           {hasDrawnToday && (
-            <p className="text-text-muted/40 text-xs mt-3">
+            <p className="text-text-muted/60 text-xs mt-3">
               Sit with today's card. Let it work on you.
             </p>
           )}

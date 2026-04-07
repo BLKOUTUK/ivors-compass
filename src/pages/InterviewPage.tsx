@@ -769,10 +769,10 @@ export default function InterviewPage() {
           <div className="flex items-center justify-center gap-3 pt-2">
             <span className="text-[10px] text-text-muted/50">Funded by</span>
             <span className="text-[10px] text-text-muted/60">Croydon Council</span>
-            <span className="text-[10px] text-text-muted/40">|</span>
+            <span className="text-[10px] text-text-muted/60">|</span>
             <span className="text-[10px] text-text-muted/60">National Lottery Heritage Fund</span>
           </div>
-          <p className="text-[9px] text-text-muted/30 text-center">
+          <p className="text-[9px] text-text-muted/60 text-center">
             Samuel Coleridge-Taylor 150 Small Heritage Grant
           </p>
         </div>

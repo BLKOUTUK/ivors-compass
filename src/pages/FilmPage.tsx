@@ -96,7 +96,7 @@ function AudioPlayer({ src, title }: { src: string; title: string }) {
             style={{ width: `${pct}%`, backgroundColor: '#D4AF37' }}
           />
         </div>
-        <div className="flex justify-between text-[10px] text-text-muted/40">
+        <div className="flex justify-between text-[10px] text-text-muted/60">
           <span>{formatTime(progress)}</span>
           <span>{duration > 0 ? formatTime(duration) : '--:--'}</span>
         </div>
@@ -166,14 +166,14 @@ export default function FilmPage() {
               <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
             </svg>
             <p className="text-gold/40 font-heritage text-sm">Video coming soon</p>
-            <p className="text-text-muted/30 text-xs mt-1">Being uploaded to YouTube</p>
+            <p className="text-text-muted/60 text-xs mt-1">Being uploaded to YouTube</p>
           </div>
         </div>
       </section>
 
       {/* Credits */}
       <div className="bg-compass-card rounded-xl p-5 border border-compass-border text-center">
-        <p className="text-text-muted/40 text-xs leading-relaxed">
+        <p className="text-text-muted/60 text-xs leading-relaxed">
           Audio and video generated using Google NotebookLM from research sources
           including Stephen Bourne, Nicholas Boston, and the National Archives.
           <br />

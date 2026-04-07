@@ -407,9 +407,9 @@ export default function MoodTrackerPage() {
                 placeholder="A few words, if you want..."
                 maxLength={280}
                 rows={3}
-                className="w-full bg-compass-dark border border-compass-border rounded-lg px-4 py-3 text-sm text-white placeholder-text-muted/40 focus:outline-none focus:border-gold/40 resize-none"
+                className="w-full bg-compass-dark border border-compass-border rounded-lg px-4 py-3 text-sm text-white placeholder-text-muted/60 focus:outline-none focus:border-gold/40 resize-none"
               />
-              <p className="text-xs text-text-muted/40 text-right">{note.length}/280</p>
+              <p className="text-xs text-text-muted/60 text-right">{note.length}/280</p>
             </div>
           )}
 
@@ -589,7 +589,7 @@ export default function MoodTrackerPage() {
                           >
                             {opt.label}
                           </span>
-                          <span className="text-xs text-text-muted/40">
+                          <span className="text-xs text-text-muted/60">
                             {count} {count === 1 ? 'day' : 'days'}
                           </span>
                         </div>
@@ -610,7 +610,7 @@ export default function MoodTrackerPage() {
                     </div>
                   )
                 })}
-                <p className="text-xs text-text-muted/40 text-center pt-2">
+                <p className="text-xs text-text-muted/60 text-center pt-2">
                   {last30Days.length} of 30 days tracked
                 </p>
               </div>

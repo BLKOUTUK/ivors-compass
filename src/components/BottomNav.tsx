@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom'
 interface NavItem {
   label: string
   to: string
-  match: string[] // path prefixes that activate this tab
+  match: string[]
   icon: React.ReactNode
 }
 
@@ -72,25 +72,32 @@ export default function BottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-0 right-0 z-50 bg-compass-black/95 backdrop-blur-sm border-t border-compass-border"
+      className="fixed bottom-0 left-0 right-0 z-50 bg-compass-black/95 backdrop-blur-sm"
       style={{ paddingBottom: 'env(safe-area-inset-bottom, 0px)' }}
       role="navigation"
       aria-label="Main navigation"
     >
-      <div className="max-w-lg mx-auto flex items-center justify-around px-2 py-1.5">
+      {/* Gold glow line */}
+      <div className="h-px bg-gradient-to-r from-transparent via-gold/30 to-transparent" />
+
+      <div className="max-w-lg mx-auto flex items-center justify-around px-2 py-2">
         {navItems.map((item) => {
           const active = isActive(item)
           return (
             <Link
               key={item.label}
               to={item.to}
-              className={`flex flex-col items-center gap-0.5 px-3 py-1.5 rounded-lg transition-colors min-w-[48px] ${
+              className={`flex flex-col items-center gap-1 px-3 py-1.5 rounded-lg transition-colors min-w-[52px] ${
                 active ? 'text-gold' : 'text-text-muted/50 hover:text-text-muted'
               }`}
               aria-current={active ? 'page' : undefined}
             >
               {item.icon}
               <span className="text-[10px]">{item.label}</span>
+              {/* Active dot indicator */}
+              {active && (
+                <span className="w-1 h-1 rounded-full bg-gold" />
+              )}
             </Link>
           )
         })}

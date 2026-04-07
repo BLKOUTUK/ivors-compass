@@ -31,7 +31,7 @@ export default function MeditationPage() {
         <div className="relative z-10 text-center">
           <span className="text-6xl font-heritage text-gold/20">{meditation.id}</span>
         </div>
-        <p className="absolute bottom-3 left-3 text-[10px] text-text-muted/30 italic z-[3]">{meditation.imageAlt}</p>
+        <p className="absolute bottom-3 left-3 text-[10px] text-text-muted/60 italic z-[3]">{meditation.imageAlt}</p>
       </div>
 
       {/* Title */}

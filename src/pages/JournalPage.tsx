@@ -522,7 +522,7 @@ export default function JournalPage() {
           </button>
           <button
             onClick={skipMoodCheckin}
-            className="w-full py-2 text-text-muted/40 text-xs hover:text-text-muted transition-colors"
+            className="w-full py-2 text-text-muted/60 text-xs hover:text-text-muted transition-colors"
           >
             Skip — I know what I want to write about
           </button>
@@ -610,13 +610,13 @@ export default function JournalPage() {
 
               {/* Morning / Evening toggle */}
               <div className="flex items-center gap-3">
-                <span className="text-text-muted/40 text-xs">Showing:</span>
+                <span className="text-text-muted/60 text-xs">Showing:</span>
                 <button
                   onClick={() => setTimeOfDay('morning')}
                   className={`text-xs px-2.5 py-1 rounded transition-colors ${
                     timeOfDay === 'morning'
                       ? 'bg-gold-rich/15 text-gold-rich'
-                      : 'text-text-muted/40 hover:text-text-muted'
+                      : 'text-text-muted/60 hover:text-text-muted'
                   }`}
                 >
                   Morning
@@ -626,7 +626,7 @@ export default function JournalPage() {
                   className={`text-xs px-2.5 py-1 rounded transition-colors ${
                     timeOfDay === 'evening'
                       ? 'bg-gold-rich/15 text-gold-rich'
-                      : 'text-text-muted/40 hover:text-text-muted'
+                      : 'text-text-muted/60 hover:text-text-muted'
                   }`}
                 >
                   Evening
@@ -639,7 +639,7 @@ export default function JournalPage() {
           {!selectedPrompt && (
             <div className="space-y-3">
               {filteredPrompts.length === 0 ? (
-                <p className="text-text-muted/40 text-sm text-center py-8">
+                <p className="text-text-muted/60 text-sm text-center py-8">
                   No prompts match this filter. Try another phase or time of day.
                 </p>
               ) : (
@@ -662,7 +662,7 @@ export default function JournalPage() {
                           {phaseLabel(prompt.phase)}
                         </span>
                         {prompt.heritageChapter && (
-                          <span className="text-[10px] text-text-muted/30">
+                          <span className="text-[10px] text-text-muted/60">
                             Ch. {prompt.heritageChapter}: {heritageChapters[prompt.heritageChapter]}
                           </span>
                         )}
@@ -674,7 +674,7 @@ export default function JournalPage() {
                       </p>
 
                       {/* Intended outcome */}
-                      <p className="text-text-muted/40 text-xs mb-3">{prompt.intendedOutcome}</p>
+                      <p className="text-text-muted/60 text-xs mb-3">{prompt.intendedOutcome}</p>
 
                       {/* Follow-ups (expandable) */}
                       {prompt.followUps.length > 0 && (
@@ -738,7 +738,7 @@ export default function JournalPage() {
                         {phaseLabel(selectedPrompt.phase)}
                       </span>
                       {selectedPrompt.heritageChapter && (
-                        <span className="text-[10px] text-text-muted/30">
+                        <span className="text-[10px] text-text-muted/60">
                           Ch. {selectedPrompt.heritageChapter}
                         </span>
                       )}
@@ -753,7 +753,7 @@ export default function JournalPage() {
 
                     {/* Intended outcome */}
                     {selectedPrompt.intendedOutcome && (
-                      <p className="text-text-muted/30 text-xs mt-2">
+                      <p className="text-text-muted/60 text-xs mt-2">
                         {selectedPrompt.intendedOutcome}
                       </p>
                     )}
@@ -766,7 +766,7 @@ export default function JournalPage() {
                         setSelectedPrompt(null)
                         setShowFollowUps(false)
                       }}
-                      className="text-text-muted/30 hover:text-text-muted transition-colors flex-shrink-0"
+                      className="text-text-muted/60 hover:text-text-muted transition-colors flex-shrink-0"
                       aria-label="Choose a different prompt"
                     >
                       <svg
@@ -791,7 +791,7 @@ export default function JournalPage() {
                   <div className="mt-3">
                     <button
                       onClick={() => setShowFollowUps(!showFollowUps)}
-                      className="text-xs text-text-muted/40 hover:text-text-muted transition-colors"
+                      className="text-xs text-text-muted/60 hover:text-text-muted transition-colors"
                     >
                       {showFollowUps ? 'Hide follow-ups' : 'Go deeper'}
                     </button>
@@ -833,7 +833,7 @@ export default function JournalPage() {
                     className={`absolute top-3 right-3 p-2 rounded-lg transition-all ${
                       isListening
                         ? 'bg-red-500/20 text-red-400'
-                        : 'text-text-muted/30 hover:text-text-muted/60'
+                        : 'text-text-muted/60 hover:text-text-muted/60'
                     }`}
                     aria-label={isListening ? 'Stop voice input' : 'Start voice input'}
                     title={isListening ? 'Stop voice input' : 'Speak to write'}
@@ -866,7 +866,7 @@ export default function JournalPage() {
                   {!isRecording && !audioData && (
                     <button
                       onClick={startRecording}
-                      className="flex items-center gap-2 text-xs text-text-muted/40 hover:text-text-muted transition-colors"
+                      className="flex items-center gap-2 text-xs text-text-muted/60 hover:text-text-muted transition-colors"
                     >
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
                         <path
@@ -888,7 +888,7 @@ export default function JournalPage() {
                         <span className="w-3 h-3 bg-red-400 rounded-sm" />
                         Stop recording
                       </button>
-                      <span className="text-text-muted/40 text-xs tabular-nums">
+                      <span className="text-text-muted/60 text-xs tabular-nums">
                         {Math.floor(recordingSeconds / 60)}:{(recordingSeconds % 60).toString().padStart(2, '0')}
                         {' / 2:00'}
                       </span>
@@ -900,7 +900,7 @@ export default function JournalPage() {
                       <audio src={audioData} controls className="h-8 flex-1" style={{ maxWidth: '100%' }} />
                       <button
                         onClick={removeAudio}
-                        className="text-text-muted/30 hover:text-red-400 transition-colors text-xs flex-shrink-0"
+                        className="text-text-muted/60 hover:text-red-400 transition-colors text-xs flex-shrink-0"
                       >
                         Remove
                       </button>
@@ -940,7 +940,7 @@ export default function JournalPage() {
         <div className="space-y-4">
           {entries.length === 0 ? (
             <div className="text-center py-16">
-              <p className="text-text-muted/40 text-sm">No entries yet</p>
+              <p className="text-text-muted/60 text-sm">No entries yet</p>
               <button
                 onClick={() => setView('write')}
                 className="text-gold-rich text-sm mt-2"
@@ -953,7 +953,7 @@ export default function JournalPage() {
               {Object.entries(groupByDate(entries)).map(([dateKey, dayEntries]) => (
                 <div key={dateKey} className="space-y-3">
                   {/* Date group header */}
-                  <h3 className="text-text-muted/40 text-xs font-medium pt-2">
+                  <h3 className="text-text-muted/60 text-xs font-medium pt-2">
                     {formatDateGroup(dayEntries[0].createdAt)}
                   </h3>
 
@@ -969,7 +969,7 @@ export default function JournalPage() {
                       >
                         <div className="flex items-center justify-between mb-3">
                           <div className="flex items-center gap-2">
-                            <span className="text-text-muted/40 text-xs">
+                            <span className="text-text-muted/60 text-xs">
                               {formatDate(entry.createdAt)}
                             </span>
                             {entry.phase && (
@@ -1010,7 +1010,7 @@ export default function JournalPage() {
                         {/* Audio playback */}
                         {entry.audioData && (
                           <div className="mt-3 pt-3 border-t border-compass-border">
-                            <p className="text-text-muted/30 text-[10px] mb-1.5">Audio note</p>
+                            <p className="text-text-muted/60 text-[10px] mb-1.5">Audio note</p>
                             <audio src={entry.audioData} controls className="h-8 w-full" />
                           </div>
                         )}
@@ -1043,7 +1043,7 @@ export default function JournalPage() {
                 </button>
                 <button
                   onClick={clearAll}
-                  className="text-text-muted/30 text-xs hover:text-red-400 transition-colors"
+                  className="text-text-muted/60 text-xs hover:text-red-400 transition-colors"
                 >
                   Delete all
                 </button>

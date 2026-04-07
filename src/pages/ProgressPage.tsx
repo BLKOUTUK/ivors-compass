@@ -430,7 +430,7 @@ export default function ProgressPage() {
                   >
                     {phase.label}
                   </p>
-                  <p className="text-[8px] text-text-muted/40">{phase.subtitle}</p>
+                  <p className="text-[8px] text-text-muted/60">{phase.subtitle}</p>
                 </div>
               </div>
             )
@@ -648,7 +648,7 @@ export default function ProgressPage() {
         {unearnedMilestones.length > 0 && (
           <div className="space-y-2">
             {earnedMilestones.length > 0 && (
-              <p className="text-[10px] text-text-muted/40 uppercase tracking-wider pt-2">
+              <p className="text-[10px] text-text-muted/60 uppercase tracking-wider pt-2">
                 Still ahead
               </p>
             )}
@@ -666,7 +666,7 @@ export default function ProgressPage() {
                   style={{ backgroundColor: '#ffffff08' }}
                 >
                   <svg
-                    className="w-4 h-4 text-text-muted/30"
+                    className="w-4 h-4 text-text-muted/60"
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -680,8 +680,8 @@ export default function ProgressPage() {
                   </svg>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm text-text-muted/40">{m.label}</p>
-                  <p className="text-[10px] text-text-muted/30 mt-0.5">
+                  <p className="text-sm text-text-muted/60">{m.label}</p>
+                  <p className="text-[10px] text-text-muted/60 mt-0.5">
                     {m.description}
                   </p>
                 </div>
@@ -693,7 +693,7 @@ export default function ProgressPage() {
 
       {/* Footer note */}
       <div className="text-center py-4">
-        <p className="text-[10px] text-text-muted/40 leading-relaxed">
+        <p className="text-[10px] text-text-muted/60 leading-relaxed">
           This is not a scorecard. There is no wrong pace.
           <br />
           The compass is here whenever you are.

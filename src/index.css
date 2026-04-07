@@ -41,21 +41,51 @@ body {
 .card-face, .card-back { backface-visibility: hidden; }
 .card-back { transform: rotateY(180deg); }
 
-/* Animations */
-@keyframes fade-in {
-  from { opacity: 0; transform: translateY(12px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-.animate-fade-in { animation: fade-in 0.5s ease-out forwards; }
+/* ---------------------------------------------------------------------------
+   Animations
+   --------------------------------------------------------------------------- */
 
+/* Page enter — richer than plain fade-in */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.animate-fade-in { animation: fade-in 0.45s ease-out forwards; }
+
+/* Gold pulse */
 @keyframes pulse-gold {
   0%, 100% { opacity: 0.4; }
   50% { opacity: 1; }
 }
 .animate-pulse-gold { animation: pulse-gold 2s ease-in-out infinite; }
 
+/* Compass star rotation — used on UnlockPage */
+@keyframes compass-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-compass-rotate { animation: compass-rotate 20s linear infinite; }
+
+/* Shimmer border glow — used on featured cards */
+@keyframes shimmer {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(212, 175, 55, 0.1), 0 0 20px rgba(212, 175, 55, 0.05);
+  }
+  50% {
+    box-shadow: 0 0 16px rgba(212, 175, 55, 0.25), 0 0 40px rgba(212, 175, 55, 0.1);
+  }
+}
+.animate-shimmer { animation: shimmer 3s ease-in-out infinite; }
+
+/* Gentle float — subtle hover-like effect for hero elements */
+@keyframes gentle-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+.animate-gentle-float { animation: gentle-float 4s ease-in-out infinite; }
+
 /* Staggered children */
-.stagger > * { opacity: 0; animation: fade-in 0.5s ease-out forwards; }
+.stagger > * { opacity: 0; animation: fade-in 0.45s ease-out forwards; }
 .stagger > *:nth-child(1) { animation-delay: 0.05s; }
 .stagger > *:nth-child(2) { animation-delay: 0.1s; }
 .stagger > *:nth-child(3) { animation-delay: 0.15s; }
@@ -68,6 +98,12 @@ body {
 .stagger > *:nth-child(8) { animation-delay: 0.4s; }
 .stagger > *:nth-child(9) { animation-delay: 0.45s; }
 .stagger > *:nth-child(10) { animation-delay: 0.5s; }
+.stagger > *:nth-child(11) { animation-delay: 0.55s; }
+.stagger > *:nth-child(12) { animation-delay: 0.6s; }
+
+/* ---------------------------------------------------------------------------
+   Textures & Effects
+   --------------------------------------------------------------------------- */
 
 /* Archival paper texture overlay */
 .archival-texture {
@@ -92,10 +128,44 @@ body {
 }
 .animate-typing-dot { animation: typing-dot 1.4s infinite; }
 
+/* ---------------------------------------------------------------------------
+   Accessibility
+   --------------------------------------------------------------------------- */
+
 /* Focus styles */
 :focus-visible {
   outline: 2px solid rgba(255, 215, 0, 0.6);
   outline-offset: 2px;
+}
+
+/* Skip link */
+.skip-link {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+.skip-link:focus {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 100;
+  width: auto;
+  height: auto;
+  padding: 0.5rem 1rem;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  background: #D4AF37;
+  color: #0A0A0A;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
 }
 
 /* Reduced motion */
@@ -103,6 +173,9 @@ body {
   .animate-fade-in,
   .animate-pulse-gold,
   .animate-pulse,
+  .animate-shimmer,
+  .animate-compass-rotate,
+  .animate-gentle-float,
   .stagger > * {
     animation: none !important;
     opacity: 1 !important;

@@ -32,7 +32,7 @@ export default function PoemPage() {
         </p>
         <h1 className="font-heritage text-3xl text-white mb-1">The Poem</h1>
         <p className="text-gold-rich text-sm">Keith Jarrett</p>
-        <p className="text-text-muted/40 text-xs mt-1">Former UK Poetry Slam Champion</p>
+        <p className="text-text-muted/60 text-xs mt-1">Former UK Poetry Slam Champion</p>
       </div>
 
       {/* Audio player */}
@@ -87,7 +87,7 @@ export default function PoemPage() {
             ))}
           </div>
 
-          <p className="text-text-muted/30 text-xs mt-4">
+          <p className="text-text-muted/60 text-xs mt-4">
             {audioRef.current?.src ? '~3 minutes' : 'Audio coming soon — recording in progress'}
           </p>
         </div>
@@ -98,7 +98,7 @@ export default function PoemPage() {
         <h2 className="font-heritage text-lg text-gold-rich mb-4">Text</h2>
         <div className="text-text-muted text-sm leading-loose italic space-y-4">
           <p>The poem text will appear here once Keith Jarrett's commission is complete.</p>
-          <p className="text-text-muted/30">
+          <p className="text-text-muted/60">
             Keith Jarrett is a former UK Poetry Slam Champion. His BBC Four film{' '}
             <em>Safest Spot in Town</em> (2017) — part of Mark Gatiss's <em>Queers</em> series
             — is set on the night of the Café de Paris bombing, 8 March 1941. The same world

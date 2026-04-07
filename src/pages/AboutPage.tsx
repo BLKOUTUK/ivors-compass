@@ -353,7 +353,7 @@ export default function AboutPage() {
         <p className="text-text-muted text-xs mt-1 italic">
           "The gay father of the Windrush generation"
         </p>
-        <p className="text-text-muted/40 text-[10px] mt-0.5">— Nicholas Boston, The Independent, 2019</p>
+        <p className="text-text-muted/60 text-[10px] mt-0.5">— Nicholas Boston, The Independent, 2019</p>
       </div>
 
       {/* Portrait */}
@@ -366,13 +366,13 @@ export default function AboutPage() {
             loading="lazy"
           />
         </div>
-        <figcaption className="text-text-muted/40 text-[10px] italic text-center mt-2">
+        <figcaption className="text-text-muted/60 text-[10px] italic text-center mt-2">
           BBC, <em>The Black Man in Britain 1550&ndash;1950</em>, 1974
         </figcaption>
       </figure>
 
       {/* Intro */}
-      <div className="bg-compass-dark border border-gold/20 rounded-xl p-6">
+      <div className="bg-compass-dark border border-gold/20 rounded-xl p-6 archival-texture overflow-hidden">
         <p className="text-text-muted text-sm leading-relaxed">
           Ivor Gustavus Cummings OBE was a Black British civil servant, community leader,
           and proudly gay man. He was the first Black official in the Colonial Office, stood
@@ -488,7 +488,7 @@ export default function AboutPage() {
             <div key={i} className="bg-compass-dark border border-compass-border rounded-lg p-4">
               <h3 className="text-white text-sm font-medium">{book.title}</h3>
               <p className="text-gold-rich/60 text-xs mt-0.5">{book.author}</p>
-              <p className="text-text-muted/40 text-xs mt-1">{book.desc}</p>
+              <p className="text-text-muted/60 text-xs mt-1">{book.desc}</p>
             </div>
           ))}
         </div>

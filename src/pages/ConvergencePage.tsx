@@ -23,7 +23,7 @@ function AffirmationHero({ daily }: { daily: DailyConvergence }) {
   const color = phaseColor(daily.phase)
 
   return (
-    <section className="text-center py-8 px-4">
+    <section className="text-center py-8 px-4 archival-texture overflow-hidden rounded-xl">
       {/* Phase badge */}
       <span
         className="inline-block text-[10px] font-semibold tracking-widest uppercase px-3 py-1 rounded-full mb-6"
@@ -89,11 +89,11 @@ function WhisperInput({
         placeholder="What does this bring up for you?"
         maxLength={280}
         rows={3}
-        className="w-full resize-none bg-compass-dark border border-compass-border rounded-xl px-4 py-3 text-sm text-white placeholder-text-muted/40 focus:outline-none focus:border-gold/50 transition-colors"
+        className="w-full resize-none bg-compass-dark border border-compass-border rounded-xl px-4 py-3 text-sm text-white placeholder-text-muted/60 focus:outline-none focus:border-gold/50 transition-colors"
       />
       <div className="flex items-center justify-between">
         <span
-          className={`text-xs ${remaining < 30 ? 'text-terracotta' : 'text-text-muted/40'}`}
+          className={`text-xs ${remaining < 30 ? 'text-terracotta' : 'text-text-muted/60'}`}
         >
           {remaining}
         </span>
@@ -192,7 +192,7 @@ function WhisperCard({
 
       <div className="flex items-center justify-between mt-3">
         {/* Timestamp */}
-        <span className="text-text-muted/30 text-[10px]">
+        <span className="text-text-muted/60 text-[10px]">
           {whisper.isMine ? 'You' : formatTime(whisper.created_at)}
         </span>
 
@@ -406,7 +406,7 @@ export default function ConvergencePage() {
       )}
 
       {/* Privacy note */}
-      <p className="text-text-muted/30 text-[10px] text-center leading-relaxed px-4 mt-8">
+      <p className="text-text-muted/60 text-[10px] text-center leading-relaxed px-4 mt-8">
         Your reflections are shared anonymously. Only you know which one is yours.
       </p>
     </div>

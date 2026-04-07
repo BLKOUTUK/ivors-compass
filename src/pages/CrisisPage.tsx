@@ -162,7 +162,7 @@ export default function CrisisPage() {
               <BreathingCircle />
               <button
                 onClick={() => setShowBreathing(false)}
-                className="text-text-muted/40 text-xs underline underline-offset-2 hover:text-text-muted/60 transition-colors"
+                className="text-text-muted/60 text-xs underline underline-offset-2 hover:text-text-muted/60 transition-colors"
               >
                 Hide breathing exercise
               </button>

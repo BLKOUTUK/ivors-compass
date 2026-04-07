@@ -286,13 +286,13 @@ export default function SunroomPage() {
               onKeyDown={handleKeyDown}
               placeholder="The way the light hit the window..."
               maxLength={MAX_CHARS}
-              className="w-full rounded-xl px-4 py-3 text-sm text-white placeholder-text-muted/40 focus:outline-none"
+              className="w-full rounded-xl px-4 py-3 text-sm text-white placeholder-text-muted/60 focus:outline-none"
               style={{
                 backgroundColor: '#0A0A0A',
                 border: '1px solid #D4AF3725',
               }}
             />
-            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-text-muted/40">
+            <span className="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] text-text-muted/60">
               {input.length}/{MAX_CHARS}
             </span>
           </div>
@@ -328,7 +328,7 @@ export default function SunroomPage() {
                   }}
                 >
                   <p className="text-sm text-white/80">{note.text}</p>
-                  <p className="text-[10px] text-text-muted/40 mt-1">
+                  <p className="text-[10px] text-text-muted/60 mt-1">
                     {formatRelativeDate(note.date)}
                   </p>
                 </div>
@@ -375,7 +375,7 @@ export default function SunroomPage() {
                   )}
                   {!item.external && (
                     <svg
-                      className="w-4 h-4 text-text-muted/30 flex-shrink-0 mt-0.5"
+                      className="w-4 h-4 text-text-muted/60 flex-shrink-0 mt-0.5"
                       fill="none"
                       viewBox="0 0 24 24"
                       stroke="currentColor"
@@ -431,7 +431,7 @@ export default function SunroomPage() {
       {/* Privacy note */}
       <div className="flex items-center justify-center gap-2 py-4">
         <svg
-          className="w-3.5 h-3.5 text-text-muted/40"
+          className="w-3.5 h-3.5 text-text-muted/60"
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
@@ -443,7 +443,7 @@ export default function SunroomPage() {
             d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
           />
         </svg>
-        <span className="text-[10px] text-text-muted/40">
+        <span className="text-[10px] text-text-muted/60">
           Your laughter notes stay on this device. Never uploaded.
         </span>
       </div>

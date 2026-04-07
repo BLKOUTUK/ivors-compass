@@ -46,20 +46,55 @@ export default function UnlockPage() {
   }
 
   return (
-    <div className="min-h-screen bg-compass-black flex flex-col items-center justify-center px-6">
+    <div className="min-h-screen bg-compass-black flex flex-col items-center justify-center px-6 relative overflow-hidden">
+      {/* Radial gold glow behind logo */}
+      <div
+        className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 rounded-full pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, rgba(212,175,55,0.08) 0%, rgba(212,175,55,0.03) 40%, transparent 70%)',
+        }}
+      />
+
       {/* Logo area */}
-      <div className="text-center mb-12 animate-fade-in">
-        <div className="w-16 h-16 mx-auto mb-6 rounded-full border-2 border-gold/40 flex items-center justify-center">
-          <svg viewBox="0 0 24 24" className="w-8 h-8 text-gold" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
-          </svg>
+      <div className="text-center mb-10 animate-fade-in relative z-10">
+        {/* Rotating compass star */}
+        <div className="relative w-20 h-20 mx-auto mb-6">
+          <div className="absolute inset-0 animate-compass-rotate">
+            <svg viewBox="0 0 64 64" fill="none" className="w-full h-full">
+              <path
+                d="M32 6L37.09 22.26L54 23.77L41.5 34.64L45.82 51.52L32 42.27L18.18 51.52L22.5 34.64L10 23.77L26.91 22.26L32 6Z"
+                stroke="#D4AF37"
+                strokeWidth="1"
+                opacity="0.3"
+              />
+            </svg>
+          </div>
+          <div className="absolute inset-0 flex items-center justify-center">
+            <div className="w-12 h-12 rounded-full border-2 border-gold/40 flex items-center justify-center">
+              <svg viewBox="0 0 24 24" className="w-6 h-6 text-gold" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
+              </svg>
+            </div>
+          </div>
         </div>
-        <h1 className="font-heritage text-4xl text-white mb-2">Ivor's Compass</h1>
+
+        <h1 className="font-heritage text-4xl text-gold-gradient mb-2">Ivor's Compass</h1>
         <p className="text-gold-rich text-sm italic">Making Shared Heritage Personal</p>
+
+        {/* BLKOUT branding */}
+        <div className="mt-6 flex flex-col items-center gap-2">
+          <img
+            src="/images/blkout-logo.png"
+            alt="BLKOUT"
+            className="w-12 h-12 opacity-30"
+            style={{ filter: 'brightness(1.5) sepia(1) hue-rotate(10deg) saturate(0.3)' }}
+          />
+          <p className="text-text-muted/60 text-[10px] tracking-widest uppercase">A BLKOUT Heritage Production</p>
+        </div>
       </div>
 
       {/* Access code form */}
-      <form onSubmit={handleSubmit} className="w-full max-w-xs space-y-4 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+      <form onSubmit={handleSubmit} className="w-full max-w-xs space-y-4 animate-fade-in relative z-10" style={{ animationDelay: '0.2s' }}>
         <div>
           <label htmlFor="code" className="block text-xs text-text-muted mb-2 text-center">
             Enter your access code
@@ -74,14 +109,14 @@ export default function UnlockPage() {
             }}
             placeholder="IVOR-XXXX"
             maxLength={9}
-            className="w-full text-center text-xl tracking-[0.3em] font-mono bg-compass-dark border border-compass-border rounded-lg px-4 py-4 text-white placeholder-text-muted/40 focus:outline-none focus:border-gold/60 transition-colors"
+            className="w-full text-center text-xl tracking-[0.3em] font-mono bg-compass-dark border border-compass-border rounded-lg px-4 py-4 text-white placeholder-text-muted/40 focus:outline-none focus:border-gold/60 focus:shadow-[0_2px_0_0_#D4AF37] transition-all"
             autoFocus
             autoComplete="off"
           />
         </div>
 
         {error && (
-          <p className="text-red-400 text-xs text-center">{error}</p>
+          <p className="text-red-400 text-xs text-center" role="alert">{error}</p>
         )}
 
         <button
@@ -94,13 +129,13 @@ export default function UnlockPage() {
       </form>
 
       {/* QR hint */}
-      <p className="text-text-muted/40 text-xs mt-8 text-center animate-fade-in" style={{ animationDelay: '0.4s' }}>
+      <p className="text-text-muted/60 text-xs mt-8 text-center animate-fade-in relative z-10" style={{ animationDelay: '0.4s' }}>
         or scan the QR code on your card
       </p>
 
       {/* Privacy notice */}
-      <div className="mt-12 max-w-xs text-center animate-fade-in" style={{ animationDelay: '0.6s' }}>
-        <p className="text-text-muted/30 text-[10px] leading-relaxed">
+      <div className="mt-12 max-w-xs text-center animate-fade-in relative z-10" style={{ animationDelay: '0.6s' }}>
+        <p className="text-text-muted/60 text-[10px] leading-relaxed">
           Your journal entries stay on your device and are never sent to our servers.
           We collect anonymous usage counts for our funder's evaluation report.
           No personal information is stored.
@@ -108,7 +143,7 @@ export default function UnlockPage() {
       </div>
 
       {/* Funder logos */}
-      <div className="mt-8 flex items-center gap-6 text-text-muted/20 text-[9px]">
+      <div className="mt-8 flex items-center gap-6 text-text-muted/60 text-[9px] relative z-10">
         <span>Croydon Council</span>
         <span>•</span>
         <span>National Lottery Heritage Fund</span>
