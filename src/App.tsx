@@ -3,6 +3,7 @@ import { Routes, Route, Navigate } from 'react-router-dom'
 import { CompassProvider, useCompass } from './hooks/useCompass'
 import Layout from './components/Layout'
 import UnlockPage from './pages/UnlockPage'
+import WelcomePage from './pages/WelcomePage'
 import HomePage from './pages/HomePage'
 import MeditationPage from './pages/MeditationPage'
 import CardsPage from './pages/CardsPage'
@@ -32,6 +33,14 @@ function AppRoutes() {
       <Route
         path="/"
         element={isUnlocked ? <Navigate to="/compass" replace /> : <UnlockPage />}
+      />
+      <Route
+        path="/welcome"
+        element={
+          <ProtectedRoute>
+            <WelcomePage />
+          </ProtectedRoute>
+        }
       />
       <Route
         element={
