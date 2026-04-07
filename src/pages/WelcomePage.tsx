@@ -423,10 +423,10 @@ export default function WelcomePage() {
               Self-care is community care. Join the HUB to find your accountability partner — a friend you're yet to meet.
             </p>
             <a
-              href="https://blkoutuk.com/join"
+              href={`https://blkoutuk.com/join?ref=compass${userName.trim() ? `&name=${encodeURIComponent(userName.trim())}` : ''}`}
               target="_blank"
               rel="noopener noreferrer"
-              onClick={() => { /* advance after clicking, don't block navigation */ setTimeout(advance, 300) }}
+              onClick={() => { setTimeout(advance, 300) }}
               className="block w-full py-3.5 bg-blkout-teal text-white text-center font-semibold text-sm rounded-full transition-all active:scale-[0.97]"
             >
               Join the HUB
