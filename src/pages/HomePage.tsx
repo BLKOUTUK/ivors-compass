@@ -67,11 +67,13 @@ function useConvergenceSnapshot() {
 // Time-of-day greeting
 // ---------------------------------------------------------------------------
 
+const USER_NAME_KEY = 'ivors-compass-user-name'
+
 function getGreeting(): string {
   const hour = new Date().getHours()
-  if (hour < 12) return 'Good morning'
-  if (hour < 17) return 'Good afternoon'
-  return 'Good evening'
+  const name = (() => { try { return localStorage.getItem(USER_NAME_KEY) } catch { return null } })()
+  const time = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening'
+  return name ? `${time}, ${name}` : time
 }
 
 // ---------------------------------------------------------------------------

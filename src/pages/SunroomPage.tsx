@@ -70,7 +70,7 @@ const COMMUNITY_HIGHLIGHTS: CommunityHighlight[] = [
     title: 'Your voice matters -- join the cooperative',
     description:
       'BLKOUT is community-owned. Shape what we build, how we grow, and where we go next.',
-    href: 'https://blkoutuk.com/join',
+    href: 'https://blkouthub.com/invitation?code=G996E9&ref=compass',
     external: true,
   },
 ]

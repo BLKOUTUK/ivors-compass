@@ -1,12 +1,24 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useCompass } from '../hooks/useCompass'
 import { validateAccessCode } from '../lib/supabase'
 
+const WELCOME_KEY = 'ivors-compass-welcomed'
+
 export default function UnlockPage() {
   const { unlock } = useCompass()
+  const navigate = useNavigate()
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+
+  const completeUnlock = (accessCode: string) => {
+    unlock(accessCode)
+    const hasSeenWelcome = localStorage.getItem(WELCOME_KEY) === 'true'
+    if (!hasSeenWelcome) {
+      navigate('/welcome', { replace: true })
+    }
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -22,13 +34,13 @@ export default function UnlockPage() {
     try {
       const result = await validateAccessCode(cleaned)
       if (result.valid) {
-        unlock(cleaned)
+        completeUnlock(cleaned)
       } else {
         setError('Code not recognised. Check your card and try again.')
       }
     } catch {
       if (/^IVOR-[A-Z0-9]{4}$/i.test(cleaned)) {
-        unlock(cleaned)
+        completeUnlock(cleaned)
       } else {
         setError('Unable to verify code. Please check your connection.')
       }
