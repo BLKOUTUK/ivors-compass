@@ -27,7 +27,7 @@ export function ImageBentoBox({ word, colorHex, imageSrc, isActive, onClick, ari
         src={imageSrc}
         alt=""
         aria-hidden="true"
-        className="absolute inset-0 w-full h-full object-cover"
+        className="absolute inset-0 w-full h-full object-cover object-top"
       />
 
       {/* Colour overlay */}
