@@ -8,6 +8,7 @@ import {
   type Workshop,
   type WorkshopStep,
 } from '../data/workshops'
+import { BreathingCircle } from '../components/ui'
 
 // ---------------------------------------------------------------------------
 // Local-storage keys
@@ -46,105 +47,6 @@ function saveProgress(progress: ProgressMap): void {
   }
 }
 
-// ---------------------------------------------------------------------------
-// Breathing animation component
-// ---------------------------------------------------------------------------
-
-function BreathingCircle({ phaseColor }: { phaseColor: string }) {
-  const [phase, setPhase] = useState<'inhale' | 'hold' | 'exhale'>('inhale')
-  const [seconds, setSeconds] = useState(4)
-  const [running, setRunning] = useState(false)
-  const [cycles, setCycles] = useState(0)
-
-  useEffect(() => {
-    if (!running) return
-    if (cycles >= 4) {
-      setRunning(false)
-      return
-    }
-
-    const timer = setInterval(() => {
-      setSeconds((prev) => {
-        if (prev <= 1) {
-          if (phase === 'inhale') {
-            setPhase('hold')
-            return 7
-          }
-          if (phase === 'hold') {
-            setPhase('exhale')
-            return 8
-          }
-          // exhale finished — next cycle
-          setCycles((c) => c + 1)
-          setPhase('inhale')
-          return 4
-        }
-        return prev - 1
-      })
-    }, 1000)
-
-    return () => clearInterval(timer)
-  }, [running, phase, cycles])
-
-  const start = useCallback(() => {
-    setPhase('inhale')
-    setSeconds(4)
-    setCycles(0)
-    setRunning(true)
-  }, [])
-
-  const scaleMap = { inhale: 'scale-125', hold: 'scale-125', exhale: 'scale-75' }
-  const labelMap = { inhale: 'Breathe in', hold: 'Hold', exhale: 'Breathe out' }
-
-  return (
-    <div className="flex flex-col items-center gap-6 py-6">
-      <div
-        className={`w-32 h-32 rounded-full flex items-center justify-center transition-transform duration-1000 ease-in-out ${running ? scaleMap[phase] : 'scale-100'}`}
-        style={{
-          backgroundColor: `${phaseColor}20`,
-          border: `2px solid ${phaseColor}60`,
-        }}
-      >
-        {running ? (
-          <div className="text-center">
-            <p className="text-2xl font-light text-white">{seconds}</p>
-            <p className="text-xs text-text-muted mt-1">{labelMap[phase]}</p>
-          </div>
-        ) : (
-          <p className="text-xs text-text-muted">
-            {cycles >= 4 ? 'Complete' : 'Ready'}
-          </p>
-        )}
-      </div>
-
-      {!running && cycles < 4 && (
-        <button
-          onClick={start}
-          className="px-5 py-2 rounded-lg text-sm font-medium transition-colors"
-          style={{
-            backgroundColor: `${phaseColor}20`,
-            color: phaseColor,
-            border: `1px solid ${phaseColor}40`,
-          }}
-        >
-          {cycles > 0 ? 'Restart breathing' : 'Start breathing exercise'}
-        </button>
-      )}
-
-      {running && (
-        <p className="text-xs text-text-muted">
-          Cycle {cycles + 1} of 4
-        </p>
-      )}
-
-      {cycles >= 4 && (
-        <p className="text-xs text-text-muted italic">
-          Well done. Take a moment before moving on.
-        </p>
-      )}
-    </div>
-  )
-}
 
 // ---------------------------------------------------------------------------
 // Step renderer
@@ -236,7 +138,7 @@ function StepContent({
           <p className="text-text-muted leading-relaxed text-sm">
             {step.content}
           </p>
-          <BreathingCircle phaseColor={phaseColor} />
+          <BreathingCircle variant="interactive" phaseColor={phaseColor} />
         </div>
       )
 

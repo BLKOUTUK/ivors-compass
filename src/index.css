@@ -92,6 +92,40 @@ body {
 }
 .animate-typing-dot { animation: typing-dot 1.4s infinite; }
 
+/* Focus styles */
+:focus-visible {
+  outline: 2px solid rgba(255, 215, 0, 0.6);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-in,
+  .animate-pulse-gold,
+  .animate-pulse,
+  .stagger > * {
+    animation: none !important;
+    opacity: 1 !important;
+    transition: none !important;
+  }
+  .card-flip-inner {
+    transition: none !important;
+  }
+}
+
+/* Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: #0A0A0A; }

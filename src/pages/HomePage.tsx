@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { meditations } from '../data/meditations'
 import { supabase } from '../lib/supabase'
+import { WarmthOrb, BentoCard } from '../components/ui'
+import InstallPrompt from '../components/InstallPrompt'
 
 // ---------------------------------------------------------------------------
 // ConvergenceSnapshot — lightweight loader for the homepage card
@@ -48,50 +50,6 @@ function useConvergenceSnapshot() {
   }, [])
 
   return snapshot
-}
-
-// ---------------------------------------------------------------------------
-// WarmthOrb — abstract golden indicator replacing emoji icons
-// ---------------------------------------------------------------------------
-
-function WarmthOrb({ intensity = 0.5, color = '#D4AF37', size = 24 }: { intensity?: number; color?: string; size?: number }) {
-  return (
-    <div
-      className="rounded-full animate-pulse"
-      style={{
-        width: size,
-        height: size,
-        background: color,
-        opacity: intensity,
-        filter: `blur(${size * 0.3}px)`,
-        boxShadow: `0 0 ${size}px ${color}`,
-      }}
-    />
-  )
-}
-
-// ---------------------------------------------------------------------------
-// BentoCard — shared card wrapper with ghost gold border and glow
-// ---------------------------------------------------------------------------
-
-interface BentoCardProps {
-  to: string
-  className?: string
-  children: React.JSX.Element | React.JSX.Element[]
-}
-
-function BentoCard({ to, className = '', children }: BentoCardProps) {
-  return (
-    <Link
-      to={to}
-      className={`block bg-compass-dark border border-[#D4AF37]/20 rounded-xl p-5 transition-all active:scale-[0.98] hover:shadow-[0_0_24px_rgba(212,175,55,0.12)] ${className}`}
-      style={{
-        boxShadow: '0 2px 16px rgba(0,0,0,0.4)',
-      }}
-    >
-      {children}
-    </Link>
-  )
 }
 
 // ---------------------------------------------------------------------------
@@ -339,6 +297,9 @@ export default function HomePage() {
           ))}
         </div>
       </div>
+
+      {/* Install prompt */}
+      <InstallPrompt />
     </div>
   )
 }
