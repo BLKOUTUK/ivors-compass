@@ -383,7 +383,10 @@ function WorkshopCard({
           background: `linear-gradient(135deg, ${phaseColor}15, ${phaseColor}05, transparent)`,
         }}
       >
-        <span className="absolute top-4 left-4 text-3xl opacity-80">
+        <span
+          className="absolute top-4 left-4 text-[10px] font-bold-shell w-8 h-8 flex items-center justify-center opacity-80"
+          style={{ border: `2px solid ${phaseColor}`, color: phaseColor }}
+        >
           {workshop.icon}
         </span>
         {isCompleted && (
@@ -562,7 +565,12 @@ export default function WorkshopsPage() {
                   border: `1px solid ${phaseColor}25`,
                 }}
               >
-                <span className="text-xl">{w.icon}</span>
+                <span
+                  className="text-[10px] font-bold-shell w-8 h-8 flex items-center justify-center flex-shrink-0"
+                  style={{ border: `2px solid ${phaseColor}`, color: phaseColor }}
+                >
+                  {w.icon}
+                </span>
                 <div className="flex-1 min-w-0 text-left">
                   <p className="text-sm text-white font-medium truncate">
                     {w.title}

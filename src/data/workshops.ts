@@ -49,7 +49,7 @@ export const workshops: Workshop[] = [
     duration: '15 minutes',
     phase: 'resistance',
     difficulty: 'gentle',
-    icon: '🌀',
+    icon: 'AX',
     steps: [
       {
         type: 'text',
@@ -100,7 +100,7 @@ export const workshops: Workshop[] = [
     duration: '20 minutes',
     phase: 'resistance',
     difficulty: 'moderate',
-    icon: '🔥',
+    icon: 'AN',
     steps: [
       {
         type: 'text',
@@ -151,7 +151,7 @@ export const workshops: Workshop[] = [
     duration: '15 minutes',
     phase: 'joy',
     difficulty: 'gentle',
-    icon: '🌱',
+    icon: 'SG',
     steps: [
       {
         type: 'text',
@@ -201,7 +201,7 @@ export const workshops: Workshop[] = [
     duration: '20 minutes',
     phase: 'identity',
     difficulty: 'deep',
-    icon: '🪞',
+    icon: 'JY',
     steps: [
       {
         type: 'text',
@@ -252,7 +252,7 @@ export const workshops: Workshop[] = [
     duration: '15 minutes',
     phase: 'connection',
     difficulty: 'moderate',
-    icon: '🤝',
+    icon: 'CF',
     steps: [
       {
         type: 'text',
@@ -302,7 +302,7 @@ export const workshops: Workshop[] = [
     duration: '15 minutes',
     phase: 'joy',
     difficulty: 'moderate',
-    icon: '✨',
+    icon: 'RR',
     steps: [
       {
         type: 'text',
