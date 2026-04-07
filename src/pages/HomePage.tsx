@@ -1,9 +1,20 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { meditations } from '../data/meditations'
 import { supabase } from '../lib/supabase'
-import { WarmthOrb, BentoCard } from '../components/ui'
+import { WarmthOrb, BentoCard, ImageBentoBox } from '../components/ui'
 import InstallPrompt from '../components/InstallPrompt'
+
+// ---------------------------------------------------------------------------
+// Image Bento Box config
+// ---------------------------------------------------------------------------
+
+const IMAGE_BENTO_CONFIG = [
+  { word: 'Spark', colorHex: '#D4A843', imageSrc: '/images/bento-7.png', ariaLabel: 'Spark — heritage and learning cards' },
+  { word: 'Strengthen', colorHex: '#6B3557', imageSrc: '/images/bento-1.png', ariaLabel: 'Strengthen — resilience and growth cards' },
+  { word: 'Connect', colorHex: '#E6A020', imageSrc: '/images/bento-2.png', ariaLabel: 'Connect — community and joy cards' },
+  { word: 'Reflect', colorHex: '#C8B89A', imageSrc: '/images/bento-3.png', ariaLabel: 'Reflect — journal and mood cards' },
+] as const
 
 // ---------------------------------------------------------------------------
 // ConvergenceSnapshot — lightweight loader for the homepage card
@@ -69,6 +80,26 @@ function getGreeting(): string {
 
 export default function HomePage() {
   const snapshot = useConvergenceSnapshot()
+  const [selectedWord, setSelectedWord] = useState<string | null>(null)
+
+  const handleImageBoxClick = useCallback((word: string) => {
+    setSelectedWord((prev) => (prev === word ? null : word))
+  }, [])
+
+  // Click-away: reset filter when clicking outside image boxes
+  useEffect(() => {
+    if (!selectedWord) return
+
+    function handleClick(e: MouseEvent) {
+      const target = e.target as HTMLElement
+      if (!target.closest('[data-image-box]')) {
+        setSelectedWord(null)
+      }
+    }
+
+    document.addEventListener('click', handleClick)
+    return () => document.removeEventListener('click', handleClick)
+  }, [selectedWord])
 
   return (
     <div className="space-y-4 stagger">
@@ -79,53 +110,14 @@ export default function HomePage() {
         <p className="font-heritage italic text-gold-dim text-sm">Your compass. Your pace. Your story.</p>
       </div>
 
-      {/* Daily Convergence Card — reflection (oatmeal) */}
-      <Link
-        to="/compass/convergence"
-        aria-label="Daily Convergence — today's shared affirmation and anonymous reflections"
-        className="block bg-gradient-to-br from-compass-dark to-compass-card border border-gold/30 hover:border-gold/50 p-5 transition-all active:scale-[0.98] animate-shimmer accent-line"
-        style={{ '--accent-color': 'var(--color-task-reflection)' } as React.CSSProperties}
+      {/* Bento Grid — image boxes scattered throughout */}
+      <div
+        className="grid grid-cols-1 sm:grid-cols-2 gap-3"
+        {...(selectedWord ? { 'data-filter-word': selectedWord.toLowerCase() } : {})}
       >
-        <div className="flex items-start gap-4">
-          {/* Ripple icon */}
-          <div className="mt-0.5 flex-shrink-0">
-            <svg className="w-7 h-7 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-              <circle cx="12" cy="12" r="3" />
-              <circle cx="12" cy="12" r="7" opacity="0.5" />
-              <circle cx="12" cy="12" r="11" opacity="0.25" />
-            </svg>
-          </div>
-          <div className="flex-1 min-w-0">
-            <h2 className="text-lg text-gold font-semibold">Daily Convergence</h2>
-            {snapshot ? (
-              <>
-                <p className="text-white/80 text-sm mt-1 line-clamp-2 font-heritage italic leading-relaxed">
-                  &ldquo;{snapshot.affirmation.slice(0, 80)}{snapshot.affirmation.length > 80 ? '...' : ''}&rdquo;
-                </p>
-                <p className="text-text-muted/60 text-xs mt-2">
-                  {snapshot.whisperCount === 0
-                    ? 'Be the first to reflect today'
-                    : `${snapshot.whisperCount} ${snapshot.whisperCount === 1 ? 'whisper' : 'whispers'} today`}
-                </p>
-              </>
-            ) : (
-              <>
-                <p className="text-text-muted text-sm mt-0.5">A shared daily ritual</p>
-                <p className="text-text-muted/60 text-xs mt-1">Today&apos;s affirmation + anonymous reflections</p>
-              </>
-            )}
-          </div>
-          <svg className="w-5 h-5 text-gold/40 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
-          </svg>
-        </div>
-      </Link>
 
-      {/* Bento Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-
-        {/* Meet Ivor — learning (sage) */}
-        <BentoCard to="/compass/film" className="sm:col-span-2" label="Meet Ivor — 2 minute audio introduction" taskColor="var(--color-task-learning)">
+        {/* 1. Meet Ivor — learning (sage) */}
+        <BentoCard to="/compass/film" className="sm:col-span-2" label="Meet Ivor — 2 minute audio introduction" taskColor="var(--color-task-learning)" category="meet-ivor">
           <div className="flex items-start gap-4">
             <div className="mt-0.5 flex-shrink-0">
               <svg className="w-7 h-7 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
@@ -143,8 +135,18 @@ export default function HomePage() {
           </div>
         </BentoCard>
 
-        {/* Heritage Meditations — learning (sage) */}
-        <BentoCard to="/compass/meditation/1" className="sm:row-span-2" label="Heritage Meditations — six reflections on Ivor's life" taskColor="var(--color-task-learning)">
+        {/* 2. [IMG: Spark] — beside heritage cards */}
+        <ImageBentoBox
+          word={IMAGE_BENTO_CONFIG[0].word}
+          colorHex={IMAGE_BENTO_CONFIG[0].colorHex}
+          imageSrc={IMAGE_BENTO_CONFIG[0].imageSrc}
+          isActive={selectedWord === IMAGE_BENTO_CONFIG[0].word}
+          onClick={() => handleImageBoxClick(IMAGE_BENTO_CONFIG[0].word)}
+          ariaLabel={IMAGE_BENTO_CONFIG[0].ariaLabel}
+        />
+
+        {/* 3. Heritage Meditations — learning (sage) */}
+        <BentoCard to="/compass/meditation/1" className="sm:row-span-2" label="Heritage Meditations — six reflections on Ivor's life" taskColor="var(--color-task-learning)" category="meditations">
           <div className="flex flex-col h-full gap-3">
             <WarmthOrb intensity={0.6} color="#802918" size={22} />
             <div className="flex-1">
@@ -171,8 +173,8 @@ export default function HomePage() {
           </div>
         </BentoCard>
 
-        {/* Affirmation Cards — joy (amber) */}
-        <BentoCard to="/compass/cards" label="Affirmation Cards — draw your daily card" taskColor="var(--color-task-joy)">
+        {/* 4. Affirmation Cards — joy (amber) */}
+        <BentoCard to="/compass/cards" label="Affirmation Cards — draw your daily card" taskColor="var(--color-task-joy)" category="affirmations">
           <div className="flex items-start gap-4">
             <WarmthOrb intensity={0.5} color="#D4AF37" size={20} />
             <div className="flex-1 min-w-0">
@@ -183,8 +185,18 @@ export default function HomePage() {
           </div>
         </BentoCard>
 
-        {/* Mood Check-in — strength (plum) */}
-        <BentoCard to="/compass/mood" label="Mood Check-in — track patterns and get journal phase suggestions" taskColor="var(--color-task-strength)">
+        {/* 5. [IMG: Strengthen] — beside resilience cards */}
+        <ImageBentoBox
+          word={IMAGE_BENTO_CONFIG[1].word}
+          colorHex={IMAGE_BENTO_CONFIG[1].colorHex}
+          imageSrc={IMAGE_BENTO_CONFIG[1].imageSrc}
+          isActive={selectedWord === IMAGE_BENTO_CONFIG[1].word}
+          onClick={() => handleImageBoxClick(IMAGE_BENTO_CONFIG[1].word)}
+          ariaLabel={IMAGE_BENTO_CONFIG[1].ariaLabel}
+        />
+
+        {/* 6. Mood Check-in — strength (plum) */}
+        <BentoCard to="/compass/mood" label="Mood Check-in — track patterns and get journal phase suggestions" taskColor="var(--color-task-strength)" category="mood">
           <div className="flex items-start gap-4">
             <WarmthOrb intensity={0.45} color="#FFD700" size={20} />
             <div className="flex-1 min-w-0">
@@ -195,8 +207,8 @@ export default function HomePage() {
           </div>
         </BentoCard>
 
-        {/* Workshops — strength (plum) */}
-        <BentoCard to="/compass/workshops" label="Workshops — self-guided wellness mini-journeys" taskColor="var(--color-task-strength)">
+        {/* 7. Workshops — strength (plum) */}
+        <BentoCard to="/compass/workshops" label="Workshops — self-guided wellness mini-journeys" taskColor="var(--color-task-strength)" category="workshops">
           <div className="flex items-start gap-4">
             <WarmthOrb intensity={0.55} color="#802918" size={20} />
             <div className="flex-1 min-w-0">
@@ -207,8 +219,18 @@ export default function HomePage() {
           </div>
         </BentoCard>
 
-        {/* The Sunroom — joy (amber) */}
-        <BentoCard to="/compass/sunroom" className="sm:col-span-2" label="The Sunroom — joy, community, and AIvor chat" taskColor="var(--color-task-joy)">
+        {/* 8. [IMG: Connect] — before community cards */}
+        <ImageBentoBox
+          word={IMAGE_BENTO_CONFIG[2].word}
+          colorHex={IMAGE_BENTO_CONFIG[2].colorHex}
+          imageSrc={IMAGE_BENTO_CONFIG[2].imageSrc}
+          isActive={selectedWord === IMAGE_BENTO_CONFIG[2].word}
+          onClick={() => handleImageBoxClick(IMAGE_BENTO_CONFIG[2].word)}
+          ariaLabel={IMAGE_BENTO_CONFIG[2].ariaLabel}
+        />
+
+        {/* 9. The Sunroom — joy (amber) */}
+        <BentoCard to="/compass/sunroom" className="sm:col-span-2" label="The Sunroom — joy, community, and AIvor chat" taskColor="var(--color-task-joy)" category="sunroom">
           <div className="flex items-start gap-4">
             <div className="mt-0.5 flex-shrink-0">
               <svg className="w-7 h-7 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
@@ -226,8 +248,51 @@ export default function HomePage() {
           </div>
         </BentoCard>
 
-        {/* Journal — reflection (oatmeal) */}
-        <BentoCard to="/compass/journal" className="sm:col-span-2" label="Your Journal — private, stored only on your device" taskColor="var(--color-task-reflection)">
+        {/* 10. Assembly (formerly Daily Convergence) — reflection (oatmeal) */}
+        <div data-category="assembly" className="sm:col-span-2">
+          <Link
+            to="/compass/convergence"
+            aria-label="Assembly — today's shared affirmation and anonymous reflections"
+            className="block bg-gradient-to-br from-compass-dark to-compass-card border border-gold/30 hover:border-gold/50 p-5 transition-all active:scale-[0.98] animate-shimmer accent-line"
+            style={{ '--accent-color': 'var(--color-task-reflection)' } as React.CSSProperties}
+          >
+            <div className="flex items-start gap-4">
+              <div className="mt-0.5 flex-shrink-0">
+                <svg className="w-7 h-7 text-gold" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                  <circle cx="12" cy="12" r="3" />
+                  <circle cx="12" cy="12" r="7" opacity="0.5" />
+                  <circle cx="12" cy="12" r="11" opacity="0.25" />
+                </svg>
+              </div>
+              <div className="flex-1 min-w-0">
+                <h2 className="text-lg text-gold font-semibold">Assembly</h2>
+                {snapshot ? (
+                  <>
+                    <p className="text-white/80 text-sm mt-1 line-clamp-2 font-heritage italic leading-relaxed">
+                      &ldquo;{snapshot.affirmation.slice(0, 80)}{snapshot.affirmation.length > 80 ? '...' : ''}&rdquo;
+                    </p>
+                    <p className="text-text-muted/60 text-xs mt-2">
+                      {snapshot.whisperCount === 0
+                        ? 'Be the first to reflect today'
+                        : `${snapshot.whisperCount} ${snapshot.whisperCount === 1 ? 'whisper' : 'whispers'} today`}
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <p className="text-text-muted text-sm mt-0.5">A shared daily ritual</p>
+                    <p className="text-text-muted/60 text-xs mt-1">Today&apos;s affirmation + anonymous reflections</p>
+                  </>
+                )}
+              </div>
+              <svg className="w-5 h-5 text-gold/40 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+              </svg>
+            </div>
+          </Link>
+        </div>
+
+        {/* 11. Journal — reflection (oatmeal) */}
+        <BentoCard to="/compass/journal" className="sm:col-span-2" label="Your Journal — private, stored only on your device" taskColor="var(--color-task-reflection)" category="journal">
           <div className="flex items-start gap-4">
             <WarmthOrb intensity={0.6} color="#D4AF37" size={24} />
             <div className="flex-1 min-w-0">
@@ -241,8 +306,18 @@ export default function HomePage() {
           </div>
         </BentoCard>
 
-        {/* Sacred Momentum — strength (plum) */}
-        <BentoCard to="/compass/progress" className="sm:col-span-1" label="Sacred Momentum — your journey milestones" taskColor="var(--color-task-strength)">
+        {/* 12. [IMG: Reflect] — beside journal/mood cards */}
+        <ImageBentoBox
+          word={IMAGE_BENTO_CONFIG[3].word}
+          colorHex={IMAGE_BENTO_CONFIG[3].colorHex}
+          imageSrc={IMAGE_BENTO_CONFIG[3].imageSrc}
+          isActive={selectedWord === IMAGE_BENTO_CONFIG[3].word}
+          onClick={() => handleImageBoxClick(IMAGE_BENTO_CONFIG[3].word)}
+          ariaLabel={IMAGE_BENTO_CONFIG[3].ariaLabel}
+        />
+
+        {/* 13. Sacred Momentum — strength (plum) */}
+        <BentoCard to="/compass/progress" className="sm:col-span-1" label="Sacred Momentum — your journey milestones" taskColor="var(--color-task-strength)" category="momentum">
           <div className="flex items-start gap-4">
             <div className="mt-0.5 flex-shrink-0">
               <svg className="w-6 h-6 text-gold-rich" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
@@ -257,8 +332,8 @@ export default function HomePage() {
           </div>
         </BentoCard>
 
-        {/* Crisis Support — grounding (terracotta) */}
-        <div className="sm:col-span-2">
+        {/* 14. Crisis Support — grounding (terracotta) */}
+        <div data-category="crisis" className="sm:col-span-2">
           <Link
             to="/compass/crisis"
             aria-label="Need support? Crisis helplines, grounding exercises, and care"
@@ -278,8 +353,8 @@ export default function HomePage() {
           </Link>
         </div>
 
-        {/* About — learning (sage) */}
-        <BentoCard to="/compass/about" className="sm:col-span-1" label="About Ivor Cummings — the gay father of Windrush" taskColor="var(--color-task-learning)">
+        {/* 15. About — learning (sage) */}
+        <BentoCard to="/compass/about" className="sm:col-span-1" label="About Ivor Cummings — the gay father of Windrush" taskColor="var(--color-task-learning)" category="about-ivor">
           <div className="flex items-center gap-3">
             <WarmthOrb intensity={0.3} color="#D4AF37" size={16} />
             <div>
@@ -288,6 +363,11 @@ export default function HomePage() {
             </div>
           </div>
         </BentoCard>
+      </div>
+
+      {/* Accessibility: live region for filter announcements */}
+      <div aria-live="polite" className="sr-only">
+        {selectedWord ? `Showing cards for ${selectedWord}` : 'Showing all cards'}
       </div>
 
       {/* Six Chapters meditation list */}

@@ -181,6 +181,10 @@ body {
 .stagger > *:nth-child(10) { animation-delay: 0.5s; }
 .stagger > *:nth-child(11) { animation-delay: 0.55s; }
 .stagger > *:nth-child(12) { animation-delay: 0.6s; }
+.stagger > *:nth-child(13) { animation-delay: 0.65s; }
+.stagger > *:nth-child(14) { animation-delay: 0.7s; }
+.stagger > *:nth-child(15) { animation-delay: 0.75s; }
+.stagger > *:nth-child(16) { animation-delay: 0.8s; }
 
 /* ---------------------------------------------------------------------------
    Textures & Effects
@@ -248,6 +252,50 @@ body {
   font-weight: 600;
 }
 
+/* Word reveal — image bento box */
+@keyframes word-reveal {
+  from { opacity: 0; transform: scale(0.7) translateY(8px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+.animate-word-reveal {
+  animation: word-reveal 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* ---------------------------------------------------------------------------
+   Image Bento Box — Filter dim/highlight (CSS-only via data attributes)
+   --------------------------------------------------------------------------- */
+
+[data-filter-word] > * {
+  opacity: 0.3;
+  pointer-events: none;
+  transition: opacity 0.35s ease, filter 0.35s ease;
+  filter: grayscale(0.5);
+}
+
+/* Image boxes always stay interactive (they are the toggles) */
+[data-filter-word] [data-image-box] {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  filter: none !important;
+}
+
+/* Each word → its matching cards restore to full */
+[data-filter-word="connect"] [data-category="sunroom"],
+[data-filter-word="connect"] [data-category="workshops"],
+[data-filter-word="connect"] [data-category="assembly"],
+[data-filter-word="reflect"] [data-category="journal"],
+[data-filter-word="reflect"] [data-category="mood"],
+[data-filter-word="strengthen"] [data-category="affirmations"],
+[data-filter-word="strengthen"] [data-category="momentum"],
+[data-filter-word="strengthen"] [data-category="crisis"],
+[data-filter-word="spark"] [data-category="meet-ivor"],
+[data-filter-word="spark"] [data-category="about-ivor"],
+[data-filter-word="spark"] [data-category="meditations"] {
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  filter: none !important;
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .animate-fade-in,
@@ -256,6 +304,7 @@ body {
   .animate-shimmer,
   .animate-compass-rotate,
   .animate-gentle-float,
+  .animate-word-reveal,
   .stagger > * {
     animation: none !important;
     opacity: 1 !important;
