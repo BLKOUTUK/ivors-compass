@@ -20,17 +20,33 @@ const CADENCE_OPTIONS = [
   { value: 'none', label: "I'll find my own way", desc: 'No reminders — the compass waits' },
 ] as const
 
-type Step = 'spin' | 'settle' | 'ivor' | 'directions' | 'name' | 'community' | 'cadence' | 'begin'
+type Step = 'spin' | 'settle' | 'ivor' | 'directions' | 'name' | 'community' | 'cadence' | 'begin' | 'welcome-back'
 
-const STEP_SEQUENCE: Step[] = ['spin', 'settle', 'ivor', 'directions', 'name', 'community', 'cadence', 'begin']
-const DOT_STEPS: Step[] = ['settle', 'ivor', 'directions', 'name', 'community', 'cadence', 'begin']
+const FULL_SEQUENCE: Step[] = ['spin', 'settle', 'ivor', 'directions', 'name', 'community', 'cadence', 'begin']
+const RETURN_SEQUENCE: Step[] = ['spin', 'settle', 'welcome-back']
+
+const FULL_DOT_STEPS: Step[] = ['settle', 'ivor', 'directions', 'name', 'community', 'cadence', 'begin']
+const RETURN_DOT_STEPS: Step[] = ['settle', 'welcome-back']
+
+function getTimeGreeting(): string {
+  const hour = new Date().getHours()
+  if (hour < 12) return 'Good morning'
+  if (hour < 17) return 'Good afternoon'
+  return 'Good evening'
+}
 
 export default function WelcomePage() {
   const navigate = useNavigate()
+  const isReturning = (() => { try { return localStorage.getItem(WELCOME_KEY) === 'true' } catch { return false } })()
+  const savedName = (() => { try { return localStorage.getItem(USER_NAME_KEY) || '' } catch { return '' } })()
+
+  const stepSequence = isReturning ? RETURN_SEQUENCE : FULL_SEQUENCE
+  const dotSteps = isReturning ? RETURN_DOT_STEPS : FULL_DOT_STEPS
+
   const [step, setStep] = useState<Step>('spin')
   const [compassAngle, setCompassAngle] = useState(0)
   const [settling, setSettling] = useState(false)
-  const [userName, setUserName] = useState('')
+  const [userName, setUserName] = useState(savedName)
   const [cadence, setCadence] = useState<string>('few')
 
   // Voice intro recording
@@ -129,19 +145,20 @@ export default function WelcomePage() {
     return () => cancelAnimationFrame(frame)
   }, [step])
 
-  // Auto-advance settle → ivor
+  // Auto-advance settle → next step
   useEffect(() => {
     if (step !== 'settle') return
-    const t = setTimeout(() => setStep('ivor'), 2000)
+    const next = isReturning ? 'welcome-back' : 'ivor'
+    const t = setTimeout(() => setStep(next), 2000)
     return () => clearTimeout(t)
-  }, [step])
+  }, [step, isReturning])
 
   const advance = useCallback(() => {
-    const idx = STEP_SEQUENCE.indexOf(step)
-    if (idx < STEP_SEQUENCE.length - 1) {
-      setStep(STEP_SEQUENCE[idx + 1])
+    const idx = stepSequence.indexOf(step)
+    if (idx < stepSequence.length - 1) {
+      setStep(stepSequence[idx + 1])
     }
-  }, [step])
+  }, [step, stepSequence])
 
   const complete = () => {
     try {
@@ -521,10 +538,44 @@ export default function WelcomePage() {
         </div>
       )}
 
+      {/* ────────────────────────────────────────────────────────────────────── */}
+      {/* Returning users: Welcome Back                                         */}
+      {/* ────────────────────────────────────────────────────────────────────── */}
+      {step === 'welcome-back' && (
+        <div className="flex flex-col items-center justify-center gap-8 px-8 relative z-10 animate-fade-in">
+          <div className="relative w-24 h-24 animate-gentle-float">
+            <svg viewBox="0 0 64 64" fill="none" className="w-full h-full">
+              <path
+                d="M32 6L37.09 22.26L54 23.77L41.5 34.64L45.82 51.52L32 42.27L18.18 51.52L22.5 34.64L10 23.77L26.91 22.26L32 6Z"
+                stroke="#d4af37"
+                strokeWidth="1"
+                fill="rgba(212,175,55,0.08)"
+              />
+            </svg>
+          </div>
+
+          <div className="text-center max-w-xs">
+            <h2 className="font-heritage italic text-gold text-2xl mb-3">
+              {savedName ? `${getTimeGreeting()}, ${savedName}` : getTimeGreeting()}
+            </h2>
+            <p className="text-warm-white/60 text-sm leading-relaxed">
+              The compass is ready. Where will it point today?
+            </p>
+          </div>
+
+          <button
+            onClick={() => navigate('/compass', { replace: true })}
+            className="mt-6 px-12 py-4 bg-white text-compass-black font-bold text-lg rounded-full transition-all active:scale-[0.97] shadow-[0_0_30px_rgba(212,175,55,0.2)]"
+          >
+            Enter
+          </button>
+        </div>
+      )}
+
       {/* Step indicator dots */}
       {step !== 'spin' && (
         <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex gap-2">
-          {DOT_STEPS.map((s) => (
+          {dotSteps.map((s) => (
             <div
               key={s}
               className={`w-1.5 h-1.5 rounded-full transition-all duration-500 ${

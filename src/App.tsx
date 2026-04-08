@@ -32,7 +32,7 @@ function AppRoutes() {
     <Routes>
       <Route
         path="/"
-        element={isUnlocked ? <Navigate to="/compass" replace /> : <UnlockPage />}
+        element={isUnlocked ? <Navigate to="/welcome" replace /> : <UnlockPage />}
       />
       <Route
         path="/welcome"
