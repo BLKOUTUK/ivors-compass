@@ -99,6 +99,9 @@ export default function CardsPage() {
                     <p className="text-white text-lg leading-relaxed font-light italic">
                       "{currentCard.text}"
                     </p>
+                    {currentCard.attribution && (
+                      <p className="text-text-muted/50 text-xs italic">— {currentCard.attribution}</p>
+                    )}
                     <span className={`inline-block text-xs px-3 py-1 rounded-full ${phaseColours[currentCard.phase].bg}/20 ${phaseColours[currentCard.phase].text}`}>
                       {phaseColours[currentCard.phase].label}
                     </span>
@@ -175,6 +178,9 @@ export default function CardsPage() {
                 <p className="text-white text-sm leading-relaxed italic pr-8">
                   "{card.text}"
                 </p>
+                {card.attribution && (
+                  <p className="text-text-muted/40 text-xs italic mt-1">— {card.attribution}</p>
+                )}
                 <div className="flex items-center justify-between mt-3">
                   <span className={`text-xs ${phaseColours[card.phase].text}/60`}>
                     {phaseColours[card.phase].label}

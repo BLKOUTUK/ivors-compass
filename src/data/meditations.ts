@@ -10,13 +10,14 @@ export interface Meditation {
   meditationAuthorBio?: string
   journalPrompt: string
   followUpQuestions: string[]
+  image: string
   imageAlt: string
 }
 
 export const meditations: Meditation[] = [
   {
     id: 1,
-    title: 'The Café de Paris',
+    title: 'Let me welcome you\u2026',
     phase: null,
     phaseEnergy: null,
     era: '8 March 1941',
@@ -25,18 +26,25 @@ export const meditations: Meditation[] = [
       'Ken Johnson was born in British Guiana in 1914 and came to England as a boy. By his mid-twenties, he was the most celebrated bandleader in London — his West Indian Dance Orchestra made the Café de Paris the most exciting room in wartime England. Ivor and Ken were part of the same world: young, Black, brilliant, navigating a city that admired their talent but policed their presence.',
       'That night, a bomb fell down a ventilation shaft and killed Ken mid-performance. He was 26. Seven years later, Ivor would stand on Tilbury Docks welcoming the Windrush generation. But his story — too queer for Windrush history, too Black for LGBTQ+ history — would be invisible for decades.',
     ],
-    meditationText: ['This meditation will be written by one of our commissioned writers, framing who Ivor was, why his story was lost, and what this journal asks of the reader.'],
+    meditationText: [
+      'This is a journal. Not a textbook, not a museum, not a lecture. Five writers have sat with different chapters of Ivor Cummings\u2019 life and written what came up for them \u2014 about identity, loss, resistance, joy, and the silence that swallows stories unless we curate them for ourselves. Each reflection ends with a question. The question is for you.',
+      'You can read in order or skip to whatever draws you. You can write your response or speak it \u2014 the journal accepts both. You can sit with a chapter for a week or move through all six in an afternoon. There is no correct pace. Some questions will land immediately. Others will sit in you for days before they produce anything. That\u2019s not failure \u2014 that\u2019s the work doing what it\u2019s supposed to do.',
+      'Ivor\u2019s story was invisible for decades \u2014 too queer for one history, too Black for another. It survived because a handful of people refused to let it disappear. This journal asks whether you might do the same thing \u2014 not for posterity, or the archive, but for yourself. What power is there in understanding your own story better? How can you use it, to heal, to grow?',
+      'Your entries are private. They stay on your device. No one sees them unless you choose to share. This is not a performance. It\u2019s a practice.',
+      'Ivor Cummings, Tilbury Docks, 22 June 1948: \u201CLet me welcome you \u2026 and express the hope that you will all achieve the objects which have brought you here.\u201D',
+    ],
     journalPrompt: 'What does it mean to inherit a story that was hidden from you?',
     followUpQuestions: [
       'What histories were you never told that shaped the world you live in?',
       'How does it feel to discover something that was always there but invisible?',
       'What stories do you carry that others might not know about?',
     ],
+    image: '/images/meditation-1.png',
     imageAlt: 'Interior of the Café de Paris, 1941, warm light, a bandleader mid-performance, the energy of wartime London',
   },
   {
     id: 2,
-    title: 'Finding Family',
+    title: 'Dear boy',
     phase: 'Identity',
     phaseEnergy: 'Grounding',
     era: '1913–1930s',
@@ -61,11 +69,12 @@ export const meditations: Meditation[] = [
       'Which parts of your identity were given to you, and which did you have to find?',
       'How does it feel to be recognised — truly seen — by someone who understands where you come from?',
     ],
+    image: '/images/meditation-2.png',
     imageAlt: 'Addiscombe, Croydon, 1920s — a young man between two worlds, the streets of South London and the heritage of West Africa',
   },
   {
     id: 3,
-    title: 'Education, Jazz, and Loss',
+    title: 'Lost in Music',
     phase: 'Vulnerability',
     phaseEnergy: 'Connection',
     era: '1920s–1941',
@@ -81,11 +90,12 @@ export const meditations: Meditation[] = [
       'Who or what has been your Café de Paris — the space that held you when the formal world shut its doors?',
       'How do you carry grief for the people and possibilities you\'ve lost?',
     ],
+    image: '/images/meditation-3.png',
     imageAlt: 'A school corridor dissolving into a jazz club, the tension between institutional coldness and communal warmth',
   },
   {
     id: 4,
-    title: 'Aggrey House',
+    title: 'Guncle Ivor',
     phase: 'Resistance',
     phaseEnergy: 'Strength',
     era: '1930s–1940s',
@@ -112,11 +122,12 @@ export const meditations: Meditation[] = [
       'Who are the mentors — formal or informal — who changed how you think?',
       'How has your understanding of resistance evolved over time?',
     ],
+    image: '/images/meditation-4.png',
     imageAlt: 'Interior of a 1930s London gathering space, warm lamplight, animated conversation, books and pamphlets on tables',
   },
   {
     id: 5,
-    title: 'Tilbury Docks',
+    title: 'The Insider?',
     phase: 'Joy',
     phaseEnergy: 'Celebration',
     era: '1948',
@@ -125,18 +136,34 @@ export const meditations: Meditation[] = [
       'And then, that same year, he stood on Tilbury Docks welcoming the Windrush generation. On 22 June 1948, the HMT Empire Windrush docked carrying 492 passengers from Jamaica and other Caribbean islands. Ivor was one of the first people they saw when they stepped onto English soil. He had worked to ensure proper reception — assistance with accommodation, employment, and the bewildering bureaucracy of a new country.',
       'Everything he built, everything he survived, turned into opening the door for others. The image of Tilbury Docks has become iconic in British history. But Ivor\'s presence there — a Black gay man born in Hartlepool, raised in Croydon, welcoming a generation that would transform Britain — has been largely written out of the story.',
     ],
-    meditationText: ['This meditation will be written by one of our commissioned writers, responding to the themes of paying it forward, using what you\'ve survived to open doors for others, and the joy of welcome.'],
+    meditationText: [
+      'What does it mean to be Black, and work for the British colonial office?',
+      'I picture you standing on Tilbury Docks, nervously awaiting their arrival.',
+      'There are workmen scuttling around you, busy making preparations for that huge, yawning, fourteen-thousand-tonne motor ship to pull into the northern side of the River Thames. At last you see it on the horizon. Its tall steam funnel gleaming in the summer sun. There it is. The fruit of your labour, creeping through the estuary. Coming closer. Closer. Closer. Soon you can see figures on deck. Hopeful faces peering over the white railings, and into their new beginning\u2026',
+      'When I think of that moment \u2013 the ship discharging its happy passengers, a flurry of luggage and lives unloaded from boat to land, you standing there, a smile spilling across your chin \u2013 I see joy. And also contradiction. Complexities.',
+      'Did you know that the HMS Empire Windrush was German in origin, Ivor? I didn\u2019t until very recently. It was built for a German shipping company in 1930 \u2013 originally called the MV Monte Rosa. Under Nazi rule it was chartered to spread Nazi propaganda at home and abroad. Then, during the war it was repurposed into a Nazi troopship. Eventually being used to deport Norwegian Jews to their deaths in Auschwitz, occupied Poland.',
+      'When the British won, they took it for themselves. The spoils of war.',
+      'So there it sits in 1948, glittering like a gem in the Thames. A stolen ship, bearing the descendants of stolen people. To the very country that enriched itself on their forefathers\u2019 enslavement.',
+      'A complicated picture isn\u2019t it?',
+      'But the Tilbury scene is a far cry from the middle passage. Or from Nazi warships\u2026 There is a customary Caribbean joy in it all as you welcome people: the atmosphere is buzzing. There\u2019s anticipation. Ambition. The excitement of economic opportunities. Perhaps you lock eyes with some lookers, Ivor? See a man or two in the crowd and know just how you\u2019d help him feel\u2026 extra at home, let\u2019s say?',
+      'Later, you guide the passengers to the ex-air raid shelter in Clapham that will be their accommodation: a bunker, beneath the land, hidden. Like a secret. Like a colonial history \u2013 or a stigmatised sexuality \u2013 that needs to be repressed.',
+      'What does it mean to be Black, and work for the British colonial office? Your life asks me a question, Ivor. As a queer, trans, Black British man, with roots reaching back to the Caribbean, and beyond that to the motherland \u2013 where am I a cog in the wheel, and where am I the tree branch that dislodges and disrupts the system? Because real joy, is collective, not colonial.',
+      'I think you knew this. Ten years after standing on Tilbury Docks, ushering the occupants of HMS Empire Windrush into Britain, you quit. Taking up work under Ghanaian revolutionary Kwame Nkrumah instead. What a twist. I bet the British didn\u2019t see that coming: esteemed colonial office employee resigns to serve post-independence Ghana\u2026',
+    ],
+    meditationAuthor: 'Jackson King',
+    meditationAuthorBio: 'Jackson King is a writer and storyteller.',
     journalPrompt: 'What have you survived that you can now use to open a door for someone else?',
     followUpQuestions: [
       'When has someone stood at the threshold for you — welcoming you into a new chapter?',
       'What does it feel like to turn your own struggle into someone else\'s support?',
       'How do you celebrate what you\'ve built, even when the world doesn\'t recognise it?',
     ],
+    image: '/images/meditation-5.png',
     imageAlt: 'Tilbury Docks 1948, figures descending a gangway, a welcoming hand extended, rendered in documentary poetic style',
   },
   {
     id: 6,
-    title: 'Silence and Reclamation',
+    title: 'The Grip of Silence',
     phase: null,
     phaseEnergy: null,
     era: '1992–present',
@@ -159,6 +186,7 @@ export const meditations: Meditation[] = [
       'How does it feel to name something that was hidden?',
       'What story will you make sure isn\'t lost?',
     ],
+    image: '/images/meditation-6.png',
     imageAlt: 'Abstract composition of archival documents, photographs, and golden light emerging from shadows',
   },
 ]

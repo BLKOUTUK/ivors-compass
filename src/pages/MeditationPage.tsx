@@ -25,14 +25,31 @@ export default function MeditationPage() {
 
   return (
     <article className="space-y-8 animate-fade-in">
-      {/* Hero image placeholder with archival texture */}
-      <div className="aspect-video rounded-xl bg-gradient-to-br from-compass-card to-compass-dark border border-compass-border flex items-center justify-center relative overflow-hidden archival-texture">
-        <div className="absolute inset-0 bg-gradient-to-t from-compass-black/80 to-transparent z-[2]" />
-        <div className="relative z-10 text-center">
-          <span className="text-6xl font-heritage text-gold/20">{meditation.id}</span>
-        </div>
-        <p className="absolute bottom-3 left-3 text-[10px] text-text-muted/60 italic z-[3]">{meditation.imageAlt}</p>
-      </div>
+      {/* Hero image */}
+      <figure className="rounded-xl overflow-hidden border border-gold/20">
+        <img
+          src={meditation.image}
+          alt={meditation.imageAlt}
+          className="w-full h-auto block"
+          loading="eager"
+        />
+      </figure>
+
+      {/* Graphic novel link — Chapter 1 only */}
+      {meditation.id === 1 && (
+        <Link
+          to="/compass/life-of-ivor"
+          className="flex items-center gap-3 px-4 py-3 bg-gold/10 border border-gold/30 rounded-lg hover:bg-gold/20 transition-colors"
+        >
+          <svg className="w-5 h-5 text-gold shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+          </svg>
+          <div>
+            <p className="text-gold text-sm font-medium">The Life of Ivor</p>
+            <p className="text-text-muted/60 text-xs">Community-generated graphic novel</p>
+          </div>
+        </Link>
+      )}
 
       {/* Title */}
       <div>

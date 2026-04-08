@@ -15,6 +15,8 @@ const SECTION_NAMES: Record<string, string> = {
   '/compass/progress': 'Sacred Momentum',
   '/compass/about': 'About Ivor',
   '/compass/crisis': 'Support',
+  '/compass/life-of-ivor': 'Life of Ivor',
+  '/compass/record': 'Record',
 }
 
 function getSectionName(pathname: string): string | null {

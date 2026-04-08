@@ -18,7 +18,7 @@ export const ROUND1_INTRO = `A research assistant has fed everything they could 
 
 export const ROUND2_REFRAME = `3 more questions. This time — ask about what's missing. What did the chatbot dodge? What's in the silence?`
 
-export const COMPLETE_MESSAGE = `Interview complete. Now make your panel. On the A3 card on your table: draw the moment, write the caption, fill the speech bubble. This becomes one frame of a comic strip telling Ivor's story.`
+export const COMPLETE_MESSAGE = `Interview complete. Now make your panel. On the A3 card on your table: draw the moment, write the caption, fill the speech bubble. This becomes your page in a graphic novel of Ivor's life.`
 
 export const LOCKED_MESSAGE = `You've used your 5 questions. How far have you got? What do you know about this man? What's missing? What couldn't the chatbot tell you? Discuss with your table.`
 

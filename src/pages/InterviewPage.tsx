@@ -308,7 +308,7 @@ function CompleteScreen({ tableId }: { tableId: number }) {
         )
       }
 
-      const { error: insertError } = await supabase
+      const { data: inserted, error: insertError } = await supabase
         .from('interview_panels')
         .insert({
           table_id: tableId,
@@ -317,8 +317,11 @@ function CompleteScreen({ tableId }: { tableId: number }) {
           speech_bubble: speechBubble.trim() || null,
           scene_description: sceneDescription.trim() || null,
         })
+        .select('id')
+        .single()
 
       if (insertError) throw insertError
+      const panelId = inserted?.id
 
       // Kick off image generation in the background — don't block the step transition
       setImageGenerating(true)
@@ -337,8 +340,28 @@ function CompleteScreen({ tableId }: { tableId: number }) {
         }),
       })
         .then(r => r.ok ? r.json() : null)
-        .then(data => {
-          if (data?.imageUrl) setGeneratedImage(data.imageUrl)
+        .then(async (data) => {
+          if (data?.imageUrl) {
+            setGeneratedImage(data.imageUrl)
+            // Persist the generated image to Supabase Storage
+            if (panelId) {
+              try {
+                const res = await fetch(data.imageUrl)
+                const blob = await res.blob()
+                const path = `table-${tableId}/generated-${panelId}.png`
+                const { error: upErr } = await supabase.storage
+                  .from('interview-panels')
+                  .upload(path, blob, { contentType: 'image/png' })
+                if (!upErr) {
+                  const { data: urlData } = supabase.storage.from('interview-panels').getPublicUrl(path)
+                  await supabase
+                    .from('interview_panels')
+                    .update({ generated_image_url: urlData.publicUrl })
+                    .eq('id', panelId)
+                }
+              } catch { /* Non-critical — image still shown inline */ }
+            }
+          }
         })
         .catch(() => { /* Non-critical — image is a bonus */ })
         .finally(() => setImageGenerating(false))
@@ -407,15 +430,28 @@ function CompleteScreen({ tableId }: { tableId: number }) {
             </div>
           ) : null}
 
-          <div className="bg-gold/10 border border-gold/30 rounded-xl p-5 text-center space-y-3">
-            <p className="text-gold font-heritage text-lg">Captured</p>
+          <div className="bg-gold/10 border border-gold/30 rounded-xl p-5 text-center space-y-4">
+            <p className="text-gold font-heritage text-lg">Your panel is being drawn</p>
             <p className="text-text-muted text-sm leading-relaxed">
-              Your panel, your words, and your voice are saved.<br />
-              They become part of the heritage.
+              While the AI creates your comic panel, go downstairs to the installation.
+              Walk through Ivor's life under coloured light. Record what stays with you.
             </p>
-            <p className="text-text-muted/50 text-xs">
-              Now visit the installation downstairs, or continue writing at your table.
-            </p>
+            <a
+              href="/compass/record"
+              className="inline-flex items-center gap-2 px-4 py-2 bg-gold/10 border border-gold/30 text-gold text-sm rounded-lg"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
+              Record at the installation
+            </a>
+            <div className="pt-2 border-t border-gold/20">
+              <p className="text-text-muted/50 text-xs mb-2">When you return:</p>
+              <a
+                href="/compass/life-of-ivor"
+                className="inline-flex items-center gap-2 text-gold-rich text-sm hover:underline"
+              >
+                View the graphic novel →
+              </a>
+            </div>
           </div>
         </div>
       </div>
