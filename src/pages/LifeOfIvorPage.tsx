@@ -199,6 +199,19 @@ export default function LifeOfIvorPage() {
 
       <Divider />
 
+      {/* Full graphic novel link */}
+      {import.meta.env.VITE_GRAPHIC_NOVEL_URL && (
+        <a
+          href={import.meta.env.VITE_GRAPHIC_NOVEL_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block bg-gradient-to-r from-compass-card to-compass-dark border-2 border-gold/30 rounded-xl p-6 text-center space-y-3 hover:border-gold/50 transition-colors"
+        >
+          <p className="font-bold-shell text-lg text-white">Read the full graphic novel</p>
+          <p className="text-text-muted text-sm">The complete illustrated story of Ivor Cummings — built by the community</p>
+        </a>
+      )}
+
       {/* CTA */}
       <div className="bg-compass-card border border-gold/20 rounded-xl p-6 text-center space-y-4">
         <p className="font-heritage text-gold/80 text-sm italic leading-relaxed">
