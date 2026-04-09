@@ -29,7 +29,7 @@ export const meditations: Meditation[] = [
     meditationText: [
       'This is a journal. Not a textbook, not a museum, not a lecture. Five writers have sat with different chapters of Ivor Cummings\u2019 life and written what came up for them \u2014 about identity, loss, resistance, joy, and the silence that swallows stories unless we curate them for ourselves. Each reflection ends with a question. The question is for you.',
       'You can read in order or skip to whatever draws you. You can write your response or speak it \u2014 the journal accepts both. You can sit with a chapter for a week or move through all six in an afternoon. There is no correct pace. Some questions will land immediately. Others will sit in you for days before they produce anything. That\u2019s not failure \u2014 that\u2019s the work doing what it\u2019s supposed to do.',
-      'Ivor\u2019s story was invisible for decades \u2014 too queer for one history, too Black for another. It survived because a handful of people refused to let it disappear. This journal asks whether you might do the same thing \u2014 not for posterity, or the archive, but for yourself. What power is there in understanding your own story better? How can you use it, to heal, to grow?',
+      'Ivor\u2019s story was invisible for decades \u2014 too queer for one history, too Black for another. It survived because a handful of people refused to let it disappear: Stephen Bourne, whose research in the National Archives brought Ivor back into the light, and Arnold Awoonor-Gordon, who knew Ivor personally in Freetown and shared his memories so that the man behind the archive could be heard. This journal asks whether you might do the same thing \u2014 not for posterity, or the archive, but for yourself. What power is there in understanding your own story better? How can you use it, to heal, to grow?',
       'Your entries are private. They stay on your device. No one sees them unless you choose to share. This is not a performance. It\u2019s a practice.',
       'Ivor Cummings, Tilbury Docks, 22 June 1948: \u201CLet me welcome you \u2026 and express the hope that you will all achieve the objects which have brought you here.\u201D',
     ],
@@ -151,7 +151,7 @@ export const meditations: Meditation[] = [
       'I think you knew this. Ten years after standing on Tilbury Docks, ushering the occupants of HMS Empire Windrush into Britain, you quit. Taking up work under Ghanaian revolutionary Kwame Nkrumah instead. What a twist. I bet the British didn\u2019t see that coming: esteemed colonial office employee resigns to serve post-independence Ghana\u2026',
     ],
     meditationAuthor: 'Jackson King',
-    meditationAuthorBio: 'Jackson King is a writer and storyteller.',
+    meditationAuthorBio: 'Jackson King is a writer and editor with bylines in The Guardian, iPaper, PinkNews and more. His debut novel has been sold to a UK publisher \u2013 announcement coming soon!',
     journalPrompt: 'What have you survived that you can now use to open a door for someone else?',
     followUpQuestions: [
       'When has someone stood at the threshold for you — welcoming you into a new chapter?',

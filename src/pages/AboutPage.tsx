@@ -493,6 +493,22 @@ export default function AboutPage() {
           ))}
         </div>
       </section>
+
+      {/* Acknowledgements */}
+      <section className="space-y-4">
+        <h2 className="font-bold-shell text-lg text-white title-underline" style={{ '--accent-color': 'var(--color-gold)' } as React.CSSProperties}>Acknowledgements</h2>
+        <div className="space-y-3 text-text-muted text-sm leading-relaxed">
+          <p>
+            This project would not exist without <span className="text-white">Stephen Bourne</span>, whose research in the National Archives recovered Ivor's story from decades of silence.
+          </p>
+          <p>
+            With thanks to <span className="text-white">Arnold Awoonor-Gordon</span>, who knew Ivor personally in Freetown and shared his memories so generously — giving us the voice and warmth that no archive could hold.
+          </p>
+          <p className="text-text-muted/50 text-xs pt-2">
+            Ivor's Compass is supported by Croydon Council and the National Lottery Heritage Fund through the Samuel Coleridge-Taylor 150 Small Heritage Grant. Produced by BLKOUT Creative Ltd.
+          </p>
+        </div>
+      </section>
     </div>
   )
 }

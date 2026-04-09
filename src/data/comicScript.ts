@@ -177,13 +177,13 @@ export const COMIC_SCRIPT: ComicBeat[] = [
     colour: '#666666',
   },
 
-  // Page 15: Sierra Leone, Arnold, death in 1992
+  // Page 15: Gloucester Place, Arnold, the network
   {
     page: 15,
     type: 'ai',
-    scene: 'Freetown, Sierra Leone. An older Ivor on a veranda, laughing with a younger man (Arnold). Tropical light, a ceiling fan turning slowly. Ivor still has the cigarette holder, still the quip and the laugh. He is surrounded by people — still at the centre of a network, still helping, still holding.',
-    caption: 'In Freetown, Arnold got to know him as always ready with a quip and a laugh, still at the centre of a network of people drawn to him, helped by him, held by him. Ivor died in 1992.',
-    era: '1970s–1992',
+    scene: 'A London flat on Gloucester Place, Marylebone, 1970s. The front door is open. An older Ivor in the hallway, cigarette holder in hand, greeting a visitor from Sierra Leone while two friends sit in the living room behind him. Coats on hooks, a telephone table, letters on the mat. The flat is a hive — people arriving, people leaving, Ivor at the centre. Through the window, the rooftops of Marylebone. Warm, domestic, alive.',
+    caption: 'Arnold knew Ivor in Freetown and in London. His Gloucester Place flat was a hive of activity — people arriving from Sierra Leone, friends dropping in. The London offices of the PR company he worked for were a short walk away in Marylebone. Always ready with a quip and a laugh, still at the centre of a network of people drawn to him, helped by him, held by him.',
+    era: '1960s–1980s',
     colour: '#666666',
   },
 

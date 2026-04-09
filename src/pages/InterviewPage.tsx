@@ -647,13 +647,13 @@ function CompleteScreen({ tableId }: { tableId: number }) {
         {/* Scene description */}
         <div className="space-y-1.5">
           <label className="text-xs text-text-muted uppercase tracking-wider">
-            The moment <span className="normal-case tracking-normal text-text-muted/60">— describe what we see in one line</span>
+            The scene <span className="normal-case tracking-normal text-text-muted/60">— describe the atmosphere, objects, lighting. Don't name Ivor — describe the world around him</span>
           </label>
           <input
             type="text"
             value={sceneDescription}
             onChange={e => setSceneDescription(e.target.value)}
-            placeholder="A boy at a piano in a Croydon parlour, 1925"
+            placeholder="A figure in sharp shadows, dwarfed by glowing file cabinets marked 'Caribbean Affairs'"
             className={inputClass}
           />
         </div>
