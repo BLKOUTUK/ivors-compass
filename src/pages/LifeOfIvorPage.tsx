@@ -101,7 +101,7 @@ function AIPage({ chapter }: { chapter: ChapterPage }) {
 // Photo page (finale)
 // ─────────────────────────────────────────────────────────
 
-function PhotoPage({ chapter, photoUrl }: { chapter: ChapterPage; photoUrl: string | null }) {
+function PhotoPage({ photoUrl }: { photoUrl: string | null }) {
   if (!photoUrl) {
     return (
       <div className="aspect-video rounded-xl border-2 border-dashed border-gold/30 flex flex-col items-center justify-center gap-3 p-6 text-center">
@@ -186,7 +186,7 @@ export default function LifeOfIvorPage() {
                 : <EmptySlot chapter={chapter} />
             )}
             {chapter.beat.type === 'photo' && (
-              <PhotoPage chapter={chapter} photoUrl={workshopPhoto} />
+              <PhotoPage photoUrl={workshopPhoto} />
             )}
 
             {/* Era label for AI pages */}
