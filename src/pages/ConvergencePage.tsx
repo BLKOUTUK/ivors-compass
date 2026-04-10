@@ -12,11 +12,26 @@ import { useCompass } from '../hooks/useCompass'
 const HEALING_CIRCLE_TARGET = 12
 const HEALING_CIRCLE_KEY = 'ivors-compass-healing-circle-signed'
 
+/** Start of the current calendar month in ISO (UTC). */
+function startOfMonthISO(): string {
+  const d = new Date()
+  return new Date(Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1)).toISOString()
+}
+
+function currentMonthKey(): string {
+  const d = new Date()
+  return `${d.getUTCFullYear()}-${d.getUTCMonth() + 1}`
+}
+
+function currentMonthName(): string {
+  return new Date().toLocaleDateString('en-GB', { month: 'long', year: 'numeric' })
+}
+
 function HealingCircleOffer() {
   const { accessCode } = useCompass()
   const [count, setCount] = useState<number | null>(null)
   const [signedUp, setSignedUp] = useState<boolean>(() => {
-    try { return localStorage.getItem(HEALING_CIRCLE_KEY) === 'true' } catch { return false }
+    try { return localStorage.getItem(HEALING_CIRCLE_KEY) === currentMonthKey() } catch { return false }
   })
   const [email, setEmail] = useState('')
   const [submitting, setSubmitting] = useState(false)
@@ -29,6 +44,7 @@ function HealingCircleOffer() {
         const { count: c } = await supabase
           .from('healing_circle_signups')
           .select('id', { count: 'exact', head: true })
+          .gte('created_at', startOfMonthISO())
         if (!cancelled && c !== null) setCount(c)
       } catch {
         // Non-critical — component still renders
@@ -53,7 +69,7 @@ function HealingCircleOffer() {
           access_code: accessCode ?? null,
         })
       if (insertErr) throw insertErr
-      localStorage.setItem(HEALING_CIRCLE_KEY, 'true')
+      localStorage.setItem(HEALING_CIRCLE_KEY, currentMonthKey())
       setSignedUp(true)
       setEmail('')
     } catch (err) {
@@ -77,15 +93,15 @@ function HealingCircleOffer() {
         <div className="flex-1">
           <h3 className="font-heritage text-lg text-white mb-2">Healing Circle</h3>
           <p className="text-text-muted text-sm leading-relaxed mb-3">
-            A journal can hold a lot. It cannot hold everything. If 12 of us sign up, we will work with partner organisations to host an online healing circle — a facilitated space for Black queer men to hold each other in reflection, grief, and joy.
+            A journal can hold a lot. It cannot hold everything. If 12 of us sign up in any calendar month, we will work with partner organisations to host an online healing circle that month — a facilitated space for Black queer men to hold each other in reflection, grief, and joy.
           </p>
           {count !== null && (
             <div className="mb-3 space-y-2">
               <div className="flex items-center justify-between text-xs text-text-muted">
                 <span>
                   {threshold
-                    ? `${count} of us ready — the circle is happening`
-                    : `${count} of 12 signed up`}
+                    ? `${count} of us this month — the circle is happening`
+                    : `${count} of 12 signed up this month`}
                 </span>
                 {!threshold && remaining !== null && (
                   <span className="text-gold/70">{remaining} more needed</span>
@@ -97,6 +113,9 @@ function HealingCircleOffer() {
                   style={{ width: `${Math.min(100, (count / HEALING_CIRCLE_TARGET) * 100)}%` }}
                 />
               </div>
+              <p className="text-[10px] text-text-muted/50 text-center">
+                {currentMonthName()} · resets on the 1st of each month
+              </p>
             </div>
           )}
         </div>

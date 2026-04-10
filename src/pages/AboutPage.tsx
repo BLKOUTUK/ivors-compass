@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import FeedbackBox from '../components/FeedbackBox'
 
 // ---------------------------------------------------------------------------
 // Data export
@@ -492,6 +493,12 @@ export default function AboutPage() {
             </div>
           ))}
         </div>
+      </section>
+
+      {/* Feedback */}
+      <section className="space-y-4">
+        <h2 className="font-bold-shell text-lg text-white title-underline" style={{ '--accent-color': 'var(--color-gold)' } as React.CSSProperties}>Feedback</h2>
+        <FeedbackBox page="about" />
       </section>
 
       {/* Acknowledgements */}
