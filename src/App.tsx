@@ -1,5 +1,5 @@
 import { type ReactNode } from 'react'
-import { Routes, Route, Navigate } from 'react-router-dom'
+import { Routes, Route, Navigate, useSearchParams } from 'react-router-dom'
 import { CompassProvider, useCompass } from './hooks/useCompass'
 import Layout from './components/Layout'
 import UnlockPage from './pages/UnlockPage'
@@ -10,6 +10,7 @@ import CardsPage from './pages/CardsPage'
 import PoemPage from './pages/PoemPage'
 import FilmPage from './pages/FilmPage'
 import JournalPage from './pages/JournalPage'
+import JournalPageV2 from './pages/JournalPageV2'
 import AboutPage from './pages/AboutPage'
 import CrisisPage from './pages/CrisisPage'
 import MoodTrackerPage from './pages/MoodTrackerPage'
@@ -20,6 +21,16 @@ import ConvergencePage from './pages/ConvergencePage'
 import InterviewPage from './pages/InterviewPage'
 import LifeOfIvorPage from './pages/LifeOfIvorPage'
 import RecordPage from './pages/RecordPage'
+
+/** Switch between the new course-based journal and the classic list.
+ *  Use ?classic=1 to fall back to the old journal instantly. */
+function JournalRouter() {
+  const [searchParams] = useSearchParams()
+  if (searchParams.get('classic') === '1') {
+    return <JournalPage />
+  }
+  return <JournalPageV2 />
+}
 
 function ProtectedRoute({ children }: { children: ReactNode }) {
   const { isUnlocked } = useCompass()
@@ -57,7 +68,7 @@ function AppRoutes() {
         <Route path="/compass/cards" element={<CardsPage />} />
         <Route path="/compass/poem" element={<PoemPage />} />
         <Route path="/compass/film" element={<FilmPage />} />
-        <Route path="/compass/journal" element={<JournalPage />} />
+        <Route path="/compass/journal" element={<JournalRouter />} />
         <Route path="/compass/mood" element={<MoodTrackerPage />} />
         <Route path="/compass/workshops" element={<WorkshopsPage />} />
         <Route path="/compass/sunroom" element={<SunroomPage />} />
