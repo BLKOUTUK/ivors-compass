@@ -344,4 +344,100 @@ export const workshops: Workshop[] = [
       },
     ],
   },
+  {
+    id: 'finding-therapist',
+    title: 'Finding the Right Therapist',
+    description:
+      'A journal is a companion, not a substitute. When you need more than reflection, this workshop helps you find culturally competent, queer-affirming support.',
+    duration: '10 minutes',
+    phase: 'connection',
+    difficulty: 'gentle',
+    icon: 'FT',
+    steps: [
+      {
+        type: 'text',
+        content:
+          "Let's be honest about what this app can and can't do. Journalling is a companion — a way of thinking on paper, of noticing patterns, of building a practice of self-knowledge. It is not a substitute for therapy. If you are carrying something that feels too big to hold alone, you deserve a trained human on your side. This workshop is a holding page for now, with partner organisations to be announced. In the meantime, here is what we know.",
+      },
+      {
+        type: 'text',
+        content:
+          "What makes a therapist 'right' for a Black queer man? Cultural competency is not optional. A therapist who has to be educated about your identity is a therapist who is being paid to do the wrong job. Look for: experience working with Black clients, experience working with LGBTQ+ clients, and — ideally — someone who understands the specific weight of being at that intersection. Ask upfront. A good therapist will not be offended by the question.",
+        duration: '2 minutes',
+      },
+      {
+        type: 'text',
+        content:
+          "Places to start in the UK: Black Minds Matter UK offers free therapy for Black individuals and families (blackmindsmatteruk.com). MindOut is a mental health service run by and for LGBTQ+ people. Pink Therapy holds a directory of therapists specialising in gender, sexual and relationship diversity (pinktherapy.com). BACP's directory (bacp.co.uk) lets you filter by specialism — look for 'BAME' or 'LGBTQ+' experience. Your GP can also refer you to NHS talking therapies.",
+        duration: '2 minutes',
+      },
+      {
+        type: 'text',
+        content:
+          "Practical questions to ask a prospective therapist in the first session: Have you worked with Black queer men before? How do you handle issues of race and sexuality when they come up? What is your approach — CBT, psychodynamic, humanistic, integrative? How long do you typically work with a client? What are your fees or sliding scale options? If the answers don't feel right, it is OK to keep looking. You are not being difficult. You are being careful.",
+        duration: '3 minutes',
+      },
+      {
+        type: 'prompt',
+        content:
+          "What would it mean to ask for help from a trained professional? What stops you? Name one step you could take this week — a phone call, a directory search, a conversation with your GP.",
+      },
+      {
+        type: 'affirmation',
+        content:
+          'Asking for help is not weakness. Finding the right help is a skill I can learn.',
+      },
+    ],
+  },
+  {
+    id: 'supporting-friends',
+    title: "Supporting Your Friends' Mental Health",
+    description:
+      "You don't have to be a therapist to be a good friend. This workshop covers listening, noticing warning signs, and knowing your own limits.",
+    duration: '12 minutes',
+    phase: 'connection',
+    difficulty: 'gentle',
+    icon: 'SF',
+    steps: [
+      {
+        type: 'text',
+        content:
+          "Community is care. For Black queer men who have been failed by formal systems, our friends are often our first line of support. That is a gift and a weight. This workshop is about how to show up for each other well — without burning out, without overstepping, without becoming a substitute therapist. This is a holding page. Full content with partner organisations coming soon.",
+      },
+      {
+        type: 'text',
+        content:
+          "Three things friends do better than professionals: showing up unannounced, remembering what matters to you, being there for the long ordinary stretch between crises. Three things professionals do better than friends: holding clinical training, carrying the weight without the relational cost, being paid to pay attention to you specifically. A good friend is not a replacement for a therapist. A good therapist is not a replacement for a friend. We need both.",
+        duration: '2 minutes',
+      },
+      {
+        type: 'text',
+        content:
+          "How to listen well: put the phone down. Let silence happen. Do not rush to fix, advise, or relate it back to yourself. Ask 'what do you need right now?' — sometimes the answer is just company. Sometimes it is a specific task (help me cook, come with me to the GP). Sometimes it is 'I don't know.' That is also a valid answer. Your job is not to know for them.",
+        duration: '3 minutes',
+      },
+      {
+        type: 'text',
+        content:
+          "Warning signs that a friend may need more than you can offer: they are withdrawing from things they usually love, not sleeping or sleeping too much, drinking or using more than usual, talking about being a burden, giving things away, or saying things that sound like goodbye. If you are worried someone may be in immediate danger, do not keep it a secret. Call them. If they don't answer, check on them in person or call 999. You can apologise later. You cannot undo silence.",
+        duration: '3 minutes',
+      },
+      {
+        type: 'text',
+        content:
+          "Your own limits matter. You cannot pour from an empty cup. If a friendship is starting to feel like a second job, that is information. You are allowed to say 'I love you, and I am out of capacity right now, and you deserve more support than I can give this week — can we call the Samaritans together, or talk to your GP?' That is not abandonment. That is being honest about what friendship can and cannot do.",
+        duration: '2 minutes',
+      },
+      {
+        type: 'prompt',
+        content:
+          "Think of a friend you are worried about. What is one small thing you could do this week to let them know you see them — without promising more than you can deliver?",
+      },
+      {
+        type: 'affirmation',
+        content:
+          'I can show up for my friends without losing myself. Honest care is better than performed care.',
+      },
+    ],
+  },
 ]

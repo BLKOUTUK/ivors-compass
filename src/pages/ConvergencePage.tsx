@@ -4,6 +4,136 @@ import { useConvergence } from '../hooks/useConvergence'
 import type { Whisper, DailyConvergence } from '../hooks/useConvergence'
 import { phaseConfig } from '../data/journalPrompts'
 import type { Phase } from '../data/journalPrompts'
+import { supabase } from '../lib/supabase'
+import { useCompass } from '../hooks/useCompass'
+
+// ---------- Healing Circle signup ----------
+
+const HEALING_CIRCLE_TARGET = 12
+const HEALING_CIRCLE_KEY = 'ivors-compass-healing-circle-signed'
+
+function HealingCircleOffer() {
+  const { accessCode } = useCompass()
+  const [count, setCount] = useState<number | null>(null)
+  const [signedUp, setSignedUp] = useState<boolean>(() => {
+    try { return localStorage.getItem(HEALING_CIRCLE_KEY) === 'true' } catch { return false }
+  })
+  const [email, setEmail] = useState('')
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+
+  useEffect(() => {
+    let cancelled = false
+    async function load() {
+      try {
+        const { count: c } = await supabase
+          .from('healing_circle_signups')
+          .select('id', { count: 'exact', head: true })
+        if (!cancelled && c !== null) setCount(c)
+      } catch {
+        // Non-critical — component still renders
+      }
+    }
+    void load()
+    return () => { cancelled = true }
+  }, [signedUp])
+
+  async function handleSignup() {
+    if (!email.trim() || !email.includes('@')) {
+      setError('Please enter a valid email address.')
+      return
+    }
+    setSubmitting(true)
+    setError(null)
+    try {
+      const { error: insertErr } = await supabase
+        .from('healing_circle_signups')
+        .insert({
+          email: email.trim().toLowerCase(),
+          access_code: accessCode ?? null,
+        })
+      if (insertErr) throw insertErr
+      localStorage.setItem(HEALING_CIRCLE_KEY, 'true')
+      setSignedUp(true)
+      setEmail('')
+    } catch (err) {
+      console.error('Healing circle signup error:', err)
+      setError('Could not sign up. Please try again.')
+    } finally {
+      setSubmitting(false)
+    }
+  }
+
+  const remaining = count !== null ? Math.max(0, HEALING_CIRCLE_TARGET - count) : null
+  const threshold = count !== null && count >= HEALING_CIRCLE_TARGET
+
+  return (
+    <section className="mt-10 p-6 rounded-2xl bg-compass-card border-2 border-gold/30">
+      <div className="flex items-start gap-3 mb-4">
+        <svg className="w-6 h-6 text-gold flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M8 12h8M12 8v8" />
+        </svg>
+        <div className="flex-1">
+          <h3 className="font-heritage text-lg text-white mb-2">Healing Circle</h3>
+          <p className="text-text-muted text-sm leading-relaxed mb-3">
+            A journal can hold a lot. It cannot hold everything. If 12 of us sign up, we will work with partner organisations to host an online healing circle — a facilitated space for Black queer men to hold each other in reflection, grief, and joy.
+          </p>
+          {count !== null && (
+            <div className="mb-3 space-y-2">
+              <div className="flex items-center justify-between text-xs text-text-muted">
+                <span>
+                  {threshold
+                    ? `${count} of us ready — the circle is happening`
+                    : `${count} of 12 signed up`}
+                </span>
+                {!threshold && remaining !== null && (
+                  <span className="text-gold/70">{remaining} more needed</span>
+                )}
+              </div>
+              <div className="h-1.5 bg-compass-border rounded-full overflow-hidden">
+                <div
+                  className="h-full bg-gold transition-all duration-500"
+                  style={{ width: `${Math.min(100, (count / HEALING_CIRCLE_TARGET) * 100)}%` }}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {signedUp ? (
+        <div className="p-3 rounded-lg bg-gold/10 border border-gold/30 text-sm text-gold text-center">
+          You're in. We'll be in touch when the circle is ready.
+        </div>
+      ) : (
+        <div className="space-y-2">
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value)
+              setError(null)
+            }}
+            placeholder="Your email"
+            className="w-full bg-compass-dark border border-compass-border rounded-lg px-3 py-2.5 text-sm text-white placeholder-text-muted/50 focus:outline-none focus:border-gold/50 transition-colors"
+          />
+          <button
+            onClick={handleSignup}
+            disabled={submitting || !email.trim()}
+            className="w-full py-2.5 rounded-lg bg-gold text-compass-black font-semibold text-sm disabled:opacity-40 disabled:cursor-not-allowed hover:bg-gold-rich transition-colors"
+          >
+            {submitting ? 'Signing up...' : 'I want to join a healing circle'}
+          </button>
+          {error && <p className="text-red-400 text-xs">{error}</p>}
+          <p className="text-text-muted/50 text-[10px] text-center leading-relaxed">
+            Your email is used only to contact you about the circle. You can unsubscribe at any time.
+          </p>
+        </div>
+      )}
+    </section>
+  )
+}
 
 // ---------- phase helpers ----------
 
@@ -409,6 +539,9 @@ export default function ConvergencePage() {
       <p className="text-text-muted/60 text-[10px] text-center leading-relaxed px-4 mt-8">
         Your reflections are shared anonymously. Only you know which one is yours.
       </p>
+
+      {/* Healing Circle offer */}
+      <HealingCircleOffer />
     </div>
   )
 }
