@@ -6,7 +6,6 @@ import {
   courseExercises,
   getChapter,
   getExercisesForChapter,
-  TOTAL_EXERCISES,
   EXERCISES_PER_CHAPTER,
   type Exercise,
   type ChapterId,
@@ -152,8 +151,6 @@ export default function JournalPageV2() {
     [activeExerciseId],
   )
   const activeChapter = activeExercise ? getChapter(activeExercise.chapter) ?? null : null
-  const globalIndex = activeExercise ? courseExercises.findIndex((e) => e.id === activeExercise.id) : -1
-
   // ---- Navigation ----
   const openExercise = useCallback((exerciseId: string) => {
     setActiveExerciseId(exerciseId)
@@ -248,7 +245,10 @@ export default function JournalPageV2() {
 
       {/* Progress bar */}
       {view !== 'welcome' && (
-        <ProgressBar completed={progress.completedIds.length} total={TOTAL_EXERCISES} />
+        <ProgressBar
+          completedIds={progress.completedIds}
+          currentChapter={activeExercise?.chapter ?? null}
+        />
       )}
 
       {view === 'welcome' && <WelcomeScreen onBegin={() => openChapter('home')} />}
@@ -269,7 +269,6 @@ export default function JournalPageV2() {
           key={activeExercise.id}
           exercise={activeExercise}
           chapter={activeChapter}
-          globalIndex={globalIndex}
           existingEntry={entries.find((e) => e.exerciseId === activeExercise.id)}
           onComplete={(entry) => completeExercise(activeExercise.id, entry)}
           onOpenGuide={(id) => {
@@ -342,20 +341,70 @@ export default function JournalPageV2() {
 // Subcomponents
 // ----------------------------------------------------------------------------
 
-function ProgressBar({ completed, total }: { completed: number; total: number }) {
-  const pct = (completed / total) * 100
+function ProgressBar({
+  completedIds,
+  currentChapter,
+}: {
+  completedIds: string[]
+  currentChapter: ChapterId | null
+}) {
   return (
-    <div className="space-y-1">
-      <div className="flex justify-between text-[11px] text-text-muted">
-        <span>Progress</span>
-        <span>{completed} / {total}</span>
+    <div className="space-y-2">
+      {/* Seven chapter bars in a row, each showing 10 segments */}
+      <div className="flex gap-1.5">
+        {chapters.map((ch) => {
+          const chEx = courseExercises.filter((e) => e.chapter === ch.id)
+          const done = chEx.filter((e) => completedIds.includes(e.id)).length
+          const isActive = ch.id === currentChapter
+          return (
+            <div key={ch.id} className="flex-1 space-y-1">
+              <div className="grid grid-cols-10 gap-[2px]">
+                {chEx.map((ex) => {
+                  const filled = completedIds.includes(ex.id)
+                  return (
+                    <div
+                      key={ex.id}
+                      className="h-2 rounded-sm transition-colors"
+                      style={{
+                        backgroundColor: filled
+                          ? ch.colour
+                          : isActive
+                            ? ch.colour + '25'
+                            : '#ffffff10',
+                      }}
+                    />
+                  )
+                })}
+              </div>
+              <div
+                className="text-[9px] uppercase tracking-wider text-center transition-colors"
+                style={{
+                  color: isActive ? ch.colour : done === chEx.length ? ch.colour + 'aa' : '#6b7280',
+                  fontWeight: isActive ? 600 : 400,
+                }}
+              >
+                {ch.title}
+              </div>
+            </div>
+          )
+        })}
       </div>
-      <div className="h-1 bg-compass-border rounded-full overflow-hidden">
-        <div
-          className="h-full bg-gold-rich transition-all duration-500"
-          style={{ width: `${pct}%` }}
-        />
-      </div>
+
+      {/* Current-chapter status line */}
+      {currentChapter && (() => {
+        const ch = getChapter(currentChapter)
+        if (!ch) return null
+        const chEx = courseExercises.filter((e) => e.chapter === currentChapter)
+        const done = chEx.filter((e) => completedIds.includes(e.id)).length
+        const remaining = chEx.length - done
+        return (
+          <div className="text-[11px] text-text-muted text-center">
+            {remaining === 0
+              ? `${ch.title} complete`
+              : `${remaining} ${remaining === 1 ? 'exercise' : 'exercises'} left in ${ch.title}`}
+          </div>
+        )
+      })()}
     </div>
   )
 }
@@ -433,7 +482,6 @@ function ChapterIntroScreen({
 function ExerciseView({
   exercise,
   chapter,
-  globalIndex,
   existingEntry,
   onComplete,
   onOpenGuide,
@@ -443,7 +491,6 @@ function ExerciseView({
 }: {
   exercise: Exercise
   chapter: ReturnType<typeof getChapter>
-  globalIndex: number
   existingEntry?: CourseEntry
   onComplete: (entry: CourseEntry) => void
   onOpenGuide: (id: string) => void
