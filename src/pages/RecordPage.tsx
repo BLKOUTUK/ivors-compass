@@ -1,6 +1,12 @@
 import { useState, useRef } from 'react'
 import { supabase } from '../lib/supabase'
 
+const PROMPTS = [
+  "What's the image you'll take home?",
+  "Which panel made you stop?",
+  "What do you want to say to Ivor?",
+] as const
+
 export default function RecordPage() {
   const [recording, setRecording] = useState(false)
   const [seconds, setSeconds] = useState(0)
@@ -9,6 +15,7 @@ export default function RecordPage() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [panelNumber, setPanelNumber] = useState<number | null>(null)
+  const [promptIndex, setPromptIndex] = useState<number | null>(null)
 
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const chunksRef = useRef<Blob[]>([])
@@ -92,6 +99,7 @@ export default function RecordPage() {
       await supabase.from('soundscape_recordings').insert({
         panel_number: panelNumber,
         audio_url: data.publicUrl,
+        prompt: promptIndex !== null ? PROMPTS[promptIndex] : null,
       })
 
       setSubmitted(true)
@@ -128,8 +136,25 @@ export default function RecordPage() {
       <div className="text-center space-y-2">
         <h1 className="font-bold-shell text-xl text-white">Record</h1>
         <p className="text-text-muted text-sm max-w-xs leading-relaxed">
-          Stand in front of a panel. Say what you see, what you feel, what stays with you.
+          Thirty seconds. Pick a prompt below, then tap record.
         </p>
+      </div>
+
+      {/* Prompt selector */}
+      <div className="w-full max-w-sm space-y-2">
+        {PROMPTS.map((prompt, i) => (
+          <button
+            key={i}
+            onClick={() => setPromptIndex(promptIndex === i ? null : i)}
+            className={`w-full px-4 py-3 rounded-lg text-sm text-left leading-snug transition-colors ${
+              promptIndex === i
+                ? 'bg-gold/20 border border-gold text-white'
+                : 'bg-compass-card border border-compass-border text-text-muted hover:text-white'
+            }`}
+          >
+            {prompt}
+          </button>
+        ))}
       </div>
 
       {/* Panel selector */}
@@ -149,7 +174,7 @@ export default function RecordPage() {
         ))}
       </div>
       <p className="text-text-muted/40 text-xs -mt-4">
-        {panelNumber ? `Panel ${panelNumber}` : 'Which panel are you near? (optional)'}
+        {panelNumber ? `Panel ${panelNumber}` : 'Which panel? (optional)'}
       </p>
 
       {/* Mic button */}
