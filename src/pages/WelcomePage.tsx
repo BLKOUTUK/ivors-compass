@@ -529,9 +529,16 @@ export default function WelcomePage() {
             </p>
           </div>
 
+          {/* Safeguarding note — first-time only */}
+          <div className="max-w-sm text-center px-4 py-3 rounded-lg bg-compass-dark/60 border border-gold/15">
+            <p className="text-warm-white/60 text-[11px] leading-relaxed">
+              This compass is a wellness companion, not a substitute for therapy or crisis care. Some of Ivor's story touches hard material — erasure, loss, silence. If at any point you need more than the app can hold, there is a <span className="text-gold/80">Support</span> tab with helplines and grounding exercises.
+            </p>
+          </div>
+
           <button
             onClick={complete}
-            className="mt-6 px-12 py-4 bg-white text-compass-black font-bold text-lg rounded-full transition-all active:scale-[0.97] shadow-[0_0_30px_rgba(212,175,55,0.2)]"
+            className="mt-2 px-12 py-4 bg-white text-compass-black font-bold text-lg rounded-full transition-all active:scale-[0.97] shadow-[0_0_30px_rgba(212,175,55,0.2)]"
           >
             Begin
           </button>

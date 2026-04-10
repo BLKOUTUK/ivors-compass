@@ -431,6 +431,31 @@ export default function MoodTrackerPage() {
             </button>
           )}
 
+          {/* Safeguarding signpost — shown when mood is low */}
+          {selectedLevel !== null && selectedLevel <= 2 && (
+            <Link
+              to="/compass/crisis"
+              className="block p-4 rounded-xl border-2 border-terracotta/40 bg-terracotta/10 hover:bg-terracotta/15 transition-colors"
+            >
+              <div className="flex items-start gap-3">
+                <svg className="w-5 h-5 text-terracotta flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+                </svg>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm text-white font-medium">
+                    If it's worse than the journal can hold, we have you.
+                  </p>
+                  <p className="text-xs text-text-muted mt-1 leading-relaxed">
+                    Helplines, grounding, and someone to talk to — available anytime.
+                  </p>
+                  <p className="text-xs text-terracotta mt-2 font-medium">
+                    Get support →
+                  </p>
+                </div>
+              </div>
+            </Link>
+          )}
+
           {/* Phase suggestion */}
           {selectedLevel && phaseInfo && suggestedPhase && (
             <div

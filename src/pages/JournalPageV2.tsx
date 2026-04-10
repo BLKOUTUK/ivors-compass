@@ -322,17 +322,33 @@ export default function JournalPageV2() {
         <HowToDetailView guide={viewingGuide} onBack={() => setView('howto-list')} />
       )}
 
-      {/* Fallback: link back to classic journal if everything breaks */}
-      {view === 'welcome' && (
-        <div className="pt-8 text-center">
-          <a
-            href="/compass/journal?classic=1"
-            className="text-[11px] text-text-muted/40 underline"
-          >
-            Use the classic journal
-          </a>
-        </div>
-      )}
+      {/* Persistent support footer — visible on every view */}
+      <div className="pt-6 mt-6 border-t border-compass-border/40 space-y-2 text-center">
+        <a
+          href="/compass/crisis"
+          className="inline-flex items-center gap-2 text-[12px] text-text-muted/70 hover:text-gold-rich transition-colors"
+        >
+          <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+          </svg>
+          If you need more than a journal can hold, get support
+        </a>
+        <p className="text-[10px] text-text-muted/40 max-w-xs mx-auto leading-relaxed">
+          This journal is a wellness companion, not a substitute for therapy or crisis care.
+        </p>
+
+        {/* Fallback: link back to classic journal if everything breaks */}
+        {view === 'welcome' && (
+          <div className="pt-4">
+            <a
+              href="/compass/journal?classic=1"
+              className="text-[11px] text-text-muted/30 underline"
+            >
+              Use the classic journal
+            </a>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
