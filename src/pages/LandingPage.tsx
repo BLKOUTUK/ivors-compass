@@ -62,9 +62,9 @@ export default function LandingPage() {
 
           <p className="text-base sm:text-lg leading-relaxed text-warm-white/90 max-w-xl mb-10">
             A digital wellness journal built around the hidden history of Black
-            queer Britain. Heritage meditations, an affirmation deck, a spoken
-            word piece from Keith Jarrett, and a private space to write, reflect
-            and return to.
+            queer Britain. Heritage meditations, an affirmation deck, a
+            commissioned art installation, and a private space to write,
+            reflect and return to.
           </p>
 
           <div className="flex flex-wrap gap-4 items-center">
@@ -233,9 +233,10 @@ export default function LandingPage() {
                 For Black queer men, and everyone who'll use it with care.
               </p>
               <p className="text-warm-white/80 text-base leading-relaxed mb-4">
-                Shaped by six commissioned writers, a poem by Keith Jarrett,
-                and the archive of Ivor Cummings — the 1940s Colonial Office
-                welfare officer our AI companion is named after.
+                Shaped by three commissioned writers, a dual-layer Nugent &amp;
+                Douglas art installation, and the archive of Ivor Cummings —
+                the 1940s Colonial Office welfare officer our AI companion is
+                named after.
               </p>
               <p className="text-text-muted text-sm leading-relaxed">
                 We're not policing the door. We are naming who this is rooted in.
@@ -261,16 +262,16 @@ export default function LandingPage() {
 
           <dl className="space-y-8 max-w-3xl">
             <InsideItem
-              title="Six heritage meditations"
-              body="Short commissioned pieces that turn shared history into something you can sit with."
+              title="Five heritage meditations"
+              body="Commissioned pieces and first-hand reflections that turn shared history into something you can sit with."
             />
             <InsideItem
               title="32-card affirmation deck"
               body="Pulled daily. Rooted in Black queer lineages, not generic self-help."
             />
             <InsideItem
-              title="A poem by Keith Jarrett"
-              body="Spoken word, written for the launch."
+              title="Dual-layer art installation"
+              body="A Nugent &amp; Douglas inspired piece that reveals different layers under different coloured light."
             />
             <InsideItem
               title="Private journal"

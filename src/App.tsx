@@ -12,7 +12,6 @@ import WelcomePage from './pages/WelcomePage'
 import HomePage from './pages/HomePage'
 import MeditationPage from './pages/MeditationPage'
 import CardsPage from './pages/CardsPage'
-import PoemPage from './pages/PoemPage'
 import FilmPage from './pages/FilmPage'
 import JournalPage from './pages/JournalPage'
 import JournalPageV2 from './pages/JournalPageV2'
@@ -77,7 +76,6 @@ function AppRoutes() {
         <Route path="/compass/convergence" element={<ConvergencePage />} />
         <Route path="/compass/meditation/:id" element={<MeditationPage />} />
         <Route path="/compass/cards" element={<CardsPage />} />
-        <Route path="/compass/poem" element={<PoemPage />} />
         <Route path="/compass/film" element={<FilmPage />} />
         <Route path="/compass/journal" element={<JournalRouter />} />
         <Route path="/compass/mood" element={<MoodTrackerPage />} />

@@ -253,13 +253,13 @@ export default function CrisisPage() {
           </Link>
 
           <Link
-            to="/compass/poem"
+            to="/compass/film"
             className="flex items-center gap-4 bg-compass-dark border border-gold/20 rounded-xl p-4 hover:border-gold/40 transition-colors active:scale-[0.98]"
           >
             <WarmthOrb intensity={0.35} color="#D4AF37" size={18} />
             <div>
-              <p className="text-white text-sm font-medium">Listen to something</p>
-              <p className="text-text-muted/60 text-xs">Keith Jarrett &middot; 3 min</p>
+              <p className="text-white text-sm font-medium">Meet Ivor</p>
+              <p className="text-text-muted/60 text-xs">Short audio introduction</p>
             </div>
           </Link>
         </div>

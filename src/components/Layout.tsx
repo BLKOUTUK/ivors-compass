@@ -6,7 +6,6 @@ const SECTION_NAMES: Record<string, string> = {
   '/compass/convergence': 'Assembly',
   '/compass/meditation': 'Meditations',
   '/compass/cards': 'Affirmation Cards',
-  '/compass/poem': 'Spoken Word',
   '/compass/film': 'Meet Ivor',
   '/compass/journal': 'Journal',
   '/compass/mood': 'Mood Check-in',
