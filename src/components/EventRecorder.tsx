@@ -107,15 +107,19 @@ export default function EventRecorder({
         .from('interview-panels')
         .getPublicUrl(path)
 
-      const { error: insertError } = await supabase
-        .from('soundscape_recordings')
-        .insert({
-          category,
-          audio_url: data.publicUrl,
-          first_name: firstName.trim() || null,
-          email: email.trim().toLowerCase() || null,
-          metadata: { duration_seconds: seconds },
-        })
+      // Feedback goes into its own table with optional identity.
+      // Installation stays in soundscape_recordings — anonymous by design.
+      const insertError = category === 'feedback'
+        ? (await supabase.from('compass_feedback_recordings').insert({
+            audio_url: data.publicUrl,
+            first_name: firstName.trim() || null,
+            email: email.trim().toLowerCase() || null,
+            metadata: { duration_seconds: seconds },
+          })).error
+        : (await supabase.from('soundscape_recordings').insert({
+            category,
+            audio_url: data.publicUrl,
+          })).error
 
       if (insertError) throw insertError
 
