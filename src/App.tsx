@@ -2,6 +2,9 @@ import { type ReactNode } from 'react'
 import { Routes, Route, Navigate, useSearchParams } from 'react-router-dom'
 import { CompassProvider, useCompass } from './hooks/useCompass'
 import Layout from './components/Layout'
+import LandingPage from './pages/LandingPage'
+import ClaimPage from './pages/ClaimPage'
+import WaitlistPage from './pages/WaitlistPage'
 import UnlockPage from './pages/UnlockPage'
 import WelcomePage from './pages/WelcomePage'
 import HomePage from './pages/HomePage'
@@ -45,6 +48,12 @@ function AppRoutes() {
     <Routes>
       <Route
         path="/"
+        element={isUnlocked ? <Navigate to="/welcome" replace /> : <LandingPage />}
+      />
+      <Route path="/claim" element={<ClaimPage />} />
+      <Route path="/waitlist" element={<WaitlistPage />} />
+      <Route
+        path="/unlock"
         element={isUnlocked ? <Navigate to="/welcome" replace /> : <UnlockPage />}
       />
       <Route
