@@ -71,7 +71,8 @@ export default function InterviewFeedbackPage() {
           <p className="text-warm-white/95 text-sm leading-relaxed">
             Croydon Council and the National Lottery Heritage Fund paid for
             this. Your voice is how we report back — and how we make the case
-            for doing it again. Anonymous is fine. Attributed is welcome.
+            for doing it again. Record anonymously unless you want us to
+            write back.
           </p>
         </div>
 
@@ -82,8 +83,8 @@ export default function InterviewFeedbackPage() {
         />
 
         <p className="text-text-muted/60 text-[11px] tracking-wide leading-relaxed mt-10 text-center">
-          Recordings are used to report back to our funders and to shape the
-          next edition. Attributions are only shared with your consent.
+          Recordings are used to report back to our funders and shape the
+          next edition. We only contact you if you leave an email.
         </p>
       </main>
 

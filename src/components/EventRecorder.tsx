@@ -158,12 +158,15 @@ export default function EventRecorder({
 
   return (
     <div className="space-y-6">
-      {/* Optional identity capture — for feedback attribution */}
+      {/* Identity — only if they want a direct response */}
       {collectIdentity && !audioUrl && (
         <div className="space-y-4">
+          <p className="text-gold text-[11px] font-semibold tracking-[0.25em] uppercase">
+            Only if you want a direct response
+          </p>
           <RecorderField
             id="er-name"
-            label="First name (optional)"
+            label="First name"
             value={firstName}
             onChange={setFirstName}
             placeholder="Your first name"
@@ -171,16 +174,16 @@ export default function EventRecorder({
           />
           <RecorderField
             id="er-email"
-            label="Email (optional)"
+            label="Email"
             type="email"
             value={email}
             onChange={setEmail}
             placeholder="you@example.com"
             autoComplete="email"
           />
-          <p className="text-text-muted/70 text-[11px] italic">
-            Attaching an email is optional — it lets us follow up if you want.
-            Leave blank to stay anonymous.
+          <p className="text-text-muted/70 text-[11px] italic leading-relaxed">
+            Leave both blank to stay anonymous. We'll only write back if you
+            fill in an email.
           </p>
         </div>
       )}
