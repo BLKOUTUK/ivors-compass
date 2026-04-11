@@ -87,7 +87,7 @@ function AppRoutes() {
         <Route path="/compass/life-of-ivor" element={<LifeOfIvorPage />} />
         <Route path="/compass/record" element={<RecordPage />} />
       </Route>
-      <Route path="/interview/:tableId" element={<InterviewPage />} />
+      <Route path="/interview/:tableSlug" element={<InterviewPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )

@@ -683,9 +683,30 @@ function CompleteScreen({ tableId }: { tableId: number }) {
 // Main page
 // ─────────────────────────────────────────────────────────
 
+// Slug → table id. These are the seven directions of the Compass, one per
+// table at the 12 April launch. Numeric ids remain internal so storage paths,
+// analytics and backend routes don't move. Also accepts "1".."7" as legacy.
+const TABLE_SLUG_TO_ID: Record<string, number> = {
+  home: 1,
+  night: 2,
+  fire: 3,
+  threshold: 4,
+  shadow: 5,
+  silence: 6,
+  return: 7,
+}
+
+function resolveTableId(param: string | undefined): number {
+  if (!param) return NaN
+  const slug = param.toLowerCase()
+  if (slug in TABLE_SLUG_TO_ID) return TABLE_SLUG_TO_ID[slug]
+  const n = Number(slug)
+  return Number.isFinite(n) ? n : NaN
+}
+
 export default function InterviewPage() {
-  const { tableId: tableIdParam } = useParams<{ tableId: string }>()
-  const tableId = Number(tableIdParam)
+  const { tableSlug } = useParams<{ tableSlug: string }>()
+  const tableId = resolveTableId(tableSlug)
   const [started, setStarted] = useState(false)
 
   const {
@@ -720,7 +741,9 @@ export default function InterviewPage() {
       <div className="h-dvh bg-compass-black flex items-center justify-center p-6">
         <div className="text-center space-y-4">
           <p className="text-gold font-heritage text-xl">Table not found</p>
-          <p className="text-text-muted text-sm">Valid tables: 1–7</p>
+          <p className="text-text-muted text-sm">
+            Valid directions: home · night · fire · threshold · shadow · silence · return
+          </p>
           <Link to="/" className="text-gold-dim text-sm underline">Return</Link>
         </div>
       </div>
