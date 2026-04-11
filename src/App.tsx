@@ -5,6 +5,8 @@ import Layout from './components/Layout'
 import LandingPage from './pages/LandingPage'
 import ClaimPage from './pages/ClaimPage'
 import WaitlistPage from './pages/WaitlistPage'
+import InstallationPage from './pages/InstallationPage'
+import InterviewFeedbackPage from './pages/InterviewFeedbackPage'
 import UnlockPage from './pages/UnlockPage'
 import WelcomePage from './pages/WelcomePage'
 import HomePage from './pages/HomePage'
@@ -87,6 +89,8 @@ function AppRoutes() {
         <Route path="/compass/life-of-ivor" element={<LifeOfIvorPage />} />
         <Route path="/compass/record" element={<RecordPage />} />
       </Route>
+      <Route path="/installation" element={<InstallationPage />} />
+      <Route path="/interview/feedback" element={<InterviewFeedbackPage />} />
       <Route path="/interview/:tableSlug" element={<InterviewPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
