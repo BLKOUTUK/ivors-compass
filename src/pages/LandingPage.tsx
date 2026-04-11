@@ -233,10 +233,10 @@ export default function LandingPage() {
                 For Black queer men, and everyone who'll use it with care.
               </p>
               <p className="text-warm-white/80 text-base leading-relaxed mb-4">
-                Shaped by three commissioned writers, a dual-layer Nugent &amp;
-                Douglas art installation, and the archive of Ivor Cummings —
-                the 1940s Colonial Office welfare officer our AI companion is
-                named after.
+                Shaped by four writers, a dual-layer Nugent &amp; Douglas art
+                installation, and the archive of Ivor Cummings — the 1940s
+                Colonial Office welfare officer our AI companion is named
+                after.
               </p>
               <p className="text-text-muted text-sm leading-relaxed">
                 We're not policing the door. We are naming who this is rooted in.
