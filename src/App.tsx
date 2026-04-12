@@ -88,6 +88,27 @@ function AppRoutes() {
         <Route path="/compass/record" element={<RecordPage />} />
       </Route>
       <Route path="/installation" element={<InstallationPage />} />
+      <Route path="/novel" element={
+        <div className="min-h-screen bg-compass-black text-white flex flex-col">
+          <header className="bg-compass-black/95 border-b-2 border-gold/30">
+            <div className="max-w-lg mx-auto px-4 py-3 flex items-center justify-between">
+              <span className="font-bold-shell text-gold text-lg tracking-tight">Ivor's Compass</span>
+              <a href="https://compass.blkoutuk.com" className="text-sm text-text-muted hover:text-gold transition-colors">Get access &rarr;</a>
+            </div>
+          </header>
+          <main className="flex-1 max-w-lg mx-auto w-full px-4 py-6">
+            <LifeOfIvorPage />
+          </main>
+          <footer className="border-t-2 border-gold/20 py-6 px-4">
+            <div className="max-w-lg mx-auto text-center space-y-3">
+              <p className="text-xs text-text-muted">A community-owned heritage project by <span className="text-blkout-red font-semibold">BLKOUT</span></p>
+              <div className="flex items-center justify-center gap-4 text-[10px] text-text-muted/60">
+                <span>Croydon Council</span><span>&mdash;</span><span>National Lottery Heritage Fund</span>
+              </div>
+            </div>
+          </footer>
+        </div>
+      } />
       <Route path="/interview/feedback" element={<InterviewFeedbackPage />} />
       <Route path="/interview/:tableSlug" element={<InterviewPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
