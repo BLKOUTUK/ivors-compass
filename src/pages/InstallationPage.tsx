@@ -5,7 +5,7 @@ import { logAnalytics } from '../lib/supabase'
 
 // Swap these in when the Nugent/Douglas image and Voices article are ready.
 // Both are public URLs — no secrets.
-const NUGENT_DOUGLAS_IMAGE = '/images/installation-hero.jpg'
+const NUGENT_DOUGLAS_IMAGE = '/images/installation-hero.png'
 const VOICES_ARTICLE_URL = 'https://voices.blkoutuk.cloud/'
 const VOICES_ARTICLE_TITLE = 'The symbiosis of opposites — Nugent & Douglas'
 
