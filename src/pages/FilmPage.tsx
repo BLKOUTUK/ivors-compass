@@ -153,7 +153,7 @@ export default function FilmPage() {
         </p>
       </div>
 
-      {/* Video section — placeholder until YouTube links are ready */}
+      {/* Video section */}
       <section className="space-y-3">
         <h2 className="font-heritage text-lg text-gold-rich">Video</h2>
 
@@ -161,14 +161,28 @@ export default function FilmPage() {
           id="video-container"
           className="relative aspect-video rounded-xl border border-gold/20 bg-compass-dark overflow-hidden"
         >
-          <div className="absolute inset-0 flex flex-col items-center justify-center">
-            <svg viewBox="0 0 24 24" className="w-12 h-12 text-gold/20 mb-3" fill="none" stroke="currentColor" strokeWidth="0.75">
-              <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" />
-            </svg>
-            <p className="text-gold/40 font-heritage text-sm">Video coming soon</p>
-            <p className="text-text-muted/60 text-xs mt-1">Being uploaded to YouTube</p>
-          </div>
+          <iframe
+            className="absolute inset-0 w-full h-full border-0"
+            src="https://www.youtube-nocookie.com/embed/1dUuzVVof_g?rel=0&modestbranding=1"
+            title="Meet Ivor Cummings"
+            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowFullScreen
+            loading="lazy"
+          />
         </div>
+
+        <a
+          href="https://youtu.be/1dUuzVVof_g"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 text-text-muted/70 hover:text-gold-rich text-xs transition-colors"
+        >
+          Watch on YouTube
+          <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M7 17L17 7" />
+            <path d="M7 7h10v10" />
+          </svg>
+        </a>
       </section>
 
       {/* Credits */}
