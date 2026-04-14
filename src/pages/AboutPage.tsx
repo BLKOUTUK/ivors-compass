@@ -361,14 +361,14 @@ export default function AboutPage() {
       <figure className="max-w-[260px] mx-auto">
         <div className="rounded-xl overflow-hidden border border-gold/20">
           <img
-            src="/images/ivor-1974.jpg"
-            alt="Ivor Cummings, BBC interview 1974"
+            src="/images/ivor-legacy.jpg"
+            alt="Ivor Cummings — The Legacy Continues"
             className="w-full h-auto block"
             loading="lazy"
           />
         </div>
         <figcaption className="text-text-muted/60 text-[10px] italic text-center mt-2">
-          BBC, <em>The Black Man in Britain 1550&ndash;1950</em>, 1974
+          Illustration after BBC, <em>The Black Man in Britain 1550&ndash;1950</em>, 1974
         </figcaption>
       </figure>
 

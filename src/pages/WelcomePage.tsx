@@ -240,7 +240,7 @@ export default function WelcomePage() {
           <div className="relative w-56 h-72 overflow-hidden">
             <div className="absolute inset-0 border border-gold/30" />
             <img
-              src="/images/ivor-1974.jpg"
+              src="/images/ivor-legacy.jpg"
               alt="Ivor Cummings"
               className="w-full h-full object-cover object-top"
               style={{
@@ -358,9 +358,9 @@ export default function WelcomePage() {
               {/* AIvor avatar */}
               <div className="flex-shrink-0 w-10 h-10 rounded-full overflow-hidden border border-gold/40">
                 <img
-                  src="/images/ivor-1974.jpg"
+                  src="/images/ivor-headshot.jpg"
                   alt="AIvor"
-                  className="w-full h-full object-cover object-top"
+                  className="w-full h-full object-cover"
                 />
               </div>
               <div>
