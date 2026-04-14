@@ -166,6 +166,49 @@ export default function LifeOfIvorPage() {
         </p>
       </div>
 
+      {/* Full 19-page edition — cover + download */}
+      <div className="bg-gradient-to-b from-compass-card to-compass-dark border border-gold/30 rounded-2xl p-6 md:p-8 space-y-5">
+        <div className="grid gap-6 md:grid-cols-[auto,1fr] md:gap-8 items-center">
+          <a
+            href="/novel/ivors-compass.pdf"
+            download="Ivors-Compass.pdf"
+            className="block mx-auto md:mx-0 w-44 md:w-52 shrink-0 rounded-xl overflow-hidden border-2 border-gold/50 shadow-[0_0_30px_rgba(255,215,0,0.25)] hover:border-gold transition-colors"
+          >
+            <img
+              src="/novel/cover.jpg"
+              alt="Ivor's Compass — A Life in Seven Directions"
+              className="w-full h-auto block"
+            />
+          </a>
+          <div className="text-center md:text-left space-y-3">
+            <div className="space-y-1">
+              <p className="text-gold-rich text-[10px] font-bold tracking-[0.35em] uppercase">BLKOUT &middot; April 2026</p>
+              <h2 className="font-bold-shell text-xl md:text-2xl text-gold leading-tight">
+                Ivor's Compass
+              </h2>
+              <p className="font-heritage text-warm-white/80 text-sm italic">
+                A Life in Seven Directions
+              </p>
+            </div>
+            <p className="text-text-muted/80 text-xs md:text-sm leading-relaxed">
+              The full illustrated biography &mdash; nineteen pages built around the seven panels made by the community at Stanley Arts on 12 April 2026.
+            </p>
+            <a
+              href="/novel/ivors-compass.pdf"
+              download="Ivors-Compass.pdf"
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-gold-rich text-compass-dark text-sm font-bold rounded-lg hover:bg-gold transition-colors shadow-lg"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+              Download PDF &middot; 5.7&nbsp;MB
+            </a>
+          </div>
+        </div>
+      </div>
+
       {/* Pages */}
       <div className="space-y-10 stagger">
         {chapters.map((chapter) => (

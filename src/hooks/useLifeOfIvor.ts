@@ -22,7 +22,7 @@ export interface ChapterPage {
 
 export function useLifeOfIvor() {
   const [panels, setPanels] = useState<ParticipantPanel[]>([])
-  const [workshopPhoto, setWorkshopPhoto] = useState<string | null>(null)
+  const [workshopPhoto, setWorkshopPhoto] = useState<string | null>('/images/workshop/page-20.jpg')
   const [loading, setLoading] = useState(true)
 
   // Fetch all panels on mount
