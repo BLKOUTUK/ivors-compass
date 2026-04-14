@@ -120,16 +120,16 @@ export default function FilmPage() {
         </p>
       </div>
 
-      {/* Archive portrait */}
+      {/* Hero portrait — illustration after BBC 1974 */}
       <figure className="rounded-xl overflow-hidden border border-gold/20">
         <img
-          src="/images/ivor-1974.jpg"
-          alt="Ivor Cummings interviewed for the BBC documentary The Black Man in Britain 1550-1950, 1974"
+          src="/images/ivor-legacy.jpg"
+          alt="Ivor Cummings — The Legacy Continues. Illustration after the 1974 BBC documentary The Black Man in Britain 1550-1950"
           className="w-full h-auto block"
           loading="eager"
         />
         <figcaption className="bg-compass-dark px-4 py-3 text-text-muted/50 text-xs italic text-center">
-          BBC, <em>The Black Man in Britain 1550&ndash;1950</em>, 1974
+          Illustration after BBC, <em>The Black Man in Britain 1550&ndash;1950</em>, 1974
         </figcaption>
       </figure>
 
