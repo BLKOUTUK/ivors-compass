@@ -3,11 +3,9 @@ import { Link } from 'react-router-dom'
 import EventRecorder from '../components/EventRecorder'
 import { logAnalytics } from '../lib/supabase'
 
-// Swap these in when the Nugent/Douglas image and Voices article are ready.
-// Both are public URLs — no secrets.
 const NUGENT_DOUGLAS_IMAGE = '/images/installation-hero.png'
-const VOICES_ARTICLE_URL = 'https://voices.blkoutuk.cloud/'
-const VOICES_ARTICLE_TITLE = 'The symbiosis of opposites — Nugent & Douglas'
+const VOICES_ARTICLE_URL = 'https://voices.blkoutuk.cloud/articles/the-secret-history-of-harlems-underground'
+const VOICES_ARTICLE_TITLE = 'The secret history of Harlem’s underground'
 
 export default function InstallationPage() {
   useEffect(() => {
