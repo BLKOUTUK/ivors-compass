@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useEffect, useMemo, useState } from 'react'
+import { Link, useNavigate, useSearchParams } from 'react-router-dom'
 import { claimCompassCode, logAnalytics } from '../lib/supabase'
 import { syncClaimToSendFox } from '../lib/sendfox'
 
@@ -7,6 +7,7 @@ const UK_POSTCODE = /^[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}$/i
 
 export default function ClaimPage() {
   const navigate = useNavigate()
+  const [searchParams] = useSearchParams()
   const [firstName, setFirstName] = useState('')
   const [email, setEmail] = useState('')
   const [postcode, setPostcode] = useState('')
@@ -18,9 +19,17 @@ export default function ClaimPage() {
     firstName: string
   } | null>(null)
 
+  // Partner cohort routing: ?ref=qc routes to the Queer Croydon 100-code pioneer pool
+  const source = useMemo(() => {
+    const ref = (searchParams.get('ref') || '').toLowerCase()
+    if (ref === 'qc' || ref === 'queer-croydon') return 'queer-croydon'
+    return 'landing'
+  }, [searchParams])
+  const isQcCohort = source === 'queer-croydon'
+
   useEffect(() => {
-    logAnalytics(null, 'claim_started')
-  }, [])
+    logAnalytics(null, 'claim_started', isQcCohort ? { source } : undefined)
+  }, [isQcCohort, source])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -34,12 +43,14 @@ export default function ClaimPage() {
 
     setSubmitting(true)
     try {
-      const res = await claimCompassCode(firstName, email, postcode, 'landing')
+      const res = await claimCompassCode(firstName, email, postcode, source)
 
       if (!res.ok) {
         if (res.exhausted) {
-          logAnalytics(null, 'claim_exhausted')
-          navigate('/waitlist?source=sold_out', { replace: true })
+          logAnalytics(null, 'claim_exhausted', { source })
+          const soldOutQuery =
+            res.reason === 'qc_cohort_full' ? 'qc_sold_out' : 'sold_out'
+          navigate(`/waitlist?source=${soldOutQuery}`, { replace: true })
           return
         }
         setError(
@@ -54,10 +65,12 @@ export default function ClaimPage() {
         email.trim(),
         firstName.trim(),
         postcode.trim().toUpperCase(),
+        source,
       )
       logAnalytics(null, 'claim_completed', {
         returning: res.returning,
         postcode_area: postcode.trim().toUpperCase().replace(/\d.*$/, ''),
+        source,
       })
 
       setResult({
@@ -129,12 +142,22 @@ export default function ClaimPage() {
 
             <div className="border-t border-compass-border pt-8 max-w-lg">
               <p className="text-gold text-[11px] font-semibold tracking-[0.25em] uppercase mb-3">
-                The deal
+                {isQcCohort ? 'Your pioneer deal' : 'The deal'}
               </p>
               <p className="text-warm-white/80 text-sm leading-relaxed">
-                We'll email you in May for a short feedback call. It's how we
-                report back to Croydon Council and keep this work funded. Takes
-                about 10 minutes.
+                {isQcCohort ? (
+                  <>
+                    You're one of 100 <em className="not-italic text-gold">journal pioneers</em> —
+                    reserved access for Queer Croydon readers. Thirty days from now we'll send
+                    you a short feedback form. Your experience shapes the physical print run
+                    going to the designers this summer. That's the whole ask.
+                  </>
+                ) : (
+                  <>
+                    We'll email you in May for a short feedback call. It's how we report back
+                    to Croydon Council and keep this work funded. Takes about 10 minutes.
+                  </>
+                )}
               </p>
             </div>
           </div>
@@ -163,7 +186,7 @@ export default function ClaimPage() {
 
       <main className="max-w-2xl mx-auto px-6 pt-10 pb-20">
         <p className="text-gold text-[11px] font-semibold tracking-[0.3em] uppercase mb-6">
-          Three fields · Instant code
+          {isQcCohort ? 'Queer Croydon pioneer — 100 codes reserved' : 'Three fields · Instant code'}
         </p>
 
         <h1 className="font-sans font-black uppercase leading-[0.88] tracking-tight text-5xl sm:text-7xl mb-4">
@@ -173,7 +196,9 @@ export default function ClaimPage() {
         </h1>
 
         <p className="font-serif italic text-xl text-warm-white/85 mb-12 max-w-lg">
-          one per person — revealed on screen, yours to keep.
+          {isQcCohort
+            ? 'one of 100 reserved for Queer Croydon readers — first come, first served.'
+            : 'one per person — revealed on screen, yours to keep.'}
         </p>
 
         <div className="h-px w-24 bg-gold mb-12" aria-hidden />
@@ -209,11 +234,12 @@ export default function ClaimPage() {
           {/* The deal — bold shell block, not a soft "notice" */}
           <div className="bg-blkout-purple border-l-4 border-gold pl-5 pr-4 py-5">
             <p className="text-gold text-[11px] font-semibold tracking-[0.25em] uppercase mb-2">
-              The deal
+              {isQcCohort ? 'Your pioneer deal' : 'The deal'}
             </p>
             <p className="text-warm-white/95 text-sm leading-relaxed">
-              By claiming a code you agree to a short feedback conversation in
-              May. It's how we report to our funders and keep this work alive.
+              {isQcCohort
+                ? 'By claiming a code you become one of 100 journal pioneers. In 30 days we\'ll send a short feedback form — your experience shapes the physical print run this summer. That\'s the whole ask.'
+                : 'By claiming a code you agree to a short feedback conversation in May. It\'s how we report to our funders and keep this work alive.'}
             </p>
           </div>
 
