@@ -94,6 +94,74 @@ export default function LandingPage() {
       </section>
 
       {/* ═══════════════════════════════════════════════════════════════
+          VIDEO + DAY-OF IMAGERY — 30-second introduction + the launch made real
+          ═══════════════════════════════════════════════════════════════ */}
+      <section className="bg-compass-dark border-b border-gold/30">
+        <div className="max-w-6xl mx-auto px-6 py-16">
+          <p className="text-gold text-[11px] font-semibold tracking-[0.3em] uppercase mb-8 text-center">
+            30 seconds · a Croydon recovery in motion
+          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-8 md:gap-10 items-start">
+            {/* LEFT: 9:16 vertical video in a gold-bordered phone frame */}
+            <div className="md:col-span-5 lg:col-span-4 flex justify-center md:justify-start">
+              <div className="aspect-[9/16] w-full max-w-[320px] border-4 border-gold bg-black shadow-[8px_8px_0_0_#d4af37] overflow-hidden">
+                <iframe
+                  src="https://www.youtube.com/embed/XWxFDq4tomw"
+                  title="Ivor's Compass — a 30-second introduction"
+                  className="w-full h-full"
+                  loading="lazy"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              </div>
+            </div>
+
+            {/* RIGHT: stacked day-of imagery */}
+            <div className="md:col-span-7 lg:col-span-8 flex flex-col gap-4">
+              <figure className="relative border-2 border-gold/60">
+                <img
+                  src="/images/workshop/IMG_1520.jpg"
+                  alt="The seven-panel Nugent/Douglas fabric installation under RGB lighting at Stanley Arts"
+                  className="w-full h-64 sm:h-72 object-cover"
+                  loading="lazy"
+                />
+                <figcaption className="absolute bottom-0 left-0 right-0 bg-compass-black/80 px-3 py-2 text-gold text-[10px] tracking-[0.2em] uppercase">
+                  The installation · Stanley Arts
+                </figcaption>
+              </figure>
+              <figure className="relative border-2 border-gold/60">
+                <img
+                  src="/images/workshop/IMG_1578.jpg"
+                  alt="Workshop tables mid-interview challenge — seven chatbots, seven compass directions"
+                  className="w-full h-64 sm:h-72 object-cover"
+                  loading="lazy"
+                />
+                <figcaption className="absolute bottom-0 left-0 right-0 bg-compass-black/80 px-3 py-2 text-gold text-[10px] tracking-[0.2em] uppercase">
+                  The workshop · seven tables, seven directions
+                </figcaption>
+              </figure>
+              <figure className="relative border-2 border-gold/60">
+                <img
+                  src="/images/workshop/IMG_1651.jpg"
+                  alt="Participants in conversation — the writers' reflection at the close of the afternoon"
+                  className="w-full h-64 sm:h-72 object-cover"
+                  loading="lazy"
+                />
+                <figcaption className="absolute bottom-0 left-0 right-0 bg-compass-black/80 px-3 py-2 text-gold text-[10px] tracking-[0.2em] uppercase">
+                  The reflection · writers at close of day
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+
+          <p className="font-serif italic text-lg text-warm-white/80 text-center mt-10 max-w-2xl mx-auto leading-relaxed">
+            Ivor Cummings welcomed the Windrush generation at Tilbury in 1948. A Black gay man from Addiscombe. The archive kept his job title and lost the man — so 36 people spent a Sunday in Croydon putting him back.
+          </p>
+        </div>
+      </section>
+
+      {/* ═══════════════════════════════════════════════════════════════
           TRIPTYCH — the story arc, made literal
           ═══════════════════════════════════════════════════════════════ */}
       <section className="bg-compass-black">
