@@ -2,7 +2,7 @@
 // Pattern lifted from apps/crm/app/api/community/join/route.ts:310 — no API key,
 // the form URL itself is the credential. Set per-list URLs in Coolify env.
 
-const CLAIM_FORM = import.meta.env.VITE_SENDFOX_COMPASS_CLAIM_URL as string | undefined
+const CLAIM_FORM = import.meta.env.VITE_SENDFOX_COMPASS_CLAIMS_URL as string | undefined
 const QC_PIONEER_FORM = import.meta.env.VITE_SENDFOX_COMPASS_QC_URL as string | undefined
 const WAITLIST_FORM = import.meta.env.VITE_SENDFOX_COMPASS_WAITLIST_URL as string | undefined
 
