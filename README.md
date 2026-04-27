@@ -71,3 +71,5 @@ export default defineConfig([
   },
 ])
 ```
+
+<!-- coolify-webhook-test 2026-04-27 -->
