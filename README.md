@@ -71,6 +71,3 @@ export default defineConfig([
   },
 ])
 ```
-
-<!-- coolify-webhook-test 2026-04-27 -->
-<!-- coolify-webhook-retest 2026-04-27T08:44Z -->
