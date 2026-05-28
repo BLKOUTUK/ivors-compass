@@ -1,0 +1,21 @@
+name: day30-digest
+
+on:
+  schedule:
+    - cron: '0 9 * * *'
+  workflow_dispatch:
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Run day 30 digest
+        env:
+          SUPABASE_PROJECT_REF: bgjengudzfickgomjqmz
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          ZAPIER_DAY30_WEBHOOK_URL: ${{ secrets.ZAPIER_DAY30_WEBHOOK_URL }}
+        run: node scripts/day30-digest.mjs
