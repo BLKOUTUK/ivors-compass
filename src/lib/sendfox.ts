@@ -4,7 +4,6 @@
 
 const CLAIM_FORM = import.meta.env.VITE_SENDFOX_COMPASS_CLAIMS_URL as string | undefined
 const QC_PIONEER_FORM = import.meta.env.VITE_SENDFOX_COMPASS_QC_URL as string | undefined
-const BLKOUTHUB_FORM = import.meta.env.VITE_SENDFOX_COMPASS_BLKOUTHUB_URL as string | undefined
 const WAITLIST_FORM = import.meta.env.VITE_SENDFOX_COMPASS_WAITLIST_URL as string | undefined
 
 async function postForm(url: string, fields: Record<string, string>) {
@@ -33,18 +32,17 @@ export async function syncClaimToSendFox(
   postcode: string,
   source = 'landing',
 ) {
-  // Route cohort sources to their own SendFox lists when configured —
-  // each list owns its 30-day feedback automation. Fall back to the general claim form.
+  // BLKOUTHUB cohort is handled internally via Heartbeat — does NOT sync to SendFox.
+  // Gift recipients also stay off SendFox; their feedback path follows whichever cohort
+  // their gifter came from (handled outside this funnel).
+  if (source === 'blkouthub' || source === 'gift') return
+
+  // Route QC pioneer cohort to its own SendFox list if configured.
   if (source === 'queer-croydon' && QC_PIONEER_FORM) {
     await postForm(QC_PIONEER_FORM, { email, first_name: firstName, postcode, source })
     return
   }
-  if (source === 'blkouthub' && BLKOUTHUB_FORM) {
-    await postForm(BLKOUTHUB_FORM, { email, first_name: firstName, postcode, source })
-    return
-  }
   if (!CLAIM_FORM) return
-  // gift-source recipients land here too — general list captures them with source='gift'
   await postForm(CLAIM_FORM, { email, first_name: firstName, postcode, source })
 }
 
