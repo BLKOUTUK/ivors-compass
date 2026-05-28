@@ -4,6 +4,7 @@ import { CompassProvider, useCompass } from './hooks/useCompass'
 import Layout from './components/Layout'
 import LandingPage from './pages/LandingPage'
 import ClaimPage from './pages/ClaimPage'
+import GiftClaimPage from './pages/GiftClaimPage'
 import WaitlistPage from './pages/WaitlistPage'
 import InstallationPage from './pages/InstallationPage'
 import InterviewFeedbackPage from './pages/InterviewFeedbackPage'
@@ -52,6 +53,7 @@ function AppRoutes() {
         element={isUnlocked ? <Navigate to="/welcome" replace /> : <LandingPage />}
       />
       <Route path="/claim" element={<ClaimPage />} />
+      <Route path="/claim/gift" element={<GiftClaimPage />} />
       <Route path="/waitlist" element={<WaitlistPage />} />
       <Route
         path="/unlock"

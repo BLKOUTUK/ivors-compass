@@ -1,13 +1,11 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link, useNavigate, useSearchParams } from 'react-router-dom'
-import { claimCompassCode, logAnalytics } from '../lib/supabase'
+import { Link, useSearchParams } from 'react-router-dom'
+import { claimGiftCode, logAnalytics } from '../lib/supabase'
 import { syncClaimToSendFox } from '../lib/sendfox'
-import GiftCodesPanel from '../components/GiftCodesPanel'
 
 const UK_POSTCODE = /^[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}$/i
 
-export default function ClaimPage() {
-  const navigate = useNavigate()
+export default function GiftClaimPage() {
   const [searchParams] = useSearchParams()
   const [firstName, setFirstName] = useState('')
   const [email, setEmail] = useState('')
@@ -18,24 +16,45 @@ export default function ClaimPage() {
     code: string
     returning: boolean
     firstName: string
-    giftCodes: string[]
+    gifterName: string
   } | null>(null)
 
-  // Partner cohort routing
-  // ?ref=qc → Queer Croydon 100-code pioneer pool
-  // ?ref=blkouthub → BLKOUTHUB peer cohort (200 codes, peer-first Ring 1)
-  const source = useMemo(() => {
-    const ref = (searchParams.get('ref') || '').toLowerCase()
-    if (ref === 'qc' || ref === 'queer-croydon') return 'queer-croydon'
-    if (ref === 'blkouthub' || ref === 'hub') return 'blkouthub'
-    return 'landing'
-  }, [searchParams])
-  const isQcCohort = source === 'queer-croydon'
-  const isBlkoutHubCohort = source === 'blkouthub'
+  const giftCode = useMemo(
+    () => (searchParams.get('code') || '').trim().toUpperCase(),
+    [searchParams],
+  )
+  const gifterName = useMemo(
+    () => (searchParams.get('from') || '').trim() || 'A peer',
+    [searchParams],
+  )
 
   useEffect(() => {
-    logAnalytics(null, 'claim_started', isQcCohort ? { source } : undefined)
-  }, [isQcCohort, source])
+    logAnalytics(null, 'gift_claim_started', { gift_code: giftCode, gifter: gifterName })
+  }, [giftCode, gifterName])
+
+  // Missing code → redirect to general claim
+  if (!giftCode) {
+    return (
+      <div className="min-h-screen bg-compass-black text-warm-white font-sans">
+        <div className="border-t-4 border-gold" />
+        <main className="max-w-2xl mx-auto px-6 py-20">
+          <h1 className="font-sans font-black uppercase leading-[0.9] tracking-tight text-4xl sm:text-5xl mb-6">
+            No gift code in this link.
+          </h1>
+          <p className="font-serif italic text-lg text-warm-white/85 mb-8">
+            ask the person who sent you to share the link again — or claim a code yourself.
+          </p>
+          <Link
+            to="/claim"
+            className="inline-block bg-blkout-red hover:bg-red-700 text-white font-black uppercase tracking-wider text-sm px-8 py-4 transition-colors shadow-[6px_6px_0_0_#d4af37]"
+          >
+            Go to /claim →
+          </Link>
+        </main>
+        <div className="border-b-4 border-gold" />
+      </div>
+    )
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -45,25 +64,29 @@ export default function ClaimPage() {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
       return setError("That email address doesn't look right.")
     if (!UK_POSTCODE.test(postcode.trim()))
-      return setError('Enter a valid UK postcode, e.g. CR0 1AA.')
+      return setError('Enter a valid UK postcode, e.g. SE1 1AA.')
 
     setSubmitting(true)
     try {
-      const res = await claimCompassCode(firstName, email, postcode, source)
+      const res = await claimGiftCode(giftCode, firstName, email, postcode)
 
       if (!res.ok) {
-        if (res.exhausted) {
-          logAnalytics(null, 'claim_exhausted', { source })
-          const soldOutQuery =
-            res.reason === 'qc_cohort_full' ? 'qc_sold_out' : 'sold_out'
-          navigate(`/waitlist?source=${soldOutQuery}`, { replace: true })
+        if (res.reason === 'gift_code_already_claimed') {
+          logAnalytics(null, 'gift_claim_taken', { gift_code: giftCode })
+          setError(
+            "Someone else claimed this gift code before you did. Ask your peer for a new link, or claim a fresh code at /claim.",
+          )
           return
         }
-        setError(
-          res.reason === 'email_invalid'
-            ? "That email address doesn't look right."
-            : 'Something went wrong. Please try again.',
-        )
+        if (res.reason === 'gift_code_not_found') {
+          setError('That gift code isn\'t valid. Check the link or ask your peer to resend.')
+          return
+        }
+        if (res.reason === 'email_invalid') {
+          setError("That email address doesn't look right.")
+          return
+        }
+        setError('Something went wrong. Please try again.')
         return
       }
 
@@ -71,19 +94,19 @@ export default function ClaimPage() {
         email.trim(),
         firstName.trim(),
         postcode.trim().toUpperCase(),
-        source,
+        'gift',
       )
-      logAnalytics(null, 'claim_completed', {
+      logAnalytics(null, 'gift_claim_completed', {
         returning: res.returning,
         postcode_area: postcode.trim().toUpperCase().replace(/\d.*$/, ''),
-        source,
+        gifter: res.gifter_name ?? gifterName,
       })
 
       setResult({
         code: res.code!,
         returning: !!res.returning,
         firstName: res.first_name || firstName.trim(),
-        giftCodes: res.gift_codes ?? [],
+        gifterName: res.gifter_name || gifterName,
       })
     } catch (err) {
       console.error(err)
@@ -113,11 +136,11 @@ export default function ClaimPage() {
 
           <div className="relative z-10 max-w-2xl mx-auto px-6 py-20">
             <p className="text-gold text-[11px] font-semibold tracking-[0.3em] uppercase mb-6">
-              {result.returning ? 'Welcome back' : "You're in"}
+              {result.gifterName} sent you this
             </p>
 
             <h1 className="font-sans font-black uppercase leading-[0.88] tracking-tight text-5xl sm:text-7xl mb-4">
-              {result.returning ? 'Hello' : 'Thank you,'}
+              {result.returning ? 'Hello' : 'Welcome,'}
               <br />
               <span className="text-gold">{result.firstName}.</span>
             </h1>
@@ -130,7 +153,6 @@ export default function ClaimPage() {
 
             <div className="h-px w-24 bg-gold mb-8" aria-hidden />
 
-            {/* The code — big, bold, gold on purple */}
             <div className="bg-blkout-purple border-4 border-gold p-8 sm:p-10 mb-10">
               <p className="text-gold text-[11px] font-semibold tracking-[0.3em] uppercase mb-4">
                 Your access code
@@ -146,39 +168,6 @@ export default function ClaimPage() {
             >
               Open my compass →
             </Link>
-
-            <div className="border-t border-compass-border pt-8 max-w-lg">
-              <p className="text-gold text-[11px] font-semibold tracking-[0.25em] uppercase mb-3">
-                {isQcCohort || isBlkoutHubCohort ? 'Your pioneer deal' : 'The deal'}
-              </p>
-              <p className="text-warm-white/80 text-sm leading-relaxed">
-                {isBlkoutHubCohort ? (
-                  <>
-                    You're one of 200 <em className="not-italic text-gold">BLKOUTHUB pioneers</em> —
-                    reserved peer access. Thirty days from now we'll send you a short feedback
-                    note. Below: three codes to gift to people you'd want to walk this with.
-                    That's the whole ask.
-                  </>
-                ) : isQcCohort ? (
-                  <>
-                    You're one of 100 <em className="not-italic text-gold">journal pioneers</em> —
-                    reserved access for Queer Croydon readers. Thirty days from now we'll send
-                    you a short feedback form. Your experience shapes the physical print run
-                    going to the designers this summer. That's the whole ask.
-                  </>
-                ) : (
-                  <>
-                    We'll email you in May for a short feedback call. It's how we report back
-                    to Croydon Council and keep this work funded. Takes about 10 minutes.
-                  </>
-                )}
-              </p>
-            </div>
-
-            <GiftCodesPanel
-              giftCodes={result.giftCodes}
-              gifterName={result.firstName}
-            />
           </div>
         </div>
 
@@ -194,57 +183,29 @@ export default function ClaimPage() {
     <div className="min-h-screen bg-compass-black text-warm-white font-sans">
       <div className="border-t-4 border-gold" />
 
-      <nav className="max-w-2xl mx-auto px-6 pt-8">
-        <Link
-          to="/"
-          className="text-text-muted hover:text-gold text-xs font-semibold tracking-[0.2em] uppercase transition-colors"
-        >
-          ← Back
-        </Link>
-      </nav>
-
       <main className="max-w-2xl mx-auto px-6 pt-10 pb-20">
         <p className="text-gold text-[11px] font-semibold tracking-[0.3em] uppercase mb-6">
-          {isBlkoutHubCohort
-            ? 'BLKOUTHUB peer cohort — 200 codes + 3 to gift'
-            : isQcCohort
-            ? 'Queer Croydon pioneer — 100 codes reserved'
-            : 'Three fields · Instant code'}
+          {gifterName} sent you this
         </p>
 
         <h1 className="font-sans font-black uppercase leading-[0.88] tracking-tight text-5xl sm:text-7xl mb-4">
-          {isBlkoutHubCohort ? (
-            <>
-              Come and
-              <br />
-              <span className="text-gold">walk with this.</span>
-            </>
-          ) : (
-            <>
-              Claim your
-              <br />
-              <span className="text-gold">free code.</span>
-            </>
-          )}
+          A gift —
+          <br />
+          <span className="text-gold">claim it.</span>
         </h1>
 
         <p className="font-serif italic text-xl text-warm-white/85 mb-8 max-w-lg">
-          {isBlkoutHubCohort
-            ? 'one of 200 reserved for BLKOUTHUB peers — yours, plus three codes to gift on.'
-            : isQcCohort
-            ? 'one of 100 reserved for Queer Croydon readers — first come, first served.'
-            : 'one per person — revealed on screen, yours to keep.'}
+          someone you know sent you Ivor's Compass. it's a wellness journal for Black queer men in the UK.
         </p>
 
-        {isBlkoutHubCohort && (
-          <p className="text-warm-white/70 text-sm leading-relaxed mb-10 max-w-lg border-l-2 border-gold/60 pl-4">
-            Fourteen people have been carrying this since April — Croydon, South East
-            and South West London, North London, Twickenham, St Albans. About two-thirds
-            have opened the journal. We made this for you. Now we want it in your hands.
+        <div className="bg-blkout-purple border-l-4 border-gold pl-5 pr-4 py-4 mb-10 max-w-lg">
+          <p className="text-gold text-[10px] font-semibold tracking-[0.3em] uppercase mb-1.5">
+            Your gift code
           </p>
-        )}
-
-        <div className="h-px w-24 bg-gold mb-12" aria-hidden />
+          <p className="font-mono font-black text-2xl tracking-[0.15em] text-gold leading-none break-all">
+            {giftCode}
+          </p>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-6 max-w-lg">
           <Field
@@ -269,30 +230,23 @@ export default function ClaimPage() {
             label="Postcode"
             value={postcode}
             onChange={(v) => setPostcode(v.toUpperCase())}
-            placeholder="CR0 1AA"
+            placeholder="SE1 1AA"
             autoComplete="postal-code"
-            hint="For our report to Croydon Council."
+            hint="So we can see where the journal is travelling."
           />
 
-          {/* The deal — bold shell block, not a soft "notice" */}
           <div className="bg-blkout-purple border-l-4 border-gold pl-5 pr-4 py-5">
             <p className="text-gold text-[11px] font-semibold tracking-[0.25em] uppercase mb-2">
-              {isQcCohort || isBlkoutHubCohort ? 'Your pioneer deal' : 'The deal'}
+              The deal
             </p>
             <p className="text-warm-white/95 text-sm leading-relaxed">
-              {isBlkoutHubCohort
-                ? 'By claiming a code you become one of 200 BLKOUTHUB pioneers. In 30 days we\'ll send a short feedback note. You also get three codes to gift to peers — pass them on however you talk to people.'
-                : isQcCohort
-                ? 'By claiming a code you become one of 100 journal pioneers. In 30 days we\'ll send a short feedback form — your experience shapes the physical print run this summer. That\'s the whole ask.'
-                : 'By claiming a code you agree to a short feedback conversation in May. It\'s how we report to our funders and keep this work alive.'}
+              By claiming this gift code you accept a short feedback note in 30 days.
+              It's how we know what's working. That's the whole ask.
             </p>
           </div>
 
           {error && (
-            <p
-              className="text-blkout-red text-sm font-semibold tracking-wide"
-              role="alert"
-            >
+            <p className="text-blkout-red text-sm font-semibold tracking-wide" role="alert">
               {error}
             </p>
           )}
@@ -302,7 +256,7 @@ export default function ClaimPage() {
             disabled={submitting}
             className="w-full bg-blkout-red hover:bg-red-700 text-white font-black uppercase tracking-wider text-sm py-5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-[6px_6px_0_0_#d4af37]"
           >
-            {submitting ? 'Claiming…' : 'Claim my code →'}
+            {submitting ? 'Claiming…' : 'Claim my gift →'}
           </button>
         </form>
 

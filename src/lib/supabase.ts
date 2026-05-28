@@ -55,6 +55,8 @@ export interface ClaimResult {
   code?: string
   returning?: boolean
   first_name?: string
+  gift_codes?: string[]
+  gifter_name?: string
   exhausted?: boolean
   reason?: string
 }
@@ -74,6 +76,26 @@ export async function claimCompassCode(
 
   if (error) {
     console.error('Claim error:', error)
+    return { ok: false, reason: 'server_error' }
+  }
+  return data as ClaimResult
+}
+
+export async function claimGiftCode(
+  code: string,
+  firstName: string,
+  email: string,
+  postcode: string,
+): Promise<ClaimResult> {
+  const { data, error } = await supabase.rpc('claim_gift_code', {
+    p_code: code.trim().toUpperCase(),
+    p_first_name: firstName.trim(),
+    p_email: email.trim().toLowerCase(),
+    p_postcode: postcode.trim().toUpperCase(),
+  })
+
+  if (error) {
+    console.error('Gift claim error:', error)
     return { ok: false, reason: 'server_error' }
   }
   return data as ClaimResult
