@@ -19,8 +19,9 @@ RUN echo 'server { \
     listen 3000; \
     root /usr/share/nginx/html; \
     index index.html; \
+    absolute_redirect off; \
     location / { \
-        try_files $uri $uri/ /index.html; \
+        try_files $uri /index.html; \
     } \
     location ~* \.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2|mp3|mp4)$ { \
         expires 30d; \
