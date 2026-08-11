@@ -81,7 +81,7 @@ async function sendEmail(subject, body) {
 }
 
 const unmet = await sql(
-  `SELECT person_name, person_ref, surface, gesture, days_waiting, acknowledged, notes
+  `SELECT person_name, person_ref, surface, gesture, days_waiting, acknowledged, notes, returner
    FROM unmet_gestures ORDER BY surface, days_waiting DESC;`
 )
 const loops = await sql(
@@ -110,7 +110,7 @@ const eventsSpotlight = eventsRows.filter(
 const personal = unmet.filter((r) => r.surface !== 'events')
 
 const fmt = (r) =>
-  `- ${r.person_name || '?'} (${r.person_ref}) — ${r.gesture} — waiting ${r.days_waiting}d` +
+  `- ${r.person_name || '?'} (${r.person_ref})${r.returner ? ' [returner]' : ''} — ${r.gesture} — waiting ${r.days_waiting}d` +
   (r.acknowledged ? '' : ' [no auto-receipt either]') +
   (r.notes ? `\n    note: ${r.notes}` : '')
 
