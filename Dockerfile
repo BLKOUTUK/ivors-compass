@@ -19,6 +19,7 @@ RUN echo 'server { \
     listen 3000; \
     root /usr/share/nginx/html; \
     index index.html; \
+    if ($host = "compass.blkoutuk.cloud") { return 301 https://compass.blkoutuk.com$request_uri; } \
     absolute_redirect off; \
     location / { \
         try_files $uri /index.html; \
