@@ -121,7 +121,7 @@ const MILESTONES: Milestone[] = [
 ]
 
 // Total number of workshops defined in the data
-const TOTAL_WORKSHOPS = 6
+const TOTAL_WORKSHOPS = 8
 
 // ---------------------------------------------------------------------------
 // Data loading helpers
