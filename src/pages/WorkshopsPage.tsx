@@ -254,7 +254,7 @@ function WorkshopDetail({
         onClick={onBack}
         className="text-sm text-text-muted hover:text-gold transition-colors"
       >
-        ← All workshops
+        ← All guided lessons
       </button>
 
       {/* Header */}
@@ -329,7 +329,7 @@ function WorkshopDetail({
           {isLastStep
             ? isCompleted
               ? 'Completed'
-              : 'Complete workshop'
+              : 'Complete lesson'
             : 'Next →'}
         </button>
       </div>
@@ -343,7 +343,7 @@ function WorkshopDetail({
           }}
         >
           <p className="text-sm" style={{ color: phaseColor }}>
-            You have completed this workshop. You can revisit any step above.
+            You have completed this lesson. You can revisit any step above.
           </p>
         </div>
       )}
@@ -540,7 +540,7 @@ export default function WorkshopsPage() {
     <div className="space-y-6 animate-fade-in">
       {/* Header */}
       <div>
-        <h1 className="font-bold-shell text-2xl text-white title-underline" style={{ '--accent-color': 'var(--color-task-strength)' } as React.CSSProperties}>Workshops</h1>
+        <h1 className="font-bold-shell text-2xl text-white title-underline" style={{ '--accent-color': 'var(--color-task-strength)' } as React.CSSProperties}>Guided lessons</h1>
         <p className="text-text-muted text-sm mt-1">
           Self-guided journeys through specific challenges. Your pace, your time.
         </p>

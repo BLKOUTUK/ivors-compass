@@ -210,13 +210,13 @@ export default function HomePage() {
         </BentoCard>
 
         {/* 7. Workshops — strength (plum) */}
-        <BentoCard to="/compass/workshops" label="Workshops — self-guided wellness mini-journeys" taskColor="var(--color-task-strength)" category="workshops">
+        <BentoCard to="/compass/workshops" label="Guided lessons — self-guided wellness mini-journeys" taskColor="var(--color-task-strength)" category="workshops">
           <div className="flex items-start gap-4">
             <WarmthOrb intensity={0.55} color="#802918" size={20} />
             <div className="flex-1 min-w-0">
-              <h2 className="text-lg text-white font-semibold">Workshops</h2>
+              <h2 className="text-lg text-white font-semibold">Guided lessons</h2>
               <p className="text-text-muted text-sm mt-0.5">Self-guided mini-journeys</p>
-              <p className="text-text-muted/60 text-xs mt-1">6 workshops · Anxiety, Anger, Shame & more</p>
+              <p className="text-text-muted/60 text-xs mt-1">8 guided lessons · Anxiety, Anger, Shame & more</p>
             </div>
           </div>
         </BentoCard>
@@ -300,7 +300,7 @@ export default function HomePage() {
             <div className="flex-1 min-w-0">
               <h2 className="text-lg text-white font-semibold">Your Journal</h2>
               <p className="text-text-muted text-sm mt-0.5">Private. On your device.</p>
-              <p className="text-text-muted/60 text-xs mt-1">Never leaves your phone</p>
+              <p className="text-text-muted/60 text-xs mt-1">Saved only on your phone</p>
             </div>
             <svg className="w-5 h-5 text-text-muted/60 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
               <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />

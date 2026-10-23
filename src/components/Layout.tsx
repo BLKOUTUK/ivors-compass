@@ -9,7 +9,7 @@ const SECTION_NAMES: Record<string, string> = {
   '/compass/film': 'Meet Ivor',
   '/compass/journal': 'Journal',
   '/compass/mood': 'Mood Check-in',
-  '/compass/workshops': 'Workshops',
+  '/compass/workshops': 'Guided lessons',
   '/compass/sunroom': 'The Sunroom',
   '/compass/progress': 'Sacred Momentum',
   '/compass/about': 'About Ivor',

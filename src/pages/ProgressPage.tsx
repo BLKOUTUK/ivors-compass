@@ -96,8 +96,8 @@ const MILESTONES: Milestone[] = [
   },
   {
     id: 'all-workshops',
-    label: 'All workshops explored',
-    description: 'You have opened every workshop at least once.',
+    label: 'All guided lessons explored',
+    description: 'You have opened every guided lesson at least once.',
     check: (s) => s.allWorkshopsExplored,
   },
   {
@@ -488,7 +488,7 @@ export default function ProgressPage() {
             },
             {
               value: stats.workshopsExplored,
-              label: 'Workshops explored',
+              label: 'Guided lessons explored',
               color: '#802918',
             },
             {

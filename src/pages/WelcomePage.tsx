@@ -326,7 +326,7 @@ export default function WelcomePage() {
               What should we call you?
             </h2>
             <p className="font-heritage italic text-warm-white/60 text-sm leading-relaxed">
-              Your name stays on your device. We use it to greet you — and you can journal by voice, not just text.
+              Your name stays on your device. We use it to greet you. You can journal by voice too: your phone's speech service turns what you say into text, and the text is saved only on your phone.
             </p>
           </div>
 

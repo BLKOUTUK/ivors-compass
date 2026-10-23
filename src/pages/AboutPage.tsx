@@ -454,7 +454,7 @@ export default function AboutPage() {
       <section className="bg-compass-dark border border-gold/20 rounded-xl p-6">
         <h2 className="font-heritage text-lg text-white mb-3">Your Data</h2>
         <p className="text-text-muted text-sm leading-relaxed mb-4">
-          Everything you write in this journal stays on your device. Nothing is sent to a server.
+          Everything you write in this journal is saved on your device, not on our servers. If you use Speak, your phone's speech service turns your voice into text.
           Download a copy whenever you want — it's yours to keep, even if you stop using the app.
         </p>
         <ExportButton />

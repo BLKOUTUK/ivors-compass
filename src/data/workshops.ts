@@ -54,7 +54,7 @@ export const workshops: Workshop[] = [
       {
         type: 'text',
         content:
-          'Anxiety is your nervous system doing its job — scanning for danger, preparing you to act. But when the alarm keeps ringing after the danger has passed, you need a way to tell your body: you are safe right now. This workshop will walk you through grounding techniques drawn from clinical practice. There is nothing to fix here. We are just coming back to the present.',
+          'Anxiety is your nervous system doing its job — scanning for danger, preparing you to act. But when the alarm keeps ringing after the danger has passed, you need a way to tell your body: you are safe right now. This lesson will walk you through grounding techniques drawn from clinical practice. There is nothing to fix here. We are just coming back to the present.',
       },
       {
         type: 'breathing',
@@ -105,7 +105,7 @@ export const workshops: Workshop[] = [
       {
         type: 'text',
         content:
-          'Anger gets a bad reputation — especially for Black men, especially for queer people. We are taught that our anger is dangerous, disproportionate, threatening. But anger is information. It tells you where your values are being crossed, where your boundaries have been breached. This workshop is not about suppressing anger. It is about understanding it so you can use it wisely.',
+          'Anger gets a bad reputation — especially for Black men, especially for queer people. We are taught that our anger is dangerous, disproportionate, threatening. But anger is information. It tells you where your values are being crossed, where your boundaries have been breached. This lesson is not about suppressing anger. It is about understanding it so you can use it wisely.',
       },
       {
         type: 'breathing',
@@ -156,7 +156,7 @@ export const workshops: Workshop[] = [
       {
         type: 'text',
         content:
-          'Low mood lies to you. It says: nothing will help, so why bother. It says: you do not have the energy. It says: tomorrow. The clinical truth is that action often comes before motivation, not after. You do not wait to feel better before you move — you move, and feeling better follows. This workshop uses behavioral activation, one of the most effective interventions for low mood. We start impossibly small.',
+          'Low mood lies to you. It says: nothing will help, so why bother. It says: you do not have the energy. It says: tomorrow. The clinical truth is that action often comes before motivation, not after. You do not wait to feel better before you move — you move, and feeling better follows. This lesson uses behavioral activation, one of the most effective interventions for low mood. We start impossibly small.',
       },
       {
         type: 'breathing',
@@ -206,7 +206,7 @@ export const workshops: Workshop[] = [
       {
         type: 'text',
         content:
-          'Shame is not the same as guilt. Guilt says: I did something wrong. Shame says: I am something wrong. For Black queer men, shame is often not yours — it was placed on you by a world that pathologized your Blackness, your queerness, your desire. Minority stress theory (Meyer, 2003) shows that internalized stigma — absorbing society\'s negative attitudes about your identity — is one of the most damaging forms of psychological stress. This workshop is about noticing the shame and putting it back where it belongs: outside of you.',
+          'Shame is not the same as guilt. Guilt says: I did something wrong. Shame says: I am something wrong. For Black queer men, shame is often not yours — it was placed on you by a world that pathologized your Blackness, your queerness, your desire. Minority stress theory (Meyer, 2003) shows that internalized stigma — absorbing society\'s negative attitudes about your identity — is one of the most damaging forms of psychological stress. This lesson is about noticing the shame and putting it back where it belongs: outside of you.',
       },
       {
         type: 'breathing',
@@ -257,7 +257,7 @@ export const workshops: Workshop[] = [
       {
         type: 'text',
         content:
-          'Loneliness is not the same as being alone. You can be alone and feel peaceful. You can be in a crowd and feel utterly unseen. For Black queer men, loneliness often has layers: the loneliness of code-switching, of not quite fitting in Black spaces or queer spaces, of performing a version of yourself that is legible to others but hollow to you. This workshop is about naming that loneliness and taking one small step towards genuine connection.',
+          'Loneliness is not the same as being alone. You can be alone and feel peaceful. You can be in a crowd and feel utterly unseen. For Black queer men, loneliness often has layers: the loneliness of code-switching, of not quite fitting in Black spaces or queer spaces, of performing a version of yourself that is legible to others but hollow to you. This lesson is about naming that loneliness and taking one small step towards genuine connection.',
       },
       {
         type: 'text',
@@ -307,7 +307,7 @@ export const workshops: Workshop[] = [
       {
         type: 'text',
         content:
-          'Pleasure is political. For Black queer men, pleasure has been surveilled, pathologized, criminalized, and shamed. You may have learned to associate your desire with danger, your body with something to be controlled. This workshop is about reclaiming your right to feel good — not as indulgence but as restoration. Audre Lorde wrote that the erotic is a source of power and information. We are going to reconnect with that.',
+          'Pleasure is political. For Black queer men, pleasure has been surveilled, pathologized, criminalized, and shamed. You may have learned to associate your desire with danger, your body with something to be controlled. This lesson is about reclaiming your right to feel good — not as indulgence but as restoration. Audre Lorde wrote that the erotic is a source of power and information. We are going to reconnect with that.',
       },
       {
         type: 'breathing',
@@ -348,7 +348,7 @@ export const workshops: Workshop[] = [
     id: 'finding-therapist',
     title: 'Finding the Right Therapist',
     description:
-      'A journal is a companion, not a substitute. When you need more than reflection, this workshop helps you find culturally competent, queer-affirming support.',
+      'A journal is a companion, not a substitute. When you need more than reflection, this lesson helps you find culturally competent, queer-affirming support.',
     duration: '10 minutes',
     phase: 'connection',
     difficulty: 'gentle',
@@ -357,7 +357,7 @@ export const workshops: Workshop[] = [
       {
         type: 'text',
         content:
-          "Let's be honest about what this app can and can't do. Journalling is a companion — a way of thinking on paper, of noticing patterns, of building a practice of self-knowledge. It is not a substitute for therapy. If you are carrying something that feels too big to hold alone, you deserve a trained human on your side. This workshop is a holding page for now, with partner organisations to be announced. In the meantime, here is what we know.",
+          "Let's be honest about what this app can and can't do. Journalling is a companion — a way of thinking on paper, of noticing patterns, of building a practice of self-knowledge. It is not a substitute for therapy. If you are carrying something that feels too big to hold alone, you deserve a trained human on your side. This lesson is a holding page for now, with partner organisations to be announced. In the meantime, here is what we know.",
       },
       {
         type: 'text',
@@ -393,7 +393,7 @@ export const workshops: Workshop[] = [
     id: 'supporting-friends',
     title: "Supporting Your Friends' Mental Health",
     description:
-      "You don't have to be a therapist to be a good friend. This workshop covers listening, noticing warning signs, and knowing your own limits.",
+      "You don't have to be a therapist to be a good friend. This lesson covers listening, noticing warning signs, and knowing your own limits.",
     duration: '12 minutes',
     phase: 'connection',
     difficulty: 'gentle',
@@ -402,7 +402,7 @@ export const workshops: Workshop[] = [
       {
         type: 'text',
         content:
-          "Community is care. For Black queer men who have been failed by formal systems, our friends are often our first line of support. That is a gift and a weight. This workshop is about how to show up for each other well — without burning out, without overstepping, without becoming a substitute therapist. This is a holding page. Full content with partner organisations coming soon.",
+          "Community is care. For Black queer men who have been failed by formal systems, our friends are often our first line of support. That is a gift and a weight. This lesson is about how to show up for each other well — without burning out, without overstepping, without becoming a substitute therapist. This is a holding page. Full content with partner organisations coming soon.",
       },
       {
         type: 'text',
