@@ -100,6 +100,26 @@ function getSpeechRecognitionCtor(): (new () => SpeechRecognitionInstance) | nul
     | null
 }
 
+function getSpeechSynthesis(): SpeechSynthesis | null {
+  if (typeof window === 'undefined') return null
+  return 'speechSynthesis' in window && typeof SpeechSynthesisUtterance !== 'undefined'
+    ? window.speechSynthesis
+    : null
+}
+
+// Prefer an on-device en-GB voice; network voices send the text off the device.
+function pickReadAloudVoice(synth: SpeechSynthesis): SpeechSynthesisVoice | null {
+  const local = synth.getVoices().filter((v) => v.localService)
+  return (
+    local.find((v) => v.lang.replace('_', '-').toLowerCase() === 'en-gb') ??
+    local.find((v) => v.lang.toLowerCase().startsWith('en')) ??
+    null
+  )
+}
+
+const READ_ALOUD_RATE = 0.95
+const READ_ALOUD_PAUSE_MS = 900
+
 // ----------------------------------------------------------------------------
 // Mood options (matching the existing mood tracker)
 // ----------------------------------------------------------------------------
@@ -523,6 +543,58 @@ function ExerciseView({
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null)
   const [speechSupported] = useState<boolean>(() => getSpeechRecognitionCtor() !== null)
   const [showStoryRefresher, setShowStoryRefresher] = useState(false)
+  const [readAloudSupported] = useState<boolean>(() => getSpeechSynthesis() !== null)
+  const [isReading, setIsReading] = useState(false)
+  const readTokenRef = useRef(0)
+  const readTimerRef = useRef<number | null>(null)
+
+  const stopReading = useCallback(() => {
+    readTokenRef.current += 1 // invalidates any pending onend/timer chain
+    if (readTimerRef.current !== null) {
+      window.clearTimeout(readTimerRef.current)
+      readTimerRef.current = null
+    }
+    getSpeechSynthesis()?.cancel()
+    setIsReading(false)
+  }, [])
+
+  const startReading = useCallback(
+    (parts: string[]) => {
+      const synth = getSpeechSynthesis()
+      const lines = parts.map((p) => p.trim()).filter(Boolean)
+      if (!synth || lines.length === 0) return
+      stopReading()
+      const token = readTokenRef.current
+      const voice = pickReadAloudVoice(synth)
+      const speakAt = (i: number) => {
+        if (token !== readTokenRef.current) return
+        if (i >= lines.length) {
+          setIsReading(false)
+          return
+        }
+        const u = new SpeechSynthesisUtterance(lines[i])
+        u.lang = 'en-GB'
+        u.rate = READ_ALOUD_RATE
+        if (voice) u.voice = voice
+        u.onend = () => {
+          if (token !== readTokenRef.current) return
+          readTimerRef.current = window.setTimeout(() => speakAt(i + 1), READ_ALOUD_PAUSE_MS)
+        }
+        u.onerror = () => {
+          if (token !== readTokenRef.current) return
+          readTokenRef.current += 1
+          setIsReading(false)
+        }
+        synth.speak(u)
+      }
+      setIsReading(true)
+      speakAt(0)
+    },
+    [stopReading],
+  )
+
+  // Stop speaking when the exercise changes or the component unmounts.
+  useEffect(() => stopReading, [exercise.id, stopReading])
 
   const startVoice = useCallback(() => {
     const Ctor = getSpeechRecognitionCtor()
@@ -579,6 +651,11 @@ function ExerciseView({
 
   const exercisesInChapter = courseExercises.filter((e) => e.chapter === exercise.chapter)
   const indexInChapter = exercisesInChapter.findIndex((e) => e.id === exercise.id)
+  const readAloudParts: string[] = guided
+    ? [guided.prompt, ...guided.followUps]
+    : free
+      ? [free.instruction]
+      : []
 
   return (
     <div className="space-y-5">
@@ -727,24 +804,45 @@ function ExerciseView({
               className="w-full bg-compass-card border border-compass-border rounded-xl p-4 text-sm text-white placeholder:text-text-muted/40 focus:outline-none focus:border-gold-rich/60 transition-colors resize-none"
             />
             <div className="flex items-center justify-between">
-              {speechSupported && (
-                <button
-                  onClick={isRecording ? stopVoice : startVoice}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs transition-colors ${
-                    isRecording
-                      ? 'bg-red-500/20 text-red-400 border border-red-500/40'
-                      : 'bg-compass-dark text-text-muted border border-compass-border hover:text-white'
-                  }`}
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
-                    <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
-                    <line x1="12" y1="19" x2="12" y2="23"/>
-                    <line x1="8" y1="23" x2="16" y2="23"/>
-                  </svg>
-                  {isRecording ? 'Stop' : 'Speak'}
-                </button>
-              )}
+              <div className="flex items-center gap-2">
+                {speechSupported && (
+                  <button
+                    onClick={isRecording ? stopVoice : startVoice}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs transition-colors ${
+                      isRecording
+                        ? 'bg-red-500/20 text-red-400 border border-red-500/40'
+                        : 'bg-compass-dark text-text-muted border border-compass-border hover:text-white'
+                    }`}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                      <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                      <line x1="12" y1="19" x2="12" y2="23"/>
+                      <line x1="8" y1="23" x2="16" y2="23"/>
+                    </svg>
+                    {isRecording ? 'Stop' : 'Speak'}
+                  </button>
+                )}
+                {readAloudSupported && (
+                  <button
+                    onClick={isReading ? stopReading : () => startReading(readAloudParts)}
+                    aria-label={isReading ? 'Stop reading' : 'Read this to me'}
+                    title={isReading ? 'Stop reading' : 'Read this to me'}
+                    className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs transition-colors ${
+                      isReading
+                        ? 'bg-red-500/20 text-red-400 border border-red-500/40'
+                        : 'bg-compass-dark text-text-muted border border-compass-border hover:text-white'
+                    }`}
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/>
+                      <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+                      <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+                    </svg>
+                    {isReading ? 'Stop' : 'Read this to me'}
+                  </button>
+                )}
+              </div>
               <button
                 onClick={handleSave}
                 disabled={!text.trim()}
