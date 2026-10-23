@@ -24,10 +24,12 @@ export default function ClaimPage() {
   // Partner cohort routing
   // ?ref=qc → Queer Croydon 100-code pioneer pool
   // ?ref=blkouthub → BLKOUTHUB peer cohort (200 codes, peer-first Ring 1)
+  // ?ref=beamday → print journal QR, Beam Day 28 Dec 2026 (100 BD- codes, supabase-beamday.sql)
   const source = useMemo(() => {
     const ref = (searchParams.get('ref') || '').toLowerCase()
     if (ref === 'qc' || ref === 'queer-croydon') return 'queer-croydon'
     if (ref === 'blkouthub' || ref === 'hub') return 'blkouthub'
+    if (ref === 'beamday') return 'beamday'
     return 'landing'
   }, [searchParams])
   const isQcCohort = source === 'queer-croydon'
