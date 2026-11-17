@@ -8,6 +8,7 @@ import GiftClaimPage from './pages/GiftClaimPage'
 import WaitlistPage from './pages/WaitlistPage'
 import InstallationPage from './pages/InstallationPage'
 import InterviewFeedbackPage from './pages/InterviewFeedbackPage'
+import FeedbackPage from './pages/FeedbackPage'
 import UnlockPage from './pages/UnlockPage'
 import WelcomePage from './pages/WelcomePage'
 import HomePage from './pages/HomePage'
@@ -111,6 +112,7 @@ function AppRoutes() {
           </footer>
         </div>
       } />
+      <Route path="/feedback" element={<FeedbackPage />} />
       <Route path="/interview/feedback" element={<InterviewFeedbackPage />} />
       <Route path="/interview/:tableSlug" element={<InterviewPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />

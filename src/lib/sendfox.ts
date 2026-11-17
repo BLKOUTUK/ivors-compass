@@ -58,3 +58,12 @@ export async function syncWaitlistToSendFox(
     postcode: postcode ?? '',
   })
 }
+
+// BLKOUT's monthly letter (SendFox list 631882), through its public form 235473.
+// Only ever called when someone has ticked the separate, unticked opt-in box.
+const NEWSLETTER_FORM =
+  (import.meta.env.VITE_SENDFOX_NEWSLETTER_URL as string | undefined) || 'https://sendfox.com/form/3zpwee/1wj276'
+
+export async function syncNewsletterOptIn(email: string) {
+  await postForm(NEWSLETTER_FORM, { email })
+}

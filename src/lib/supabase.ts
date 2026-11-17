@@ -127,3 +127,25 @@ export async function joinCompassWaitlist(
   }
   return data as { ok: boolean; reason?: string }
 }
+
+/** Journal feedback (the printed "Tell us how it went" page, and /feedback).
+ *  One row per answered question in compass_feedback, which already allows anonymous inserts. */
+export async function submitJournalFeedback(
+  answers: { category: string; message: string }[],
+  accessCode: string | null,
+  email: string | null,
+): Promise<{ ok: boolean }> {
+  const rows = answers.map((a) => ({
+    category: a.category,
+    message: a.message,
+    access_code: accessCode,
+    email,
+    page: 'journal-feedback-2027',
+  }))
+  const { error } = await supabase.from('compass_feedback').insert(rows)
+  if (error) {
+    console.error('Feedback error:', error)
+    return { ok: false }
+  }
+  return { ok: true }
+}
