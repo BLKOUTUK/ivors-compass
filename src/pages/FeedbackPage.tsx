@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { logAnalytics, submitJournalFeedback } from '../lib/supabase'
-import { syncNewsletterOptIn } from '../lib/sendfox'
 import { useCompass } from '../hooks/useCompass'
 
 // The three questions printed on the "Tell us how it went" page of the journal (first edition, 2027).
@@ -38,12 +37,18 @@ export default function FeedbackPage() {
       return setError("That email address doesn't look right.")
     if (newsletter && !cleanEmail) return setError('Add your email if you want the monthly letter.')
 
+    // The monthly-letter tick is stored as its own row. SendFox's public form is reCAPTCHA-protected, so a page
+    // cannot post to it (tested 17 Nov 2026: nothing arrived). A server job has to pick these rows up, as
+    // events-calendar's api/newsletter-sync.ts does for event_interest.
+    const rows = newsletter && cleanEmail
+      ? [...filled, { category: 'newsletter-optin', message: 'Ticked: send me BLKOUT’s monthly letter too' }]
+      : filled
+
     setSubmitting(true)
-    const res = await submitJournalFeedback(filled, accessCode, cleanEmail || null)
+    const res = await submitJournalFeedback(rows, accessCode, cleanEmail || null)
     setSubmitting(false)
     if (!res.ok) return setError('That didn’t send. Please try again.')
 
-    if (newsletter && cleanEmail) syncNewsletterOptIn(cleanEmail)
     logAnalytics(null, 'journal_feedback_sent', { answered: filled.length })
     setSent(true)
   }
