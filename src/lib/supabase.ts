@@ -1,7 +1,11 @@
 import { createClient } from '@supabase/supabase-js'
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://bgjengudzfickgomjqmz.supabase.co'
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || ''
+// Supabase disabled this project's legacy JWT keys ("eyJ...") on 6 Jul 2026, and the Coolify build variable
+// still held one, so every database call from the app failed with a 401 from that date (found 17 Nov 2026).
+// The publishable key is public by design. A legacy key in the environment is ignored; any other value wins.
+const envKey = (import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined) || ''
+const supabaseAnonKey = envKey && !envKey.startsWith('eyJ') ? envKey : 'sb_publishable_cpUwnfcJuvnjrJjmLdZpXw_jJIOa8aB'
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
