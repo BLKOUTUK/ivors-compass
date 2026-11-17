@@ -28,7 +28,7 @@ RUN echo 'server { \
     location = / { \
         try_files /index.html =404; \
     } \
-    location ~ ^/(claim|claim/gift|waitlist|unlock|welcome|compass|compass/(convergence|cards|film|journal|mood|workshops|sunroom|progress|about|crisis|life-of-ivor|record|meditation/[^/]+))/?$ { \
+    location ~ ^/(claim|claim/gift|waitlist|feedback|unlock|welcome|compass|compass/(convergence|cards|film|journal|mood|workshops|sunroom|progress|about|crisis|life-of-ivor|record|meditation/[^/]+))/?$ { \
         add_header X-Robots-Tag "noindex, follow"; \
         try_files /index.html =404; \
     } \
